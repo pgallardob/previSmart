@@ -1,0 +1,45 @@
+<h1>Ruta del proceso</h1>
+<p class="view__lead">Las 7 etapas AFP → SCOMP → aceptación, con los 25 pasos de la secuencia recomendada y los plazos legales calculados sobre fechas reales del cliente.</p>
+
+<div id="ruta-vacio"></div>
+<div id="ruta-cuerpo" hidden>
+
+  <section class="card card--flat u-mb-6" aria-labelledby="ruta-operacion-titulo">
+    <h2 id="ruta-operacion-titulo" class="u-mt-0">Centro operativo del expediente</h2>
+    <p class="small muted">Preparación documental y seguimiento con el canal autorizado, incluso sin RPA. No emite, acepta ni certifica ofertas SCOMP.</p>
+    <div id="ruta-operacion" aria-live="polite"></div>
+    <form id="ruta-gestion-form" class="u-mt-4">
+      <div class="grid-modulos">
+        <div class="field"><label for="r-participe">Partícipe o institución contactada</label><input id="r-participe" maxlength="150" placeholder="AFP, compañía o asesor autorizado"></div>
+        <div class="field"><label for="r-referencia">Referencia entregada por el canal</label><input id="r-referencia" maxlength="150" placeholder="Referencia real, si la recibiste"></div>
+        <div class="field"><label for="r-envio">Fecha de envío declarada</label><input id="r-envio" type="date"></div>
+      </div>
+      <button type="submit" class="btn btn--secondary btn--sm">Guardar seguimiento</button>
+      <button id="ruta-exportar-gestion" type="button" class="btn btn--secondary btn--sm">Descargar resumen de gestión</button>
+      <p class="tiny muted">El registro es una declaración del operador, no una confirmación de recepción ni autorización. El resumen contiene datos personales, nunca claves.</p>
+    </form>
+  </section>
+
+  <section class="card card--accent" aria-label="Fechas y plazos">
+    <h2 class="u-mt-0">Fechas clave</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="r-fecha-solicitud">Solicitud de pensión a la AFP</label>
+        <input id="r-fecha-solicitud" type="date" data-fecha="solicitud">
+        <p class="field__ayuda" id="r-plazo-cert"></p>
+      </div>
+      <div class="field">
+        <label for="r-fecha-cert">Certificado de Saldo emitido</label>
+        <input id="r-fecha-cert" type="date" data-fecha="certEmitido">
+        <p class="field__ayuda" id="r-vence-cert"></p>
+      </div>
+      <div class="field">
+        <label for="r-fecha-ofe">Ofertas SCOMP emitidas</label>
+        <input id="r-fecha-ofe" type="date" data-fecha="ofertasEmitidas">
+        <p class="field__ayuda" id="r-vence-ofe"></p>
+      </div>
+    </div>
+  </section>
+
+  <div id="ruta-timeline" class="timeline u-mt-6"></div>
+</div>

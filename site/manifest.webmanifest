@@ -1,0 +1,19 @@
+{
+  "name": "PreviSmart — Copiloto previsional",
+  "short_name": "PreviSmart",
+  "description": "Herramienta del asesor previsional para acompañar el proceso AFP → renta vitalicia: UF del día, elegibilidad, beneficios estatales, comparador SCOMP, pensión líquida y checklists. Normativa Chile, octubre 2026.",
+  "lang": "es-CL",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0C5A54",
+  "background_color": "#F7F5F1",
+  "categories": ["finance", "productivity"],
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

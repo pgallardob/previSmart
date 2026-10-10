@@ -1,0 +1,111 @@
+/* ============================================================
+   Pico overrides — Pico aporta base semántica y accesibilidad;
+   aquí se mapea su sistema de variables al design system PreviSmart.
+   ============================================================ */
+
+:root {
+  --pico-font-family-sans-serif: var(--font-ui);
+  --pico-font-family: var(--font-ui);
+  --pico-font-size: 106.25%; /* base 17px */
+  --pico-line-height: var(--lh-body);
+  --pico-font-weight: 400;
+
+  --pico-border-radius: var(--radius-md);
+  --pico-border-width: 1px;
+  --pico-outline-width: 3px;
+
+  --pico-background-color: var(--bg);
+  --pico-color: var(--text);
+  --pico-text-selection-color: rgb(12 90 84 / 0.22);
+  --pico-muted-color: var(--text-2);
+  --pico-muted-border-color: var(--border);
+
+  --pico-primary: var(--primary);
+  --pico-primary-background: var(--primary);
+  --pico-primary-underline: rgb(12 90 84 / 0.4);
+  --pico-primary-hover: var(--primary-strong);
+  --pico-primary-hover-background: var(--primary-strong);
+  --pico-primary-focus: var(--focus);
+  --pico-primary-inverse: var(--primary-contrast);
+
+  --pico-secondary: var(--text-2);
+  --pico-secondary-background: var(--surface-2);
+  --pico-secondary-underline: rgb(85 100 95 / 0.4);
+  --pico-secondary-hover: var(--text);
+  --pico-secondary-hover-background: var(--border);
+  --pico-secondary-focus: var(--text-2);
+  --pico-secondary-inverse: var(--text);
+
+  --pico-contrast: var(--text);
+  --pico-contrast-background: var(--text);
+  --pico-contrast-inverse: var(--bg);
+
+  --pico-form-element-background-color: var(--surface);
+  --pico-form-element-selected-background-color: var(--primary-soft);
+  --pico-form-element-border-color: var(--border);
+  --pico-form-element-color: var(--text);
+  --pico-form-element-placeholder-color: var(--text-3);
+  --pico-form-element-active-border-color: var(--primary);
+  --pico-form-element-focus-color: var(--focus);
+  --pico-form-element-disabled-opacity: 0.55;
+
+  --pico-card-background-color: var(--surface);
+  --pico-card-border-color: var(--border);
+  --pico-card-box-shadow: var(--shadow-1);
+  --pico-card-sectioning-background-color: var(--surface-2);
+
+  --pico-h1-color: var(--text);
+  --pico-h2-color: var(--text);
+  --pico-h3-color: var(--text);
+  --pico-h4-color: var(--text);
+  --pico-h5-color: var(--text);
+  --pico-h6-color: var(--text);
+
+  --pico-mark-background-color: var(--accent-soft);
+  --pico-mark-color: var(--text);
+
+  --pico-ins-color: var(--success);
+  --pico-del-color: var(--danger);
+
+  --pico-blockquote-border-color: var(--primary-soft);
+  --pico-blockquote-footer-color: var(--text-2);
+
+  --pico-table-border-color: var(--border);
+  --pico-table-row-stripped-background-color: var(--surface-2);
+
+  --pico-code-background-color: var(--surface-2);
+  --pico-code-color: var(--text);
+  --pico-code-kbd-background-color: var(--text);
+  --pico-code-kbd-color: var(--bg);
+
+  --pico-valid-color: var(--success);
+  --pico-invalid-color: var(--danger);
+
+  --pico-modal-overlay-background-color: rgb(16 24 22 / 0.55);
+}
+
+/* Titulares con la serif editorial */
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 60, "WONK" 0;
+  letter-spacing: -0.02em;
+  line-height: var(--lh-head);
+}
+h4, h5, h6 {
+  font-family: var(--font-ui);
+  font-variation-settings: normal;
+  letter-spacing: 0;
+}
+
+/* Pico: inputs algo más generosos (accesibilidad 55+) */
+input, select, textarea, button {
+  font-size: 1rem;
+}
+
+/* El anillo de foco consistente en todo */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

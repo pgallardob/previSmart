@@ -1,0 +1,40 @@
+<h1>Pensión líquida</h1>
+<p class="view__lead">De la renta bruta en UF a los pesos que efectivamente llegan: salud e impuesto único. Todo en pesos chilenos con la UF vigente.</p>
+
+<div id="liq-vacio"></div>
+<div id="liq-cuerpo" hidden>
+
+  <section class="card" aria-labelledby="liq-inputs">
+    <h2 id="liq-inputs" class="u-mt-0">Datos</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="liq-pension">Pensión bruta (UF/mes)</label>
+        <input id="liq-pension" name="pensionUF" type="text" inputmode="decimal" class="money" placeholder="12,00">
+        <p class="field__ayuda">La oferta elegida o la estimación de la AFP.</p>
+      </div>
+      <div class="field">
+        <label for="liq-salud">Previsión de salud</label>
+        <select id="liq-salud" name="saludTipo">
+          <option value="fonasa">Fonasa (7%)</option>
+          <option value="isapre">Isapre (plan UF)</option>
+        </select>
+      </div>
+      <div class="field" id="liq-plan-wrap" hidden>
+        <label for="liq-plan">Plan Isapre (UF/mes)</label>
+        <input id="liq-plan" name="planUF" type="text" inputmode="decimal" class="money" placeholder="0,00">
+      </div>
+    </div>
+  </section>
+
+  <div id="liq-resultado" class="u-mt-6"></div>
+
+  <section class="card card--flat u-mt-8">
+    <h2 class="u-mt-0">Notas que revisar con la aseguradora</h2>
+    <ul class="muted small u-mb-0">
+      <li>Impuesto único de segunda categoría sobre la renta líquida (bruta − salud), tabla SII mensual. Oct-2026: exento hasta $974.038,50.</li>
+      <li>Salud: Fonasa descuenta 7% de la pensión; en Isapre se paga el plan pactado en UF. Puede haber exenciones y trato distinto con PGU.</li>
+      <li>Comisión del agente: referencia del mercado ~2% del capital (máx. 60 UF); preguntar si sale de la oferta o la paga la aseguradora.</li>
+      <li>Los beneficios del Seguro Social (BAC, CEV) se expresan como pensión y pueden sumar al ingreso final.</li>
+    </ul>
+  </section>
+</div>

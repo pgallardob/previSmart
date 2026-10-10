@@ -1,0 +1,83 @@
+/* ============================================================
+   PreviSmart · Print — reporte en hoja carta
+   El documento vive visible en pantalla como vista previa;
+   al imprimir se oculta el resto de la vista. ============================================================ */
+
+@media print {
+  .appbar, .tabbar, .sidenav, .skip-link,
+  #toast-region, dialog, .btn, .icon-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  :root, [data-theme="dark"] {
+    --bg: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-2: #FFFFFF;
+    --text: #1A1A1A;
+    --text-2: #444444;
+  }
+
+  body {
+    background: #FFFFFF;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  .layout {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+
+  .view { padding: 0; animation: none; }
+  .app-footer { padding: 8pt 0 0; margin-top: 8pt; color: #444444; font-size: 8pt; break-inside: avoid; }
+
+  .card, .veredicto, .mod-card {
+    box-shadow: none;
+    border: 1px solid #CCCCCC;
+    break-inside: avoid;
+  }
+
+  h1, h2, h3 { break-after: avoid; }
+  section, article { break-inside: avoid-page; }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666666;
+    font-weight: 400;
+  }
+
+  .reporte { border: none; padding: 0; max-width: none; }
+  .rep-sec { break-inside: avoid; }
+  .rep-firmas { break-inside: avoid; }
+  /* Documento de ofertas: fichas compactas por oferta */
+  .print-doc .reporte { font-size: 8.5pt; line-height: 1.35; }
+  .print-doc .rep-oferta { padding: 6pt 8pt; margin-block-end: 6pt; border-color: #999; }
+  .print-doc .rep-oferta__grid { grid-template-columns: repeat(4, 1fr); gap: 4pt 12pt; }
+  .print-doc .rep-oferta__grid > div > strong { font-size: 8.5pt; }
+  .print-doc .rep-oferta__head strong { font-size: 9.5pt; }
+  .rep-oferta { break-inside: avoid; }
+  .propuesta__aviso { border: 2px solid #444; padding: 6pt; text-align: center; break-inside: avoid; }
+  .propuesta .rep-oferta__grid dd { margin: 0; overflow-wrap: anywhere; }
+  #rep-meta, #rep-vacio, #btn-imprimir { display: none !important; }
+
+  /* Impresión de un documento puntual (ej.: comparación SCOMP).
+     El botón agrega body.impresion-ofertas: se imprime solo .print-doc.
+     #ofe-print vive anidado en #ofe-cuerpo → se conserva su ancestro. */
+  body.impresion-ofertas .view > *:not(#ofe-cuerpo) { display: none !important; }
+  body.impresion-ofertas #ofe-cuerpo > *:not(#ofe-print) { display: none !important; }
+  body.impresion-ofertas #ofe-print { display: block !important; }
+  body.impresion-ofertas .reporte { border: none; padding: 0; max-width: none; }
+
+  body.impresion-autorizacion .view > *:not(#cap-cuerpo) { display: none !important; }
+  body.impresion-autorizacion #cap-cuerpo > *:not(#cap-autorizacion) { display: none !important; }
+  body.impresion-autorizacion #cap-autorizacion { border: none; padding: 0; }
+  body.impresion-autorizacion #cap-aut-preview { display: block !important; }
+
+  @page {
+    size: letter;
+    margin: 18mm 16mm;
+  }
+}

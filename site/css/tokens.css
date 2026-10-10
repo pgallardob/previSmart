@@ -1,0 +1,131 @@
+/* ============================================================
+   PreviSmart · Design tokens — "Confianza Serena"
+   Fuente única de verdad visual. docs/DESIGN_SYSTEM.md
+   ============================================================ */
+
+:root {
+  /* ---- Color · tema claro ---- */
+  --bg: #F7F5F1;
+  --surface: #FFFFFF;
+  --surface-2: #F0EDE7;
+  --border: #E3DED4;
+  --text: #1E2A28;
+  --text-2: #55645F;
+  --text-3: #8A948E;
+
+  --primary: #0C5A54;
+  --primary-strong: #084540;
+  --primary-soft: #E1EFEC;
+  --primary-contrast: #FFFFFF;
+
+  --accent: #C9932E;
+  --accent-strong: #A87B1F;
+  --accent-soft: #F8EED8;
+
+  --success: #2E7D5B;
+  --success-soft: #E2F1E9;
+  --warning: #B35C00;
+  --warning-soft: #FAEBD9;
+  --danger: #B3261E;
+  --danger-soft: #F9E3E1;
+  --info: #2B5FAB;
+  --info-soft: #E3ECF8;
+
+  --focus: #2E86AB;
+
+  /* ---- Tipografía ---- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-display: clamp(1.3rem, 2vw + 0.8rem, 1.7rem);
+  --fs-h2: clamp(1.1rem, 1.4vw + 0.6rem, 1.3rem);
+  --fs-h3: clamp(1rem, 1vw + 0.5rem, 1.12rem);
+  --fs-lg: 1rem;
+  --fs-body: 0.95rem;
+  --fs-sm: 0.85rem;
+  --fs-xs: 0.75rem;
+  --fs-money: clamp(1.25rem, 3vw + 0.8rem, 1.8rem);
+
+  --lh-body: 1.55;
+  --lh-head: 1.28;
+
+  /* Alto uniforme de controles (medido del select de AFP: 43.63px; raíz 17px) */
+  --control-h: 2.566rem;
+
+  /* ---- Espaciado (base 4px) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* ---- Radios ---- */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-pill: 999px;
+
+  /* ---- Sombras (tintadas petróleo) ---- */
+  --shadow-1: 0 1px 2px rgb(12 90 84 / 0.06), 0 1px 8px rgb(12 90 84 / 0.05);
+  --shadow-2: 0 2px 6px rgb(12 90 84 / 0.07), 0 8px 24px rgb(12 90 84 / 0.08);
+  --shadow-3: 0 8px 16px rgb(12 90 84 / 0.10), 0 24px 56px rgb(12 90 84 / 0.12);
+
+  /* ---- Movimiento ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+  --dur-slow: 360ms;
+
+  /* ---- Estructura ---- */
+  --appbar-h: 4rem;
+  --tabbar-h: 4rem;
+  --sidenav-w: 16.5rem;
+  --content-max: 72rem;
+  --read-max: 42rem;
+
+  --z-tabbar: 40;
+  --z-appbar: 50;
+  --z-sheet: 60;
+  --z-toast: 70;
+}
+
+[data-theme="dark"] {
+  --bg: #101816;
+  --surface: #182220;
+  --surface-2: #1F2C29;
+  --border: #2C3B37;
+  --text: #E9EFEC;
+  --text-2: #A9B8B1;
+  --text-3: #75857E;
+
+  --primary: #3FA99E;
+  --primary-strong: #5CC0B5;
+  --primary-soft: #17332F;
+  --primary-contrast: #10201D;
+
+  --accent: #D9AC4E;
+  --accent-strong: #E5C06E;
+  --accent-soft: #2E2716;
+
+  --success: #5FB98A;
+  --success-soft: #15312A;
+  --warning: #E09543;
+  --warning-soft: #332515;
+  --danger: #E46962;
+  --danger-soft: #3A1B19;
+  --info: #7AA5DC;
+  --info-soft: #18293E;
+
+  --focus: #5CC0B5;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.35), 0 1px 8px rgb(0 0 0 / 0.25);
+  --shadow-2: 0 2px 6px rgb(0 0 0 / 0.35), 0 8px 24px rgb(0 0 0 / 0.30);
+  --shadow-3: 0 8px 16px rgb(0 0 0 / 0.40), 0 24px 56px rgb(0 0 0 / 0.35);
+}

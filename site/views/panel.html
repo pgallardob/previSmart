@@ -1,0 +1,113 @@
+<h1>Panel</h1>
+<p class="view__lead">Herramienta del asesor previsional para acompañar, paso a paso y sin errores, el camino AFP → renta vitalicia. Normativa Chile · octubre 2026.</p>
+
+<section class="card card--accent" aria-label="Valor UF del día">
+  <div id="panel-uf" class="u-flex u-items-center u-justify-between u-gap-4 u-wrap">
+    <div class="stat"><span class="stat__valor">…</span><span class="stat__label">Consultando UF</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="cartera-titulo">
+  <div class="u-flex u-items-center u-justify-between u-gap-3 u-wrap u-mt-8">
+    <h2 id="cartera-titulo" class="u-mt-0 u-mb-0">Cartera de clientes</h2>
+    <div class="u-flex u-gap-2 u-wrap">
+      <button id="btn-nuevo-cliente" class="btn btn--primary btn--sm" type="button">
+        <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-plus"></use></svg>
+        Nuevo cliente
+      </button>
+      <button id="btn-scomp" class="btn btn--outline btn--sm" type="button">
+        <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-file-text"></use></svg>
+        Datos de demostración
+      </button>
+      <button id="btn-importar" class="btn btn--ghost btn--sm" type="button">
+        <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-upload"></use></svg>
+        Importar
+      </button>
+      <button id="btn-exportar-cartera" class="btn btn--ghost btn--sm" type="button">
+        <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-download"></use></svg>
+        Exportar cartera
+      </button>
+    </div>
+  </div>
+  <div id="cartera" class="u-mt-4"></div>
+  <input id="import-file" class="visually-hidden" type="file" accept="application/json,.json">
+</section>
+
+<section aria-labelledby="proceso-titulo">
+  <h2 id="proceso-titulo">Estado del proceso</h2>
+  <div id="proceso" class="card"></div>
+</section>
+
+<div id="panel-modulos"></div>
+
+<section class="view__section">
+  <hr class="separador">
+  <p class="tiny muted">PreviSmart es una herramienta informativa para el trabajo del asesor previsional. No reemplaza los documentos oficiales (Certificado de Saldo, Certificado de Ofertas SCOMP) ni constituye asesoría financiera. Toda cifra normativa indica su fuente y fecha de vigencia. Los datos se guardan solo en este dispositivo.</p>
+</section>
+
+<dialog id="dlg-cliente" class="centrado centrado--wide" aria-label="Datos del cliente">
+  <article>
+  <form id="form-cliente">
+    <input type="hidden" id="cliente-id">
+    <div class="dlg-grid">
+      <div class="field">
+        <label for="cliente-nombre">Nombre</label>
+        <input id="cliente-nombre" type="text" autocomplete="off" required placeholder="María">
+      </div>
+      <div class="field">
+        <label for="cliente-apaterno">Apellido paterno</label>
+        <input id="cliente-apaterno" type="text" autocomplete="off" placeholder="González">
+      </div>
+      <div class="field">
+        <label for="cliente-amaterno">Apellido materno</label>
+        <input id="cliente-amaterno" type="text" autocomplete="off" placeholder="Soto">
+      </div>
+      <div class="field">
+        <label for="cliente-rut">RUT</label>
+        <input id="cliente-rut" type="text" inputmode="text" autocomplete="off" placeholder="12.345.678-9">
+      </div>
+      <div class="field">
+        <label for="cliente-fnac">Fecha de nacimiento</label>
+        <input id="cliente-fnac" type="date">
+        <p class="field__ayuda" id="cliente-edad">Edad calculada sola.</p>
+      </div>
+      <div class="field">
+        <label for="cliente-afp">AFP actual</label>
+        <select id="cliente-afp">
+          <option value="">—</option>
+          <option>Capital</option><option>Cuprum</option><option>Habitat</option>
+          <option>Modelo</option><option>PlanVital</option><option>ProVida</option>
+          <option>Uno</option><option value="otra">Otra / IPS-IPS</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cliente-telefono">Teléfono</label>
+        <input id="cliente-telefono" type="tel" inputmode="tel" autocomplete="off" placeholder="+56 9 1234 5678">
+      </div>
+      <div class="field">
+        <label for="cliente-email">Email</label>
+        <input id="cliente-email" type="email" autocomplete="off" placeholder="cliente@correo.cl">
+      </div>
+      <div class="field dlg-grid__full">
+        <label for="cliente-direccion">Dirección</label>
+        <input id="cliente-direccion" type="text" autocomplete="off" placeholder="Calle 123, Comuna">
+      </div>
+    </div>
+    <div class="dlg-actions">
+      <button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn--primary btn--sm" type="submit">Guardar</button>
+    </div>
+  </form>
+  </article>
+</dialog>
+
+<dialog id="dlg-confirmar" class="centrado" aria-labelledby="confirmar-titulo">
+  <article>
+    <h3 id="confirmar-titulo">Eliminar cliente</h3>
+    <p id="confirmar-texto" class="muted"></p>
+    <div class="dlg-actions">
+      <button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button>
+      <button id="confirmar-si" class="btn btn--danger btn--sm" type="button">Eliminar</button>
+    </div>
+  </article>
+</dialog>

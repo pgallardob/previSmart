@@ -1,0 +1,52 @@
+<h1>Modalidades de pensión</h1>
+<p class="view__lead">Compara condiciones y distribuciones propuestas del capital. Las pensiones requieren ofertas documentadas o cálculo actuarial AFP: la tasa técnica no se convierte en una pensión mensual ni una oferta se escala automáticamente.</p>
+
+<div id="mod-vacio"></div>
+<div id="mod-cuerpo" hidden>
+
+  <section class="card" aria-labelledby="mod-inputs">
+    <h2 id="mod-inputs" class="u-mt-0">Supuestos de la simulación</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="m-pension-rvi">Pensión ofrecida renta vitalicia inmediata (UF/mes)</label>
+        <input id="m-pension-rvi" name="pensionRVIuf" type="text" inputmode="decimal" class="money" placeholder="12,00">
+        <p class="field__ayuda" id="m-rvi-equiv">Ingresa una renta vitalicia documentada; no se toma automáticamente una estimación AFP.</p>
+      </div>
+      <div class="field">
+        <label for="m-pct-temporal">% del capital para renta temporal</label>
+        <input id="m-pct-temporal" name="pctTemporal" type="number" min="10" max="80" step="5" value="30">
+        <p class="field__ayuda">Resto financia la vitalicia diferida.</p>
+      </div>
+      <div class="field">
+        <label for="m-pct-rvi">% del capital para RVI en la modalidad combinada</label>
+        <input id="m-pct-rvi" name="pctRVI" type="number" min="10" max="90" step="5" value="50">
+        <p class="field__ayuda">El resto queda en la AFP como retiro programado (§12 del maestro).</p>
+      </div>
+      <div class="field">
+        <label for="m-anios-dif">Años de diferimiento</label>
+        <input id="m-anios-dif" name="aniosDiferimiento" type="number" min="1" max="20" value="5">
+      </div>
+      <div class="field">
+        <label for="m-pension-dif">Pensión vitalicia diferida pactada (UF/mes)</label>
+        <input id="m-pension-dif" name="pensionDiferidaUF" type="text" inputmode="decimal" class="money" placeholder="14,00">
+        <p class="field__ayuda">Debe ser ≥ 2 UF (mínimo legal).</p>
+      </div>
+    </div>
+    <div class="field" id="m-eld-wrap" hidden>
+      <label><input type="checkbox" id="m-eld" name="eld"> Retirar antes el excedente de libre disposición (ELD)</label>
+      <p class="field__ayuda">Solo si la AFP confirma derecho y monto oficial. El ELD sale del capital antes de repartirlo.</p>
+    </div>
+  </section>
+
+  <div id="mod-escenarios" class="grid-modulos u-mt-6"></div>
+
+  <section class="card card--flat u-mt-8">
+    <h2 class="u-mt-0">Cómo leer esto</h2>
+    <ul class="muted small u-mb-0">
+      <li><strong>Retiro programado:</strong> la AFP administra tu capital y calcula la pensión con parámetros y tablas actuariales. La tasa técnica SP desde octubre 2026 es 3,67%; no es rentabilidad prometida ni determina por sí sola una pensión.</li>
+      <li><strong>Renta vitalicia inmediata:</strong> la aseguradora paga una pensión fija en UF de por vida. Sin herencia del capital (salvo período garantizado o coberturas). Exige mínimo 2 UF.</li>
+      <li><strong>Renta temporal + vitalicia diferida:</strong> primero retiros programados por unos años, luego una renta vitalicia garantizada pactada hoy. Protege contra la caída de tasas.</li>
+      <li><strong>RVI + RP combinada:</strong> una fracción del capital se propone para la vitalicia y el resto para retiro programado. Requiere oferta específica y cálculo AFP; no se extrapola proporcionalmente una oferta por todo el capital.</li>
+    </ul>
+  </section>
+</div>

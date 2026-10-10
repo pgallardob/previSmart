@@ -1,0 +1,165 @@
+<h1>Ajustes</h1>
+<p class="view__lead">Tema, UF, respaldo de datos e información de la aplicación.</p>
+
+<section class="card u-mt-4" aria-labelledby="aj-asesor-titulo">
+  <h2 id="aj-asesor-titulo" class="u-mt-0">Responsable de esta instalación</h2>
+  <p class="small muted">Cada asesor configura su propia identidad y contacto. Se usan en las autorizaciones locales; no comparten expedientes ni acreditan automáticamente una inscripción profesional.</p>
+  <form id="aj-asesor-form">
+    <div class="grid-modulos">
+      <div class="field"><label for="aj-asesor-nombre">Nombre del responsable</label><input id="aj-asesor-nombre" maxlength="200" required></div>
+      <div class="field"><label for="aj-asesor-registro">Inscripción declarada (si corresponde)</label><input id="aj-asesor-registro" maxlength="200"></div>
+      <div class="field"><label for="aj-asesor-email">Email del responsable</label><input id="aj-asesor-email" type="email" maxlength="200"></div>
+      <div class="field"><label for="aj-asesor-telefono">Teléfono del responsable</label><input id="aj-asesor-telefono" type="tel" maxlength="200"></div>
+    </div>
+    <button type="submit" class="btn btn--secondary btn--sm">Guardar responsable local</button>
+  </form>
+</section>
+
+<section class="card card--flat u-mt-4" aria-labelledby="aj-operacion-titulo">
+  <h2 id="aj-operacion-titulo" class="u-mt-0">Estado para operación local</h2>
+  <p class="small muted">Comprueba el RPA sin ingresar claves ni iniciar una sesión AFP. El resultado es técnico, no una aprobación legal o previsional.</p>
+  <button id="aj-verificar-operacion" class="btn btn--secondary btn--sm" type="button">Verificar versión y modo del RPA</button>
+  <p id="aj-operacion-estado" class="small" role="status">Pendiente de verificación.</p>
+  <p class="tiny muted">Antes de atender: respaldo completo cifrado, cuenta Windows protegida, autorización del titular y revisión de antecedentes. La propuesta no oficial no requiere emitir un certificado SCOMP.</p>
+</section>
+
+<section class="card" aria-labelledby="aj-tema">
+  <h2 id="aj-tema" class="u-mt-0">Apariencia</h2>
+  <div class="field">
+    <label for="aj-tema-sel">Tema</label>
+    <select id="aj-tema-sel">
+      <option value="auto">Automático (según el sistema)</option>
+      <option value="light">Claro</option>
+      <option value="dark">Oscuro</option>
+    </select>
+  </div>
+</section>
+
+<section class="card u-mt-6" aria-labelledby="aj-uf">
+  <h2 id="aj-uf" class="u-mt-0">Valor UF</h2>
+  <p class="muted small" id="aj-uf-estado">Consultando…</p>
+  <div class="u-flex u-gap-2 u-wrap">
+    <button id="aj-uf-actualizar" class="btn btn--secondary btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-refresh-cw"></use></svg>
+      Actualizar en línea
+    </button>
+  </div>
+  <form id="aj-uf-manual" class="u-mt-4">
+    <div class="field">
+      <label for="aj-uf-input">Valor manual (solo sin conexión o si difiere)</label>
+      <div class="u-flex u-gap-2">
+        <input id="aj-uf-input" type="text" inputmode="decimal" class="money" placeholder="41.081,76">
+        <button class="btn btn--ghost btn--sm" type="submit">Guardar</button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="card u-mt-6" aria-labelledby="aj-respaldo">
+  <h2 id="aj-respaldo" class="u-mt-0">Guardado automático en archivo</h2>
+  <p class="muted small" id="aj-res-estado">Consultando…</p>
+  <div class="u-flex u-gap-2 u-wrap">
+    <button id="aj-res-elegir" class="btn btn--primary btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-file-text"></use></svg>
+      Elegir carpeta de respaldo
+    </button>
+    <button id="aj-res-guardar" class="btn btn--secondary btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-download"></use></svg>
+      Guardar ahora
+    </button>
+    <button id="aj-res-restaurar" class="btn btn--ghost btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-upload"></use></svg>
+      Restaurar desde carpeta
+    </button>
+  </div>
+</section>
+
+<section class="card u-mt-6 no-print" aria-labelledby="aj-integracion">
+  <h2 id="aj-integracion" class="u-mt-0">Servicio de descarga AFP (RPA)</h2>
+  <p class="muted small">El sistema se autentica como el propio afiliado en su sucursal virtual AFP usando las credenciales que él entrega en la reunión. La autenticación la ejecuta el <strong>servicio RPA local</strong> (carpeta <code>rpa/</code> del proyecto) — la app solo le entrega las credenciales ya capturadas.</p>
+  <p class="muted small" id="aj-int-estado">Consultando…</p>
+  <form id="aj-int-form" class="u-mt-4">
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="aj-int-endpoint">Endpoint del servicio RPA</label>
+        <input id="aj-int-endpoint" type="url" placeholder="http://localhost:8787">
+      </div>
+      <div class="field">
+        <label for="aj-int-key">Token de acceso (si el servicio lo exige)</label>
+        <input id="aj-int-key" type="password" autocomplete="off" placeholder="opcional">
+      </div>
+    </div>
+    <div class="dlg-actions">
+      <button id="aj-int-borrar" class="btn btn--ghost btn--sm" type="button">Olvidar configuración</button>
+      <button class="btn btn--primary btn--sm" type="submit">Guardar configuración</button>
+    </div>
+  </form>
+  <p class="tiny muted u-mt-4">Las credenciales de los afiliados duran únicamente durante la sesión de pestaña y no se incluyen en respaldos ni impresiones.</p>
+</section>
+
+<section class="card u-mt-6" aria-labelledby="aj-datos">
+  <h2 id="aj-datos" class="u-mt-0">Respaldo de datos</h2>
+  <p class="muted small">Los datos de todos los clientes se guardan solo en este dispositivo. Exporta la cartera completa como respaldo o para moverla a otro equipo.</p>
+  <div class="u-flex u-gap-2 u-wrap">
+    <button id="aj-exportar" class="btn btn--secondary btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-download"></use></svg>
+      Exportar cartera (JSON)
+    </button>
+    <button id="aj-importar" class="btn btn--ghost btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-upload"></use></svg>
+      Importar (JSON)
+    </button>
+    <button id="aj-borrar" class="btn btn--danger btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-triangle-alert"></use></svg>
+      Borrar todos los datos
+    </button>
+  </div>
+  <input id="aj-import-file" class="visually-hidden" type="file" accept="application/json,.json">
+</section>
+
+<section class="card card--flat u-mt-6" aria-labelledby="aj-integral-titulo">
+  <h2 id="aj-integral-titulo" class="u-mt-0">Respaldo completo cifrado</h2>
+  <p class="small muted">Incluye la cartera y los PDF originales, sin claves AFP. Se cifra con una contraseña que no se guarda. El respaldo JSON de cartera y el guardado automático no incluyen los documentos.</p>
+  <div class="u-flex u-gap-2 u-wrap">
+    <button id="aj-integral-exportar" class="btn btn--secondary btn--sm" type="button">Exportar expedientes cifrados</button>
+    <button id="aj-integral-restaurar" class="btn btn--secondary btn--sm" type="button">Restaurar expedientes cifrados</button>
+  </div>
+  <input id="aj-integral-file" class="visually-hidden" type="file" accept="application/json,.json">
+</section>
+
+<section class="card card--flat u-mt-6" aria-labelledby="aj-acerca">
+  <h2 id="aj-acerca" class="u-mt-0">Acerca de PreviSmart</h2>
+  <table class="rep-tabla"><tbody>
+    <tr><td class="rep-k">Versión</td><td id="aj-version">—</td></tr>
+    <tr><td class="rep-k">Normativa</td><td>DL 3.500 + Ley 21.735 + Ley 21.818 · vigente octubre 2026</td></tr>
+    <tr><td class="rep-k">UF</td><td>mindicador.cl (API pública) con cache y valor manual</td></tr>
+    <tr><td class="rep-k">Datos</td><td>localStorage del dispositivo — nada sale del equipo</td></tr>
+  </tbody></table>
+  <p class="tiny muted u-mt-4">Herramienta informativa para asesores previsionales. No constituye asesoría financiera ni reemplaza los documentos oficiales de AFP, CMF, Spensiones, IPS o SII. <a href="#/guia-estilos">Guía de estilos</a> · <a href="#/glosario">Glosario y fuentes</a></p>
+</section>
+
+<dialog id="dlg-borrar" class="centrado" aria-labelledby="borrar-titulo">
+  <article>
+    <h3 id="borrar-titulo">Borrar todos los datos</h3>
+    <p class="muted">Se eliminarán <strong>todos los clientes y expedientes</strong> de este dispositivo. Esta acción no se puede deshacer. Exporta la cartera primero si necesitas respaldo.</p>
+    <div class="dlg-actions">
+      <button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button>
+      <button id="borrar-si" class="btn btn--danger btn--sm" type="button">Sí, borrar todo</button>
+    </div>
+  </article>
+</dialog>
+
+<dialog id="dlg-integral" class="centrado no-print" aria-labelledby="integral-titulo">
+  <article>
+    <h3 id="integral-titulo">Respaldo de expedientes cifrado</h3>
+    <p class="small muted">Usa al menos 12 caracteres. Conserva esta contraseña por separado: no se puede recuperar. El archivo contiene datos personales y documentos; guárdalo en una ubicación protegida.</p>
+    <form id="form-integral">
+      <label for="integral-password">Contraseña del respaldo</label>
+      <input id="integral-password" type="password" minlength="12" required autocomplete="off">
+      <div class="dlg-actions">
+        <button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button>
+        <button id="integral-accion" class="btn btn--primary btn--sm" type="submit">Continuar</button>
+      </div>
+    </form>
+  </article>
+</dialog>

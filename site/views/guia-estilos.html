@@ -1,0 +1,137 @@
+<h1>Guía de estilos</h1>
+<p class="view__lead">Design system <strong>“Confianza Serena”</strong> en vivo. Esta página es la referencia visual permanente: todo componente nuevo se agrega aquí primero. Documento: <code>docs/DESIGN_SYSTEM.md</code>.</p>
+
+<h2>Color</h2>
+<div class="swatches">
+  <div class="swatch"><div class="swatch__color sw--primary"></div><div class="swatch__info"><span class="swatch__nombre">primary</span><span class="swatch__hex">#0C5A54</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--primary-strong"></div><div class="swatch__info"><span class="swatch__nombre">primary-strong</span><span class="swatch__hex">#084540</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--primary-soft"></div><div class="swatch__info"><span class="swatch__nombre">primary-soft</span><span class="swatch__hex">#E1EFEC</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--accent"></div><div class="swatch__info"><span class="swatch__nombre">accent</span><span class="swatch__hex">#C9932E</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--accent-soft"></div><div class="swatch__info"><span class="swatch__nombre">accent-soft</span><span class="swatch__hex">#F8EED8</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--success"></div><div class="swatch__info"><span class="swatch__nombre">success</span><span class="swatch__hex">#2E7D5B</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--warning"></div><div class="swatch__info"><span class="swatch__nombre">warning</span><span class="swatch__hex">#B35C00</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--danger"></div><div class="swatch__info"><span class="swatch__nombre">danger</span><span class="swatch__hex">#B3261E</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--info"></div><div class="swatch__info"><span class="swatch__nombre">info</span><span class="swatch__hex">#2B5FAB</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--bg"></div><div class="swatch__info"><span class="swatch__nombre">bg</span><span class="swatch__hex">#F7F5F1</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--surface"></div><div class="swatch__info"><span class="swatch__nombre">surface</span><span class="swatch__hex">#FFFFFF</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--surface-2"></div><div class="swatch__info"><span class="swatch__nombre">surface-2</span><span class="swatch__hex">#F0EDE7</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--text"></div><div class="swatch__info"><span class="swatch__nombre">text</span><span class="swatch__hex">#1E2A28</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--text-2"></div><div class="swatch__info"><span class="swatch__nombre">text-2</span><span class="swatch__hex">#55645F</span></div></div>
+  <div class="swatch"><div class="swatch__color sw--focus"></div><div class="swatch__info"><span class="swatch__nombre">focus</span><span class="swatch__hex">#2E86AB</span></div></div>
+</div>
+<p class="muted small">Tema oscuro: cambia con el botón del encabezado — todos los tokens responden.</p>
+
+<h2>Tipografía</h2>
+<div class="card">
+  <p class="tiny muted">Display — Fraunces variable (SOFT 60)</p>
+  <p class="money--big u-fg-display">Tu pensión, decidida bien.</p>
+  <h3 class="u-mt-4">Subtítulo de sección en Fraunces</h3>
+  <p>Cuerpo en Inter 17px con interlineado generoso para lectura cómoda a cualquier edad. Los valores monetarios usan <span class="money">cifras tabulares $1.234.567</span> para que las columnas de números nunca “bailen”.</p>
+  <p class="muted">Texto secundario — muted</p>
+  <p class="small">Texto pequeño — ayudas y meta</p>
+  <p class="tiny">Texto mínimo — badges y legales (13px)</p>
+  <p class="money money--big">$2.464.906 <span class="small muted">· 60 UF</span></p>
+</div>
+
+<h2>Botones</h2>
+<div class="card u-flex u-gap-3 u-wrap u-items-center">
+  <button class="btn btn--primary" type="button">Primario</button>
+  <button class="btn btn--secondary" type="button">Secundario</button>
+  <button class="btn btn--ghost" type="button">Ghost</button>
+  <button class="btn btn--danger" type="button">Peligro</button>
+  <button class="btn btn--primary btn--sm" type="button">Pequeño</button>
+  <button class="btn btn--primary" type="button" disabled>Deshabilitado</button>
+  <button class="icon-btn" type="button" aria-label="Icono"><svg class="icon"><use href="./assets/icons/sprite.svg#i-settings"></use></svg></button>
+</div>
+
+<h2>Badges</h2>
+<div class="card u-flex u-gap-2 u-wrap u-items-center">
+  <span class="badge badge--success"><svg class="icon"><use href="./assets/icons/sprite.svg#i-circle-check"></use></svg> Cumple</span>
+  <span class="badge badge--warning"><svg class="icon"><use href="./assets/icons/sprite.svg#i-triangle-alert"></use></svg> Vence pronto</span>
+  <span class="badge badge--danger"><svg class="icon"><use href="./assets/icons/sprite.svg#i-circle-alert"></use></svg> Vencido</span>
+  <span class="badge badge--info"><svg class="icon"><use href="./assets/icons/sprite.svg#i-info"></use></svg> Normativa</span>
+  <span class="badge badge--accent"><svg class="icon"><use href="./assets/icons/sprite.svg#i-sparkles"></use></svg> Logro</span>
+  <span class="badge badge--primary">Primario</span>
+  <span class="badge badge--neutral">Neutro</span>
+  <span class="badge badge--outline">F4</span>
+</div>
+
+<h2>Tarjetas</h2>
+<div class="grid-modulos">
+  <div class="card"><h3 class="u-mt-0">Card base</h3><p class="muted small">Superficie, borde suave, sombra-1, radius-lg.</p></div>
+  <div class="card card--interactive"><h3 class="u-mt-0">Card interactiva</h3><p class="muted small">Hover: eleva a sombra-2 y borde petróleo.</p></div>
+  <div class="card card--accent"><h3 class="u-mt-0">Card acento</h3><p class="muted small">Borde dorado para logros y la UF del día.</p></div>
+</div>
+
+<h2>Veredicto (patrón firma)</h2>
+<div class="lista">
+  <div class="veredicto veredicto--success">
+    <span class="veredicto__icono"><svg class="icon"><use href="./assets/icons/sprite.svg#i-circle-check"></use></svg></span>
+    <div><p class="veredicto__titulo">Cumple edad legal</p><p class="veredicto__texto">65 años cumplidos. Puede solicitar pensión de vejez. <a class="fuente" href="#/glosario"><svg class="icon"><use href="./assets/icons/sprite.svg#i-info"></use></svg>DL 3.500, art. 3</a></p></div>
+  </div>
+  <div class="veredicto veredicto--warning">
+    <span class="veredicto__icono"><svg class="icon"><use href="./assets/icons/sprite.svg#i-triangle-alert"></use></svg></span>
+    <div><p class="veredicto__titulo">Certificado vence pronto</p><p class="veredicto__texto">Quedan 8 días corridos de los 35 de vigencia. Agenda la decisión esta semana.</p></div>
+  </div>
+  <div class="veredicto veredicto--danger">
+    <span class="veredicto__icono"><svg class="icon"><use href="./assets/icons/sprite.svg#i-shield-check"></use></svg></span>
+    <div><p class="veredicto__titulo">Decisión irrevocable</p><p class="veredicto__texto">Una vez aceptada la renta vitalicia no se puede volver atrás ni recuperar el capital.</p></div>
+  </div>
+</div>
+
+<h2>Formularios</h2>
+<div class="card view__section">
+  <div class="field">
+    <label for="g-nombre">Nombre del cliente</label>
+    <input id="g-nombre" type="text" placeholder="María González">
+    <p class="field__ayuda">Como aparece en la cédula de identidad.</p>
+  </div>
+  <div class="field">
+    <label for="g-saldo">Saldo en AFP</label>
+    <div class="money-input">
+      <input id="g-saldo" type="text" inputmode="decimal" placeholder="85.000.000">
+      <button class="money-input__toggle" type="button">CLP ⇄ UF</button>
+    </div>
+    <p class="field__ayuda">El toggle convierte en vivo con la UF vigente.</p>
+  </div>
+  <div class="field">
+    <label for="g-afp">AFP</label>
+    <select id="g-afp"><option>Capital</option><option>Modelo</option><option>PlanVital</option><option>Uno</option></select>
+  </div>
+  <div class="field">
+    <label><input type="checkbox"> Tiene cónyuge con derecho a sobrevivencia</label>
+    <label><input type="radio" name="g-sexo"> Mujer</label>
+    <label><input type="radio" name="g-sexo"> Hombre</label>
+  </div>
+</div>
+
+<h2>Estados</h2>
+<div class="grid-modulos">
+  <div class="empty u-p-6">
+    <span class="empty__icono"><svg class="icon"><use href="./assets/icons/sprite.svg#i-users"></use></svg></span>
+    <p class="empty__titulo">Sin clientes aún</p>
+    <p>Agrega el primer afiliado para comenzar su expediente.</p>
+    <button class="btn btn--primary btn--sm" type="button"><svg class="icon"><use href="./assets/icons/sprite.svg#i-plus"></use></svg> Nuevo cliente</button>
+  </div>
+  <div class="card"><p class="tiny muted">Skeleton</p><div class="skeleton sk-line"></div><div class="skeleton sk-line sk-line--70"></div><div class="skeleton sk-block"></div></div>
+  <div class="card"><p class="tiny muted">Progress</p><div class="progress"><div class="progress__bar w-62"></div></div><p class="small muted u-mt-2">15 de 24 pasos del proceso</p></div>
+</div>
+
+<h2>Iconos</h2>
+<div class="card u-flex u-gap-4 u-wrap u-fz-lg2 u-text-primary">
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-layout-dashboard"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-user-round"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-badge-check"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-landmark"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-scale"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-table"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-calculator"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-heart-handshake"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-route"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-clipboard-check"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-book-open"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-file-text"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-palette"></use></svg>
+  <svg class="icon"><use href="./assets/icons/sprite.svg#i-settings"></use></svg>
+</div>
+<p class="muted small">Set Lucide vendored en <code>assets/icons/sprite.svg</code> (43 símbolos, stroke 2px redondeado).</p>

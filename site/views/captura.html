@@ -1,0 +1,165 @@
+<h1>Captura de datos</h1>
+<p class="view__lead">Modelo híbrido (presiso.md): el afiliado entrega en la reunión las credenciales de su sucursal virtual AFP, el sistema las usa para la descarga directa de saldos, y los documentos oficiales — Certificado de Saldo y Certificado de Ofertas SCOMP — quedan custodiados como respaldo legal.</p>
+
+<div id="cap-vacio"></div>
+
+  <section class="card card--flat u-mb-6 no-print" aria-labelledby="cap-archivo-titulo">
+    <h2 id="cap-archivo-titulo" class="u-mt-0">Documentos cifrados por cliente</h2>
+    <p class="small muted">Cada archivo contiene solo el cliente seleccionado y sus PDF, cifrados con una contraseña de esta instalación. No contiene claves AFP ni datos de otros asesores. El nombre del archivo o carpeta identifica al cliente; protégete también con el bloqueo del equipo.</p>
+    <div class="u-flex u-gap-2 u-wrap">
+      <button id="cap-archivo-carpeta" class="btn btn--secondary btn--sm" type="button">Elegir ubicación para respaldos</button>
+      <button id="cap-archivo-guardar" class="btn btn--secondary btn--sm" type="button">Guardar cliente cifrado</button>
+      <button id="cap-archivo-abrir" class="btn btn--secondary btn--sm" type="button">Abrir cliente cifrado</button>
+      <a id="cap-archivo-descarga" class="btn btn--primary btn--sm" hidden download>Descargar archivo cifrado listo</a>
+    </div>
+    <p id="cap-archivo-estado" class="small" role="status"></p>
+    <input id="cap-archivo-importar" type="file" accept="application/json,.json" class="visually-hidden">
+    <p class="tiny muted">El expediente de trabajo permanece en el navegador; este guardado no elimina ni cifra automáticamente esa base local. El archivo cifrado no se comparte con otros asesores y no crea copias externas. Sin su contraseña no se puede recuperar.</p>
+  </section>
+
+<div id="cap-cuerpo" hidden>
+
+  <section id="cap-autorizacion" class="card u-mb-6" aria-labelledby="cap-aut-titulo">
+    <h2 id="cap-aut-titulo" class="u-mt-0 no-print">Autorización previa del afiliado</h2>
+    <p class="small muted no-print">Los datos se toman del Perfil del cliente activo; la edad se calcula a la fecha elegida. Completa los campos faltantes y revisa la conservación de 30 días hábiles desde la firma. Obtén la firma antes de consultar la AFP. Crear el documento no registra consentimiento ni firma.</p>
+    <div id="cap-aut-form" class="grid-modulos no-print">
+      <div class="field"><label for="cap-aut-fecha">Fecha de firma de autorización (propuesta)</label><input id="cap-aut-fecha" type="date"><p class="field__ayuda">Debe coincidir con la firma efectiva; si cambia, regenera antes de firmar.</p></div>
+      <div class="field"><label for="cap-aut-responsable">Responsable de tratamiento y custodia</label><input id="cap-aut-responsable" type="text" maxlength="200" placeholder="Configura tu nombre en Ajustes"></div>
+      <div class="field"><label for="cap-aut-contacto">Contacto del responsable para solicitudes</label><input id="cap-aut-contacto" type="text" maxlength="200" placeholder="Configura tu contacto en Ajustes"><p class="field__ayuda">Contacto de tu instalación, no del afiliado. Los datos del cliente se muestran por separado.</p></div>
+      <div class="field"><label for="cap-aut-hasta">Conservar hasta (30 días hábiles desde firma)</label><input id="cap-aut-hasta" type="date" readonly aria-describedby="cap-aut-calendario"><p class="field__ayuda" id="cap-aut-calendario"></p></div>
+    </div>
+    <div class="u-flex u-gap-2 u-wrap no-print u-mt-4">
+      <button id="cap-aut-descargar" class="btn btn--secondary btn--sm" type="button">Descargar autorización (texto)</button>
+      <button id="cap-aut-imprimir" class="btn btn--secondary btn--sm" type="button">Imprimir / Guardar PDF</button>
+      <a class="btn btn--ghost btn--sm" href="#/perfil">Completar datos del cliente</a>
+    </div>
+    <div id="cap-aut-preview" class="print-doc u-mt-4" aria-live="polite"></div>
+  </section>
+
+  <section class="card card--flat u-mt-4 no-print" aria-labelledby="cap-priv-titulo">
+    <h2 id="cap-priv-titulo" class="u-mt-0">Registro de autorización y conservación</h2>
+    <p class="small muted">Después de cotejar la firma real, registra su fecha efectiva y referencia antes de consultar la AFP. No se toma como firma la fecha propuesta en la plantilla. Una fecha vencida, revocación o cambio de responsable bloquea nuevas consultas desde la app, sin borrar archivos automáticamente.</p>
+    <p id="cap-priv-estado" class="small" role="status"></p>
+    <form id="cap-priv-form">
+      <div class="grid-modulos">
+        <div class="field"><label for="cap-priv-fecha">Fecha efectiva de firma</label><input id="cap-priv-fecha" type="date" required></div>
+        <div class="field"><label for="cap-priv-referencia">Referencia o ubicación de autorización firmada</label><input id="cap-priv-referencia" maxlength="200" required placeholder="Referencia de documento, sin claves"></div>
+      </div>
+      <label class="small"><input id="cap-priv-cotejo" type="checkbox" required> He cotejado la autorización previa firmada y sus datos. Registro una declaración del operador, no una firma electrónica.</label>
+      <div class="u-flex u-gap-2 u-wrap u-mt-4"><button type="submit" class="btn btn--secondary btn--sm">Registrar autorización cotejada</button><button id="cap-priv-revocar" type="button" class="btn btn--secondary btn--sm">Registrar revocación</button></div>
+    </form>
+    <p class="tiny muted">El expediente y sus archivos locales siguen presentes. Al vencer o revocar, revisa las obligaciones legales y todos los archivos/copias en navegador, carpetas, descargas y dispositivos; eliminar la ficha no borra automáticamente los archivos del sistema.</p>
+  </section>
+
+  <p id="cap-rpa-info" class="small muted no-print" hidden>En esta instalación web/móvil se usa carga de documentos. El RPA de AFP requiere la distribución Windows y Edge local; no ingreses claves AFP en un sitio web que no esté vinculado al servicio local autorizado.</p>
+  <article id="cap-rpa-contenedor" class="card no-print">
+    <div class="u-flex u-items-center u-justify-between u-gap-2 u-wrap">
+      <h3 class="u-mt-0 u-mb-0">Credenciales AFP del afiliado</h3>
+      <span class="badge badge--neutral" id="cap-cred-estado">—</span>
+    </div>
+      <p class="small muted u-mt-3 u-mb-0">El afiliado entrega su usuario y clave durante la reunión. Se usan ante su AFP mediante el RPA local y se conservan solo durante esta sesión de pestaña, nunca en respaldos ni impresiones. Al cerrar la pestaña tendrás que ingresarlas nuevamente. Puedes olvidarlas en un clic.</p>
+
+      <form id="cap-form-cred" class="u-mt-4">
+        <div class="grid-modulos">
+          <div class="field">
+            <label for="cap-cred-afp">AFP del afiliado</label>
+            <select id="cap-cred-afp" required>
+              <option value="provida">AFP Provida</option>
+              <option value="cuprum">AFP Cuprum</option>
+              <option value="habitat">AFP Habitat</option>
+              <option value="capital">AFP Capital</option>
+              <option value="planvital">AFP PlanVital</option>
+              <option value="modelo">AFP Modelo</option>
+              <option value="uno">AFP Uno</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cap-cred-rut">RUT del afiliado</label>
+            <input id="cap-cred-rut" type="text" placeholder="RUT con dígito verificador">
+          </div>
+          <div class="field">
+            <label for="cap-cred-usuario">Usuario (el que usa en su AFP)</label>
+            <input id="cap-cred-usuario" type="text" autocomplete="off" required>
+          </div>
+          <div class="field">
+            <label for="cap-cred-clave">Clave (la que usa en su AFP)</label>
+            <input id="cap-cred-clave" type="password" autocomplete="off" required>
+          </div>
+        </div>
+        <label class="small u-mt-4"><input id="cap-cred-consentimiento" type="checkbox" required> Confirmo disponer de autorización previa firmada del afiliado para consultar su AFP, descargar y conservar sus datos previsionales y PDF con el alcance y plazo acordados. Esto no autoriza elegir ni aceptar ofertas de pensión.</label>
+        <div class="dlg-actions">
+          <button id="cap-cred-olvidar" class="btn btn--ghost btn--sm" type="button">Olvidar credenciales</button>
+          <button class="btn btn--primary btn--sm" type="submit">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-shield-check"></use></svg>
+            Guardar credenciales
+          </button>
+        </div>
+      </form>
+
+      <div class="u-flex u-gap-2 u-wrap u-mt-4">
+        <button id="cap-descargar" class="btn btn--primary btn--sm" type="button">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-download"></use></svg>
+          Autenticar como el afiliado y descargar saldos
+        </button>
+        <a class="btn btn--secondary btn--sm" href="#/ajustes">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-settings"></use></svg>
+          Servicio RPA
+        </a>
+      </div>
+      <p class="small muted u-mt-2 u-mb-0">Descarga los saldos por cuenta y los documentos oficiales disponibles (Certificado de Afiliación, Certificado de Cotizaciones y Cartola Resumen), que se custodian abajo. Se abre Microsoft Edge con la sesión del afiliado — si la AFP pide verificación o código, se resuelve en esa ventana. Tarda ~2–5 min.</p>
+      <div id="cap-desc-resultado" class="u-mt-3"></div>
+    </article>
+
+    <article class="card u-mt-6">
+      <div class="u-flex u-items-center u-justify-between u-gap-2 u-wrap">
+        <h3 class="u-mt-0 u-mb-0">Carga de documentos oficiales</h3>
+        <span class="badge badge--info">respaldo legal</span>
+      </div>
+      <p class="small muted u-mt-3 u-mb-0">Sube PDFs que el cliente trae por otro canal (mail, papel escaneado, USB). Los que el RPA descarga directo de la AFP ya aparecen abajo solos — no hace falta subirlos de nuevo. Todo queda custodiado en este dispositivo (IndexedDB) asociado al expediente; "Guardar" los baja como archivo a tu carpeta de descargas.</p>
+      <form id="cap-form-doc" class="u-mt-4">
+        <div class="grid-modulos">
+          <div class="field">
+            <label for="cap-doc-tipo">Tipo de documento</label>
+            <select id="cap-doc-tipo" required>
+              <option value="certificado-saldo">Certificado de Saldo</option>
+              <option value="certificado-ofertas">Certificado de Ofertas SCOMP</option>
+              <option value="certificado-afiliacion">Certificado de Afiliación</option>
+              <option value="certificado-cotizaciones">Certificado de Cotizaciones</option>
+              <option value="cartola-resumen">Cartola Resumen</option>
+              <option value="otro">Otro documento</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cap-doc-archivo">Archivo (PDF)</label>
+            <input id="cap-doc-archivo" type="file" accept="application/pdf,.pdf" required>
+          </div>
+        </div>
+        <div class="dlg-actions">
+          <button class="btn btn--primary btn--sm" type="submit">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-upload"></use></svg>
+            Guardar documento
+          </button>
+        </div>
+      </form>
+      <div id="cap-doc-lista" class="u-mt-4"></div>
+    </article>
+
+    <div id="cap-extraccion" class="u-mt-6"></div>
+    <section class="card card--flat u-mt-6" aria-labelledby="cap-auditoria-titulo">
+      <h3 id="cap-auditoria-titulo" class="u-mt-0">Control del volcado de datos</h3>
+      <div id="cap-auditoria"></div>
+    </section>
+
+</div>
+
+<dialog id="dlg-archivo-cliente" class="centrado no-print" aria-labelledby="archivo-cliente-titulo">
+  <article>
+    <h3 id="archivo-cliente-titulo">Archivo cifrado del cliente</h3>
+    <p class="small muted">Contraseña de al menos 12 caracteres, diferente de la clave AFP. No se guarda. Abrir un cliente cifrado lo incorpora a esta instalación solo si su identificador no existe; nunca reemplaza automáticamente otro expediente.</p>
+    <form id="form-archivo-cliente">
+      <label for="archivo-cliente-password">Contraseña del archivo</label><input id="archivo-cliente-password" type="password" minlength="12" required autocomplete="off">
+      <div id="archivo-cliente-confirmar-wrap"><label for="archivo-cliente-confirmar">Repetir contraseña</label><input id="archivo-cliente-confirmar" type="password" minlength="12" autocomplete="off"></div>
+      <div class="dlg-actions"><button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button><button id="archivo-cliente-accion" class="btn btn--primary btn--sm" type="submit">Continuar</button></div>
+    </form>
+  </article>
+</dialog>

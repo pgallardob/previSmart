@@ -1,0 +1,280 @@
+<h1>Perfil del cliente</h1>
+<p class="view__lead">Expediente previsional completo. Todo se guarda automáticamente en este dispositivo y alimenta la elegibilidad, los beneficios y el comparador.</p>
+
+<div id="perfil-vacio"></div>
+<div id="perfil-cuerpo" hidden>
+
+<form id="form-perfil" autocomplete="off">
+
+  <!-- ============ 1. IDENTIDAD ============ -->
+  <section class="card" aria-labelledby="sec-identidad">
+    <h2 id="sec-identidad" class="u-mt-0">Identidad</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="f-nombre">Nombre</label>
+        <input id="f-nombre" data-grupo="perfil" name="nombre" type="text" required>
+      </div>
+      <div class="field">
+        <label for="f-apaterno">Apellido paterno</label>
+        <input id="f-apaterno" data-grupo="perfil" name="apellidoPaterno" type="text">
+      </div>
+      <div class="field">
+        <label for="f-amaterno">Apellido materno</label>
+        <input id="f-amaterno" data-grupo="perfil" name="apellidoMaterno" type="text">
+      </div>
+      <div class="field">
+        <label for="f-rut">RUT</label>
+        <input id="f-rut" data-grupo="perfil" name="rut" type="text" placeholder="12.345.678-9">
+      </div>
+      <div class="field">
+        <label for="f-telefono">Teléfono</label>
+        <input id="f-telefono" data-grupo="perfil" name="telefono" type="tel" inputmode="tel" placeholder="+56 9 1234 5678">
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" data-grupo="perfil" name="email" type="email" placeholder="cliente@correo.cl">
+      </div>
+      <div class="field">
+        <label for="f-direccion">Dirección</label>
+        <input id="f-direccion" data-grupo="perfil" name="direccion" type="text" placeholder="Calle 123, Comuna">
+      </div>
+      <div class="field">
+        <label>Sexo <span class="muted small">(define la edad legal)</span></label>
+        <div class="u-flex u-gap-4 u-mt-1">
+          <label><input type="radio" data-grupo="perfil" name="sexo" value="F"> Mujer</label>
+          <label><input type="radio" data-grupo="perfil" name="sexo" value="M"> Hombre</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-fnac">Fecha de nacimiento</label>
+        <input id="f-fnac" data-grupo="perfil" name="fechaNacimiento" type="date">
+        <p class="field__ayuda" id="edad-actual"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. SITUACIÓN Y RUTA ============ -->
+  <section class="card u-mt-6" aria-labelledby="sec-situacion">
+    <h2 id="sec-situacion" class="u-mt-0">Situación y tipo de pensión</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="f-ruta">Tipo de pensión a tramitar</label>
+        <select id="f-ruta" data-grupo="perfil" name="rutaTipo">
+          <option value="vejez">Vejez</option>
+          <option value="invalidez">Invalidez</option>
+          <option value="terminal">Enfermedad terminal</option>
+          <option value="sobrevivencia">Sobrevivencia (el afiliado falleció)</option>
+        </select>
+        <p class="field__ayuda">Invalidez, terminal y sobrevivencia siguen rutas legales distintas.</p>
+      </div>
+      <div class="field">
+        <label for="f-ecivil">Estado civil</label>
+        <select id="f-ecivil" data-grupo="perfil" name="estadoCivil">
+          <option value="">—</option>
+          <option value="soltero">Soltero(a)</option>
+          <option value="casado">Casado(a)</option>
+          <option value="auc">Conviviente civil (AUC)</option>
+          <option value="divorciado">Divorciado(a) / nulidad</option>
+          <option value="viudo">Viudo(a)</option>
+        </select>
+      </div>
+    </div>
+    <div id="grupo-matrimonio" hidden>
+      <div class="grid-modulos">
+        <div class="field">
+          <label for="f-fmat">Fecha de matrimonio / AUC</label>
+          <input id="f-fmat" data-grupo="perfil" name="fechaMatrimonio" type="date">
+          <p class="field__ayuda">Plazos del cónyuge: 6 meses si no está pensionado · 3 años si ya está pensionado.</p>
+        </div>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" data-grupo="perfil" name="yaPensionado"> El afiliado ya está pensionado</label>
+        <label><input type="checkbox" data-grupo="perfil" name="hijosComunes"> Hay hijos comunes con el cónyuge actual</label>
+        <label><input type="checkbox" data-grupo="perfil" name="embarazo"> Embarazo en curso (exime plazo de matrimonio)</label>
+        <label><input type="checkbox" data-grupo="perfil" name="matrimoniosAnteriores"> Matrimonios anteriores (con divorcio/nulidad documentada)</label>
+      </div>
+    </div>
+    <div class="field">
+      <label><input type="checkbox" data-grupo="perfil" name="trabajoPesado"> Cotizaciones por trabajo pesado</label>
+      <label><input type="checkbox" data-grupo="perfil" name="sigueTrabajando"> Seguirá trabajando después de pensionarse</label>
+    </div>
+  </section>
+
+  <!-- ============ 3. BENEFICIARIOS ============ -->
+  <section class="card u-mt-6" aria-labelledby="sec-beneficiarios">
+    <div class="u-flex u-items-center u-justify-between u-gap-3 u-wrap">
+      <h2 id="sec-beneficiarios" class="u-mt-0 u-mb-0">Beneficiarios de sobrevivencia</h2>
+      <button id="btn-add-benef" class="btn btn--secondary btn--sm" type="button">
+        <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-plus"></use></svg>
+        Agregar
+      </button>
+    </div>
+    <p class="field__ayuda">El grupo familiar cambia la pensión y las ofertas. Registra a todos antes de entrar a SCOMP.</p>
+    <div id="lista-beneficiarios" class="lista u-mt-4"></div>
+  </section>
+
+  <!-- ============ 4. AFP Y COMPOSICIÓN DEL SALDO ============ -->
+  <section class="card u-mt-6" aria-labelledby="sec-saldo">
+    <h2 id="sec-saldo" class="u-mt-0">AFP y composición del saldo</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="f-afp">AFP</label>
+        <select id="f-afp" data-grupo="perfil" name="afp">
+          <option value="">—</option>
+          <option>Capital</option><option>Cuprum</option><option>Habitat</option>
+          <option>Modelo</option><option>PlanVital</option><option>ProVida</option>
+          <option>Uno</option><option value="otra">Otra / IPS-IPS</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-fondo">Multifondo</label>
+        <select id="f-fondo" data-grupo="perfil" name="multifondo">
+          <option value="">—</option>
+          <option value="A">A (más riesgo)</option><option>B</option><option>C</option>
+          <option>D</option><option value="E">E (más conservador)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-modulos">
+      <div class="field"><label for="s-oblig">Capital obligatorio</label><input id="s-oblig" data-grupo="saldo" name="obligatorio" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda" data-equiv="obligatorio"></p></div>
+      <div class="field"><label for="s-apv">APV</label><input id="s-apv" data-grupo="saldo" name="apv" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda" data-equiv="apv"></p></div>
+      <div class="field"><label for="s-dep">Depósitos convenidos</label><input id="s-dep" data-grupo="saldo" name="depositosConvenidos" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda" data-equiv="depositosConvenidos"></p></div>
+      <div class="field"><label for="s-vol">Cotizaciones voluntarias</label><input id="s-vol" data-grupo="saldo" name="cotizacionesVoluntarias" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda" data-equiv="cotizacionesVoluntarias"></p></div>
+      <div class="field"><label for="s-cta2">Cuenta 2</label><input id="s-cta2" data-grupo="saldo" name="cuenta2" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda">Ahorro voluntario: naturaleza distinta, no financia la pensión.</p></div>
+      <div class="field"><label for="s-bh">Bono por Hijo</label><input id="s-bh" data-grupo="saldo" name="bonoPorHijo" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda" data-equiv="bonoPorHijo"></p></div>
+      <div class="field"><label for="s-otros">Otros bonos / recursos</label><input id="s-otros" data-grupo="saldo" name="otrosBonos" type="text" inputmode="numeric" class="money" placeholder="0"><p class="field__ayuda" data-equiv="otrosBonos"></p></div>
+      <div class="field">
+        <label for="s-br">Bono de Reconocimiento</label>
+        <input id="s-br" data-grupo="saldo" name="bonoReconocimientoMonto" type="text" inputmode="numeric" class="money" placeholder="0">
+        <select data-grupo="saldo" name="bonoReconocimientoEstado" class="u-mt-1" aria-label="Estado del Bono de Reconocimiento">
+          <option value="">—</option>
+          <option value="pendiente">Pendiente / sin visar</option>
+          <option value="liquidado">Liquidado</option>
+          <option value="visado">Visado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="veredicto veredicto--info u-mt-4">
+      <span class="veredicto__icono"><svg class="icon"><use href="./assets/icons/sprite.svg#i-banknote"></use></svg></span>
+      <div>
+        <p class="veredicto__titulo">Capital previsional estimado: <span id="saldo-total" class="money">—</span></p>
+        <p class="veredicto__texto" id="saldo-total-uf">Obligatorio + APV + depósitos convenidos + cotizaciones voluntarias + bonos (Cuenta 2 excluida). El monto oficial lo fija el Certificado de Saldo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. TRAYECTORIA ============ -->
+  <section class="card u-mt-6" aria-labelledby="sec-trayectoria">
+    <h2 id="sec-trayectoria" class="u-mt-0">Trayectoria previsional</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="f-meses">Meses cotizados (total)</label>
+        <input id="f-meses" data-grupo="perfil" name="mesesCotizados" type="number" min="0" max="1200" inputmode="numeric" placeholder="240">
+        <p class="field__ayuda">Clave para el BAC: mujeres 120 meses (sube a 180), hombres 240.</p>
+      </div>
+      <div class="field">
+        <label for="f-prom">Promedio de remuneraciones/rentas declaradas (CLP)</label>
+        <input id="f-prom" data-grupo="perfil" name="promedioRemuneraciones" type="text" inputmode="numeric" class="money" placeholder="900.000">
+        <p class="field__ayuda">Según período legal de cálculo. Lo confirma la AFP.</p>
+      </div>
+      <div class="field">
+        <label for="f-afiliacion">Primera afiliación al sistema</label>
+        <input id="f-afiliacion" data-grupo="perfil" name="fechaPrimeraAfiliacion" type="date">
+        <p class="field__ayuda">Antigüedad — relevante para excedente de libre disposición.</p>
+      </div>
+    </div>
+    <div class="field">
+      <label><input type="checkbox" data-grupo="perfil" name="cotizacionesImpagas"> Hay cotizaciones impagas por regularizar</label>
+      <label><input type="checkbox" data-grupo="perfil" name="cotizacionesRezagadas"> Hay rezagos de cotización</label>
+    </div>
+    <fieldset class="field">
+      <legend>Otras pensiones que recibe</legend>
+      <div class="u-flex u-gap-4 u-wrap">
+        <label><input type="checkbox" data-grupo="perfil" name="otrasPensiones" value="ips"> IPS</label>
+        <label><input type="checkbox" data-grupo="perfil" name="otrasPensiones" value="capredena"> Capredena</label>
+        <label><input type="checkbox" data-grupo="perfil" name="otrasPensiones" value="dipreca"> Dipreca</label>
+        <label><input type="checkbox" data-grupo="perfil" name="otrasPensiones" value="mutualidad"> Mutualidad</label>
+        <label><input type="checkbox" data-grupo="perfil" name="otrasPensiones" value="accidente"> Accidente del trabajo</label>
+        <label><input type="checkbox" data-grupo="perfil" name="otrasPensiones" value="extranjera"> Pensión extranjera</label>
+      </div>
+    </fieldset>
+  </section>
+
+  <!-- ============ 6. PENSIÓN ESTIMADA Y SALUD ============ -->
+  <section class="card u-mt-6" aria-labelledby="sec-pension">
+    <h2 id="sec-pension" class="u-mt-0">Pensión estimada y salud</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="s-pension">Pensión estimada (UF mensual)</label>
+        <input id="s-pension" data-grupo="saldo" name="pensionEstimadaUF" type="text" inputmode="decimal" class="money" placeholder="12,50">
+        <p class="field__ayuda" id="pension-equiv">La estimación de la AFP o la oferta SCOMP más conservadora.</p>
+      </div>
+      <div class="field">
+        <label for="f-salud">Previsión de salud</label>
+        <select id="f-salud" data-grupo="perfil" name="saludTipo">
+          <option value="fonasa">Fonasa (7%)</option>
+          <option value="isapre">Isapre (plan en UF)</option>
+        </select>
+      </div>
+      <div class="field" id="grupo-planuf" hidden>
+        <label for="f-planuf">Plan Isapre (UF/mes)</label>
+        <input id="f-planuf" data-grupo="perfil" name="saludPlanUF" type="text" inputmode="decimal" class="money" placeholder="0,00">
+      </div>
+    </div>
+  </section>
+
+  <div class="savebar u-mt-6">
+    <button id="btn-guardar-perfil" class="btn btn--primary" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-circle-check"></use></svg>
+      Guardar perfil
+    </button>
+    <p class="small muted u-mb-0" id="guardado-estado"><svg class="icon"><use href="./assets/icons/sprite.svg#i-circle-check"></use></svg> Guardado automático activo</p>
+  </div>
+</form>
+</div>
+
+<!-- ============ Diálogo beneficiario ============ -->
+<dialog id="dlg-beneficiario" class="centrado" aria-labelledby="dlg-benef-titulo">
+  <article>
+  <h3 id="dlg-benef-titulo">Beneficiario</h3>
+  <form id="form-beneficiario">
+    <input type="hidden" id="benef-idx">
+    <div class="field">
+      <label for="benef-tipo">Tipo de beneficiario</label>
+      <select id="benef-tipo" name="tipo">
+        <option value="conyuge">Cónyuge</option>
+        <option value="conviviente">Conviviente civil</option>
+        <option value="hijo">Hijo(a)</option>
+        <option value="filiacion">Padre/madre de hijo de filiación no matrimonial</option>
+        <option value="padre_causante">Padre/madre del afiliado (carga legal)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="benef-nombre">Nombre</label>
+      <input id="benef-nombre" name="nombre" type="text" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="benef-fnac">Fecha de nacimiento</label>
+      <input id="benef-fnac" name="fechaNacimiento" type="date">
+      <p class="field__ayuda" id="benef-edad"></p>
+    </div>
+    <div id="benef-hijo-extra" hidden>
+      <label><input type="checkbox" name="estudiante"> Estudiante (hasta 24 años)</label>
+      <div class="field">
+        <label for="benef-invalidez">Invalidez</label>
+        <select id="benef-invalidez" name="invalidez">
+          <option value="">Sin invalidez</option>
+          <option value="parcial">Parcial</option>
+          <option value="total">Total</option>
+        </select>
+      </div>
+    </div>
+    <div class="dlg-actions">
+      <button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn--primary btn--sm" type="submit">Guardar beneficiario</button>
+    </div>
+  </form>
+  </article>
+</dialog>

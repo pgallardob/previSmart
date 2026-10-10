@@ -1,0 +1,35 @@
+<h1>Sobrevivencia y garantías</h1>
+<p class="view__lead">Qué pasa si el titular fallece: período garantizado, pensiones de sobrevivencia por beneficiario y cuota mortuoria. Elige la oferta a simular o ingresa los datos manualmente.</p>
+
+<div id="sov-vacio"></div>
+<div id="sov-cuerpo" hidden>
+
+  <section class="card" aria-labelledby="sov-inputs">
+    <h2 id="sov-inputs" class="u-mt-0">Contrato a simular</h2>
+    <div class="grid-modulos">
+      <div class="field">
+        <label for="sov-oferta">Oferta registrada</label>
+        <select id="sov-oferta" name="ofertaIdx"><option value="">— manual —</option></select>
+        <p class="field__ayuda">Usa una oferta de SCOMP o completa los campos a mano.</p>
+      </div>
+      <div class="field"><label for="sov-pension">Pensión del titular (UF/mes)</label><input id="sov-pension" name="pensionUF" type="text" inputmode="decimal" class="money" placeholder="12,00"></div>
+      <div class="field"><label for="sov-perg">Período garantizado (años)</label><input id="sov-perg" name="periodoGarantizadoAnios" type="number" min="0" max="20" step="any" value="0"></div>
+      <div class="field"><label for="sov-mort">Cuota mortuoria (UF)</label><input id="sov-mort" name="cuotaMortuoriaUF" type="text" inputmode="decimal" class="money" placeholder="15"></div>
+      <div class="field"><label for="sov-inc">Incremento cónyuge (UF)</label><input id="sov-inc" name="incrementoConyugeUF" type="text" inputmode="decimal" class="money" placeholder="0"></div>
+      <div class="field"><label for="sov-sobc">Sobrev. cónyuge pactada (%)</label><input id="sov-sobc" name="sobrevConyugePct" type="number" min="0" max="100" placeholder="60"></div>
+      <div class="field"><label for="sov-sobh">Sobrev. hijos pactada (%)</label><input id="sov-sobh" name="sobrevHijosPct" type="number" min="0" max="100" placeholder="15"></div>
+    </div>
+  </section>
+
+  <div id="sov-resultado" class="u-mt-6"></div>
+
+  <section class="card card--flat u-mt-8">
+    <h2 class="u-mt-0">Lo que dice la ley (maestro §14-15, §21-22)</h2>
+    <ul class="muted small u-mb-0">
+      <li>Período garantizado: si el titular fallece dentro de él, los beneficiarios heredan el pago de los meses restantes (o la renta pactada).</li>
+      <li>Porcentajes legales: cónyuge 60% (50% con hijos con derecho), hijos 15% (menores de 18 o estudiantes &lt;24), filiación no matrimonial 36%/30%, padres carga 50%.</li>
+      <li>Cuota mortuoria con tope de 15 UF, a pagar por la aseguradora según el régimen contratado.</li>
+      <li>Ley 21.818: beneficiarios condenados por delitos graves contra el causante quedan excluidos.</li>
+    </ul>
+  </section>
+</div>

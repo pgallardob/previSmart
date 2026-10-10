@@ -1,0 +1,30 @@
+<h1>Checklist</h1>
+<p class="view__lead">La carpeta documental completa, qué pedirle por escrito a la AFP y a la aseguradora, los errores comunes y las 10 comprobaciones finales antes de firmar.</p>
+
+<div id="chk-vacio"></div>
+<div id="chk-cuerpo" hidden>
+
+  <div class="u-flex u-items-center u-justify-between u-gap-3 u-wrap">
+    <div class="progress u-w-full"><div class="progress__bar" data-progreso></div></div>
+    <p class="small muted u-mt-2" id="chk-resumen"></p>
+    <button id="chk-reset" class="btn btn--ghost btn--sm" type="button">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#i-refresh-cw"></use></svg>
+      Limpiar checklist
+    </button>
+  </div>
+
+  <details class="card card--accent u-mt-6" aria-labelledby="chk-finales">
+    <summary class="u-flex u-items-center u-justify-between u-gap-3">
+      <strong class="u-mt-0 u-mb-0">Las 10 comprobaciones antes de firmar</strong>
+      <span class="badge badge--neutral" id="chk-finales-count"></span>
+    </summary>
+    <div id="chk-finales-lista" class="lista u-mt-2"></div>
+  </details>
+
+  <div id="chk-grupos" class="u-mt-6"></div>
+
+  <section class="card u-mt-8">
+    <h2 class="u-mt-0">Errores comunes a evitar</h2>
+    <ul class="muted small u-mb-0" id="chk-errores"></ul>
+  </section>
+</div>

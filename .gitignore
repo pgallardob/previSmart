@@ -1,0 +1,9 @@
+*.log
+.env*
+respaldo/
+respaldos/
+*.prevismart.json
+*.pfx
+*.p12
+*.pem
+*.key
