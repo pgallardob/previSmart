@@ -74,6 +74,18 @@
 }
 .icon-btn:hover { background: var(--surface-2); color: var(--text); }
 
+#btn-tema {
+  flex: 0 0 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  color: var(--primary);
+  background: var(--surface);
+  border-color: var(--border);
+}
+#btn-tema:hover { background: var(--primary-soft); color: var(--primary-strong); }
+#icono-tema { width: 28px; height: 28px; stroke-width: 2.5; }
+
 /* ---- Badges / chips ---- */
 .badge {
   display: inline-flex;

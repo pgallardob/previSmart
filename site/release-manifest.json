@@ -1,8 +1,8 @@
 {
   "tipo": "prevismart-release",
-  "version": "1.3.40",
+  "version": "1.3.41",
   "runtime": "navegador",
-  "creadoEn": "2026-10-10T23:40:47.612Z",
+  "creadoEn": "2026-10-10T23:51:50.844Z",
   "archivos": [
     {
       "path": "assets/fonts/fraunces-latin-full-normal.woff2",
@@ -226,7 +226,7 @@
     },
     {
       "path": "css/components.css",
-      "sha256": "ceeede588cfd6546b0aa3f30c4bf780cd09b44a5625df3957896df7cb3ac0973"
+      "sha256": "7c843d31b8e967891301c209a3afb321978d6a3e063f5c1048daa5cb1ae5b8a4"
     },
     {
       "path": "css/pico.overrides.css",
@@ -386,7 +386,7 @@
     },
     {
       "path": "js/core/version.js",
-      "sha256": "d8cad5fb1fe7e399ddf1cae425f2c74763f7daf3b121d3c8566d6f422e2b27ec"
+      "sha256": "5a3336cf6573bfc0b8d29f4df2d6742ba18fb50b22efbbab01949fd2537604e6"
     },
     {
       "path": "js/data/aseguradoras.js",
@@ -510,7 +510,7 @@
     },
     {
       "path": "service-worker.js",
-      "sha256": "9fac512295f02bf8ab43f83d13eecc4353a5befa7e0e680ec3beadc62044c98f"
+      "sha256": "804b6fa14e7e50c4cac5a05853c22bb3b7bf105eb9377539bcaae37983948384"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
