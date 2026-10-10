@@ -4,6 +4,7 @@
    El estado es global y los módulos se suscriben. */
 
 import { aISO, parseLocal } from './dates.js';
+import { UF_REFERENCIA } from '../data/uf-referencia.js';
 
 const KEY = 'prevismart.uf.v1';
 const API = 'https://mindicador.cl/api/uf';
@@ -27,6 +28,15 @@ function escribirCache(e) {
   try { localStorage.setItem(KEY, JSON.stringify(e)); } catch { /* sin espacio */ }
 }
 
+function leerRespaldo() {
+  const cache = leerCache();
+  const hoy = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const referencia = UF_REFERENCIA.fecha <= hoy ? UF_REFERENCIA : null;
+  // Preserve a newer locally captured value; never present a future reference.
+  if (cache && (!referencia || cache.fecha >= referencia.fecha)) return cache;
+  return referencia ? { valor: referencia.valor, fecha: referencia.fecha } : null;
+}
+
 function emitir() {
   oyentes.forEach((fn) => { try { fn(estado); } catch { /* oyente defectuoso */ } });
 }
@@ -45,7 +55,7 @@ export function getUF() { return estado; }
    sin-conexión antes de intentarlo). Si el primer intento falla, reintenta
    una vez: la primera conexión TLS/VPN/antivirus puede ser lenta. */
 export async function initUF() {
-  const cache = leerCache();
+  const cache = leerRespaldo();
   estado = { valor: cache?.valor ?? null, fecha: cache?.fecha ?? null, origen: 'consultando' };
   emitir();
   if (await refrescarUF()) return estado;
@@ -77,7 +87,7 @@ export async function refrescarUF() {
     return !stale;
   } catch {
     if (ticket !== revision) return false;
-    const cache = leerCache();
+    const cache = leerRespaldo();
     if (cache) estado = { ...cache, origen: 'guardada' };
     else estado = { valor: null, fecha: null, origen: 'sin-valor' };
     emitir();

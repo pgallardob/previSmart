@@ -145,7 +145,7 @@ function initUFPill() {
     const { valor, fecha, origen } = (window.__ufEstado || {});
     e.innerHTML = valor != null
       ? `<strong class="money">${clpDec(valor)}</strong> · ${fechaCorta(fecha)} · ${etiquetaOrigen({ origen })}
-         <p class="muted small u-mt-2 u-mb-0">${origen === 'online' ? 'Valor oficial de la UF del SII, consultado en línea (vía mindicador.cl).' : origen === 'guardada' ? 'Sin conexión: se muestra el último valor guardado (' + relativo(fecha) + ').' : origen === 'consultando' ? 'Verificando el valor oficial en línea (mindicador.cl)…' : 'Valor ingresado manualmente.'}</p>`
+          <p class="muted small u-mt-2 u-mb-0">${origen === 'online' ? 'Valor oficial de la UF del SII, consultado en línea (vía mindicador.cl).' : origen === 'guardada' ? 'La consulta en línea no está disponible: se muestra una referencia guardada del SII vía mindicador.cl (' + relativo(fecha) + '). Revisa la fecha antes de calcular.' : origen === 'consultando' ? 'Verificando el valor oficial en línea (mindicador.cl)…' : 'Valor ingresado manualmente.'}</p>`
       : `<strong>Sin valor UF</strong><p class="muted small">${origen === 'consultando' ? 'Consultando el valor en línea…' : 'No hay conexión ni valor guardado. Ingresa el valor de hoy manualmente.'}</p>`;
     abrirDialog(dlg);
   });
@@ -154,7 +154,7 @@ function initUFPill() {
     ev.target.disabled = true;
     const ok = await refrescarUF();
     ev.target.disabled = false;
-    toast(ok ? 'UF actualizada en línea' : 'Sin conexión: se mantiene el último valor', ok ? 'success' : 'warning');
+    toast(ok ? 'UF actualizada en línea' : 'Consulta no disponible: revisa el valor guardado y su fecha', ok ? 'success' : 'warning');
     if (ok) cerrarDialog(dlg);
   });
 

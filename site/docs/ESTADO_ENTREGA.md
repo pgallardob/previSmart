@@ -1,4 +1,4 @@
-# Estado técnico de la entrega — 1.3.39
+# Estado técnico de la entrega — 1.3.40
 
 La comprobación se realiza **por función**, no condicionando todo el producto a contraseña/PIN Windows, copias adicionales o firma del editor. Las decisiones de seguridad se documentan como riesgos; no se presentan como protección cumplida ni se bloquean las correcciones independientes.
 
@@ -15,6 +15,8 @@ La comprobación se realiza **por función**, no condicionando todo el producto 
 `node herramientas/preflight-produccion.mjs` informa disponibilidad por función. Si el RPA no está, puede seguir disponible el trabajo documental; si una tabla tributaria vence, no se calcula impuesto con ella, pero no se bloquea por eso guardar PDF.
 
 ## Compatibilidad comprobable antes de publicar
+
+La primera instalación incluye una referencia UF fechada, obtenida del SII vía mindicador.cl. Si la API externa no responde, se muestra como **guardada**, no «en línea»; se conserva una referencia local más reciente. El respaldo de la entrega no se actualiza diariamente por sí solo: la consulta directa sigue siendo el mecanismo de actualización. Revisar siempre la fecha, especialmente si se usa sin conexión.
 
 Se prueban Edge/Chromium, Firefox y WebKit con perfil/viewport iPhone. Se detectó un fallo al persistir `File`/`Blob` en IndexedDB con WebKit y se corrigió usando `ArrayBuffer` para nuevos registros. La lectura reconstruye el Blob y mantiene compatibilidad con los registros antiguos, sin borrar la base ni perder PDF.
 

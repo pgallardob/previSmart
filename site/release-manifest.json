@@ -1,8 +1,8 @@
 {
   "tipo": "prevismart-release",
-  "version": "1.3.39",
+  "version": "1.3.40",
   "runtime": "navegador",
-  "creadoEn": "2026-10-10T23:08:16.549Z",
+  "creadoEn": "2026-10-10T23:40:47.612Z",
   "archivos": [
     {
       "path": "assets/fonts/fraunces-latin-full-normal.woff2",
@@ -250,7 +250,7 @@
     },
     {
       "path": "docs/ESTADO_ENTREGA.md",
-      "sha256": "cc1421c75c6ea53dba79fc23bcd49c65840d88dcaca2353700002ecf5d56cfb5"
+      "sha256": "358dd14bca3e77f1ff084a3d780b1f2da7a6766ec95c53cc2fcfc6037ed63434"
     },
     {
       "path": "docs/GITHUB_PAGES.md",
@@ -270,7 +270,7 @@
     },
     {
       "path": "js/app.js",
-      "sha256": "8453f77d61b103be6ec1c263337c257e0e64a42487bb3f30b282ef3be1ea027f"
+      "sha256": "0a3e32aae2ca82ad20d6f32ea2f048d9dfa00ffcb8194c68689aae42d7738dd5"
     },
     {
       "path": "js/core/actividad.js",
@@ -382,11 +382,11 @@
     },
     {
       "path": "js/core/uf.js",
-      "sha256": "434923ad14d36f30231306af16544b114443811d78c2f19ea9c05aea609c55d8"
+      "sha256": "e78bd92e673bae40d58d26e1378ff7a61331e6aed611819c3ed488fb7881d03a"
     },
     {
       "path": "js/core/version.js",
-      "sha256": "3f1a2449c07d5a77c21ef0591d6fe16e742b5148713e4a9d12908da5b59aa0e2"
+      "sha256": "d8cad5fb1fe7e399ddf1cae425f2c74763f7daf3b121d3c8566d6f422e2b27ec"
     },
     {
       "path": "js/data/aseguradoras.js",
@@ -423,6 +423,10 @@
     {
       "path": "js/data/semilla.js",
       "sha256": "047bcf6a45a117a7e74760d8c9ae448834f05975bb45e2778e2ce8e4393dc153"
+    },
+    {
+      "path": "js/data/uf-referencia.js",
+      "sha256": "9b5c3f9eea342fa40dd8b426920bd273bbb921016bb59592026d16c3c5471be8"
     },
     {
       "path": "js/features/ajustes.js",
@@ -506,7 +510,7 @@
     },
     {
       "path": "service-worker.js",
-      "sha256": "dfa98ae6e506f28c63cb09f78cfdec7f9a57321f2b2c685841eeb44e09ed4037"
+      "sha256": "9fac512295f02bf8ab43f83d13eecc4353a5befa7e0e680ec3beadc62044c98f"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",

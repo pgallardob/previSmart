@@ -2,7 +2,7 @@
    Estrategia: precache del app shell; network-first con timeout para la API de UF;
    cache-first para el resto de recursos propios. */
 
-const VERSION = 'prevismart-1.3.39-2026.10.10-portabilidad';
+const VERSION = 'prevismart-1.3.40-2026.10.10-uf-respaldo';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `rt-${VERSION}`;
 
@@ -19,6 +19,7 @@ const SHELL = [
   './js/app.js',
   './js/core/format.js',
   './js/core/uf.js',
+  './js/data/uf-referencia.js',
   './js/core/dates.js',
   './js/core/store.js',
   './js/core/actividad.js',
