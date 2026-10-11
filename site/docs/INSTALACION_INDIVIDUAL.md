@@ -21,16 +21,16 @@ Cancelar el diálogo durante una fase pendiente de cifrado/importación invalida
 
 Necesitan una **dirección HTTPS donde se distribuya la PWA estática**. `localhost:8321` de otro computador no sirve como instalación del teléfono. Una carpeta descargada o una URL `file://` no sustituye ese origen seguro.
 
-El operador eligió GitHub Pages. El paquete separado y la publicación manual se describen en [GitHub Pages](GITHUB_PAGES.md); no se ha publicado ni validado una URL real aún. Revisar los términos y el carácter público del sitio antes de subirlo.
+El operador eligió GitHub Pages. La distribución está publicada en `https://pgallardob.github.io/previSmart/`; el paquete separado y la publicación manual se describen en [GitHub Pages](GITHUB_PAGES.md). El sitio distribuye software, nunca expedientes privados.
 
 1. Publica únicamente el contenido de `dist/PreviSmart-web/` en un alojamiento estático HTTPS. No publiques `rpa/`, `respaldo/`, `respaldos/`, `.env`, perfiles de navegador ni datos exportados.
 2. En Android, abre la dirección en un navegador compatible y usa su opción de instalar/agregar a pantalla principal si se ofrece.
 3. En iPhone, abre la dirección en Safari y usa **Compartir → Añadir a pantalla de inicio**.
-4. Configura tu propio responsable y crea tus clientes. Los datos quedan en el almacenamiento del navegador de esa instalación. En teléfono se usa carga de documentos; el ejecutable Windows y Edge RPA no funcionan en Android/iOS.
+4. Configura tu propio responsable y crea tus clientes. En **Captura → Descargar documentos desde el teléfono**, selecciona la AFP y abre su sitio oficial. Inicia sesión únicamente allí, descarga los PDF en Archivos/Descargas y cierra la sesión de la AFP. Vuelve a PreviSmart, selecciona el tipo de documento y pulsa **Seleccionar PDF descargado → Guardar documento**. Revisa los datos extraídos antes de aplicarlos al expediente. Es un flujo manual independiente del computador; no una descarga automatizada ni una API AFP. PreviSmart no recibe las credenciales usadas en el portal.
 5. En Captura, pulsa **Guardar cliente cifrado**, introduce y confirma la contraseña y luego pulsa **Descargar archivo cifrado listo**. Guarda el archivo en Archivos/Descargas y organízalo manualmente por cliente si el navegador no ofrece escritura directa en carpetas.
    Para respetar el almacenamiento exclusivamente local elegido, usa almacenamiento interno/«En mi iPhone», no una ubicación de nube sincronizada sin haberla autorizado. La ubicación efectiva depende del sistema y debe comprobarla el operador.
 
-La app no puede confirmar dónde guardó el archivo el sistema ni escribir automáticamente en cualquier carpeta de Android/iOS. La ruta sin selector de carpetas se verifica con pruebas de navegador; **instalación, descarga, apertura de archivos y funcionamiento offline en teléfonos físicos todavía requieren validación real**. La dirección HTTPS de distribución aún no se ha suministrado ni publicado.
+La app no puede confirmar dónde guardó el archivo el sistema ni escribir automáticamente en cualquier carpeta de Android/iOS. La ruta sin selector de carpetas se verifica con pruebas de navegador; **los flujos de descarga y apertura de archivos de cada AFP en teléfonos físicos requieren validación real**. El ejecutable Windows y Edge RPA no funcionan en Android/iOS.
 
 ## Volver a abrir un cliente cifrado
 

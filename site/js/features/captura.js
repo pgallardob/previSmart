@@ -21,6 +21,7 @@ import { iniciarArchivoCliente } from './archivo-cliente.js';
 import { iniciarPrivacidad, renderPrivacidad } from './privacidad.js';
 import { evaluarPrivacidad } from '../core/privacidad.js';
 import { getAsesor } from '../core/asesor.js';
+import { PORTALES_AFP, portalAFP } from '../data/portales-afp.js';
 
 const icono = (n) => `<svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#${n}"></use></svg>`;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => '&#' + c.charCodeAt(0) + ';');
@@ -42,6 +43,11 @@ export function init(main) {
 }
 
 function cablear(main) {
+  main.querySelector('#cap-movil-afp')?.addEventListener('change', () => renderPortalMovil(main));
+  main.querySelector('#cap-movil-cargar')?.addEventListener('click', () => {
+    main.querySelector('#cap-form-doc')?.scrollIntoView({ block: 'center' });
+    main.querySelector('#cap-doc-archivo')?.click();
+  });
   /* ---- Credenciales del afiliado ---- */
   main.querySelector('#cap-form-cred')?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -225,10 +231,27 @@ function render(main) {
   const local = ['localhost', '127.0.0.1'].includes(location.hostname);
   main.querySelector('#cap-rpa-contenedor').hidden = !local;
   main.querySelector('#cap-rpa-info').hidden = local;
+  const seleccion = main.querySelector('#cap-movil-afp');
+  seleccion.innerHTML = '<option value="">Selecciona la AFP</option>' + PORTALES_AFP.map((p) => `<option value="${p.id}">AFP ${esc(p.nombre)}</option>`).join('');
+  seleccion.value = portalAFP(cliente.perfil?.afp)?.id || '';
+  renderPortalMovil(main);
   renderAutorizacion(main, cliente);
   renderCred(main, cliente);
   renderDocs(main, cliente.id);
   renderAuditoria(main, cliente);
+}
+
+function renderPortalMovil(main) {
+  const portal = portalAFP(main.querySelector('#cap-movil-afp')?.value);
+  const enlace = main.querySelector('#cap-movil-portal');
+  enlace.hidden = !portal;
+  if (portal) {
+    enlace.href = portal.url;
+    enlace.textContent = `Abrir sitio oficial de AFP ${portal.nombre}`;
+  } else enlace.removeAttribute('href');
+  main.querySelector('#cap-movil-estado').textContent = portal
+    ? `Se abrirá ${new URL(portal.url).hostname}. El inicio de sesión y la descarga se realizan allí; PreviSmart no lee esa sesión ni importa documentos automáticamente.`
+    : 'Selecciona la AFP para abrir su sitio oficial.';
 }
 
 function renderAuditoria(main, cliente) {

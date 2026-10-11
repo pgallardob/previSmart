@@ -51,7 +51,25 @@
     <p class="tiny muted">El expediente y sus archivos locales siguen presentes. Al vencer o revocar, revisa las obligaciones legales y todos los archivos/copias en navegador, carpetas, descargas y dispositivos; eliminar la ficha no borra automáticamente los archivos del sistema.</p>
   </section>
 
-  <p id="cap-rpa-info" class="small muted no-print" hidden>En esta instalación web/móvil se usa carga de documentos. El RPA de AFP requiere la distribución Windows y Edge local; no ingreses claves AFP en un sitio web que no esté vinculado al servicio local autorizado.</p>
+  <article id="cap-rpa-info" class="card no-print" hidden>
+    <h3 class="u-mt-0">Descargar documentos desde el teléfono</h3>
+    <p class="small">No necesitas un computador. Abre el sitio oficial de la AFP, ingresa allí las credenciales del afiliado y descarga los certificados o cartolas disponibles. Después vuelve a PreviSmart para cargar los PDF en este expediente.</p>
+    <p class="small muted">Es una descarga manual desde la AFP, no una consulta automática de PreviSmart. Las claves se ingresan únicamente en el sitio de la AFP y no se envían a esta aplicación. Si actúas por el afiliado, debes contar con su autorización previa.</p>
+    <div class="field">
+      <label for="cap-movil-afp">AFP para descargar documentos</label>
+      <select id="cap-movil-afp"><option value="">Selecciona la AFP</option></select>
+    </div>
+    <div class="u-flex u-gap-2 u-wrap u-mt-4">
+      <a id="cap-movil-portal" class="btn btn--primary btn--sm" target="_blank" rel="noopener noreferrer" hidden>Abrir sitio oficial de la AFP</a>
+      <button id="cap-movil-cargar" class="btn btn--secondary btn--sm" type="button">Seleccionar PDF descargado</button>
+    </div>
+    <p id="cap-movil-estado" class="small muted u-mt-3" role="status">Selecciona la AFP para abrir su sitio oficial.</p>
+    <ol class="small u-mb-0">
+      <li>En la AFP, entra a la sucursal virtual y resuelve allí cualquier código de verificación.</li>
+      <li>Busca certificados o cartolas. Guarda cada PDF en Descargas o Archivos del teléfono y cierra la sesión de la AFP al terminar.</li>
+      <li>Vuelve aquí, selecciona el tipo de documento y el PDF descargado, y pulsa Guardar documento. Revisa la identidad y los datos extraídos antes de aplicarlos.</li>
+    </ol>
+  </article>
   <article id="cap-rpa-contenedor" class="card no-print">
     <div class="u-flex u-items-center u-justify-between u-gap-2 u-wrap">
       <h3 class="u-mt-0 u-mb-0">Credenciales AFP del afiliado</h3>

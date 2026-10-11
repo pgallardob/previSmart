@@ -1,8 +1,8 @@
 {
   "tipo": "prevismart-release",
-  "version": "1.3.41",
+  "version": "1.3.42",
   "runtime": "navegador",
-  "creadoEn": "2026-10-10T23:51:50.844Z",
+  "creadoEn": "2026-10-11T00:39:28.926Z",
   "archivos": [
     {
       "path": "assets/fonts/fraunces-latin-full-normal.woff2",
@@ -258,7 +258,7 @@
     },
     {
       "path": "docs/INSTALACION_INDIVIDUAL.md",
-      "sha256": "b36cfb135434828740a066ec97e84b2e9d2a0d7b8b05b2319d67ed0d43ef1a2a"
+      "sha256": "11ec951b49e36fa680664045c7056df435d9768d474d96d16c49c31d7703d0bb"
     },
     {
       "path": "docs/PROCEDIMIENTO_PRIVACIDAD.md",
@@ -386,7 +386,7 @@
     },
     {
       "path": "js/core/version.js",
-      "sha256": "5a3336cf6573bfc0b8d29f4df2d6742ba18fb50b22efbbab01949fd2537604e6"
+      "sha256": "3e64c26c15d2a9174bb255e1bfd6b8179e545ca710ca4730bc631e86a47aab85"
     },
     {
       "path": "js/data/aseguradoras.js",
@@ -446,7 +446,7 @@
     },
     {
       "path": "js/features/captura.js",
-      "sha256": "e46a24197bbac143407fc26eab31f728c8e35e12e4dbaef1a9233389d4c1a2a6"
+      "sha256": "51c12c2f55117dd4a2f37ad9b212b9e1f77256ae73753289b031f59d5101752b"
     },
     {
       "path": "js/features/checklist.js",
@@ -510,7 +510,7 @@
     },
     {
       "path": "service-worker.js",
-      "sha256": "804b6fa14e7e50c4cac5a05853c22bb3b7bf105eb9377539bcaae37983948384"
+      "sha256": "740da21d197d2e421839ccd012a1b1b0da092b6ed254ff1a9d8145dcb50ca032"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -590,7 +590,7 @@
     },
     {
       "path": "views/captura.html",
-      "sha256": "9dfcc80c97a3f91b211578612fabe0a432d629edc547247aabdce9aba0033010"
+      "sha256": "8067c3dc39bf3524aa87c6095368a928334bc704211159d188df8aeb469cd27e"
     },
     {
       "path": "views/checklist.html",

@@ -2,7 +2,7 @@
    Estrategia: precache del app shell; network-first con timeout para la API de UF;
    cache-first para el resto de recursos propios. */
 
-const VERSION = 'prevismart-1.3.41-2026.10.10-tema-visible';
+const VERSION = 'prevismart-1.3.42-2026.10.10-afp-movil';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `rt-${VERSION}`;
 

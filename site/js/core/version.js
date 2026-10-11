@@ -4,4 +4,4 @@
    Ajustes → Acerca de, para saber con certeza qué versión corre
    el navegador (útil contra caché viejo). */
 
-export const APP_VERSION = '1.3.41';
+export const APP_VERSION = '1.3.42';
