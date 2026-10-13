@@ -65,7 +65,8 @@ export function modeloInformeCalculos(cliente, ufMeta, generadoEn = new Date().t
     ['Estado', rp.estado === 'simulacion' ? 'SIMULACIÓN ACTUARIAL - NO ES PENSIÓN AFP' : `Pendiente: ${rp.faltantes.join('; ')}`]
   ];
   if (rp.estado === 'simulacion') {
-    filasRP.push(['Tipo de escenario', rp.tipoEscenario], ['Capital usado', `${clp(rp.capitalCLP)} · ${rp.capitalFuente}; no reemplaza saldos documentales`],
+    filasRP.push(['Tipo de escenario', rp.tipoEscenario], ['Inicio informado, distinto de la fecha del ejercicio', rp.fechaInicioInformada || 'No informado / no requerido en este escenario'],
+      ['Capital usado', `${clp(rp.capitalCLP)} · ${rp.capitalFuente}; no reemplaza saldos documentales`],
       ['Fecha y edades', `${rp.fecha}; años cumplidos del titular: ${rp.edad}. No proyecta jubilación futura`]);
     for (const [i, c] of rp.componentes.entries()) filasRP.push([`Componente ${i + 1}: ${c.tipo}`, `${c.edad} años · ${c.tabla} · CNU ${c.cnu.toFixed(6)}`]);
     filasRP.push(['CNU total', rp.total.toFixed(6)], ['Meses devengados declarados', String(rp.mesesDevengados)],
@@ -192,12 +193,12 @@ export function modeloInformeCalculos(cliente, ufMeta, generadoEn = new Date().t
     aviso: 'Documento propio de PreviSmart. No es certificado SCOMP, oferta de aseguradora, aceptación ni contrato. No garantiza pensión ni beneficios. Revisar datos y fuentes antes de decidir.' };
 }
 
-export function renderInformeCalculos(modelo) {
+export function renderInformeCalculos(modelo, { incluirRevisionAsesor = false } = {}) {
   return `<article class="reporte propuesta" aria-label="Certificado informativo no oficial"><p class="propuesta__aviso"><strong>${esc(modelo.titulo)}</strong></p>
     <p class="small"><strong>${esc(modelo.subtitulo)}</strong></p><p class="small">${esc(modelo.referencia)} · ${esc(fechaCorta(modelo.generadoEn))}</p><p class="small">${esc(modelo.aviso)}</p>
     ${modelo.lecturaCliente ? renderLecturaCliente(modelo.lecturaCliente) : ''}
-    <details class="cliente-anexo"><summary>Anexo técnico: cálculos, supuestos y fuentes</summary>
-    ${modelo.secciones.map((s) => `<section class="rep-sec"><h3>${esc(s.titulo)}</h3><table class="rep-tabla"><tbody>${s.filas.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></section>`).join('')}</details>
+    ${incluirRevisionAsesor ? `<details class="cliente-anexo"><summary>Revisión interna del asesor</summary>
+    ${modelo.secciones.map((s) => `<section class="rep-sec"><h3>${esc(s.titulo)}</h3><table class="rep-tabla"><tbody>${s.filas.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></section>`).join('')}</details>` : ''}
     <p class="propuesta__aviso"><strong>NO OFICIAL - SIN VALIDEZ PARA ACEPTAR OFERTAS</strong></p>
     <p class="tiny">© 2026 Todos los derechos reservados · Desarrollado por P. Gallardo</p></article>`;
 }

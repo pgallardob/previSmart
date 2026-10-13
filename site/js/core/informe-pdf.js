@@ -13,7 +13,7 @@ function cargarPDFLib() {
 }
 
 /** Local-only, paginated PDF from the same whitelisted model used for screen preview. */
-export async function crearPDFInforme(modelo) {
+export async function crearPDFInforme(modelo, { incluirRevisionAsesor = false } = {}) {
   const { PDFDocument, StandardFonts, rgb } = await cargarPDFLib();
   const pdf = await PDFDocument.create();
   pdf.setTitle(modelo.titulo); pdf.setCreator('PreviSmart'); pdf.setProducer('PreviSmart');
@@ -144,10 +144,10 @@ export async function crearPDFInforme(modelo) {
       section.filas.forEach((row) => tablaFila(row, section.columnas, weights));
       y -= 10; escribir(section.nota, false, 9); y -= 10;
     }
-    nueva(); escribir('ANEXO TÉCNICO', true, 18); escribir('Cálculos, supuestos y fuentes para revisión del asesor');
+    if (incluirRevisionAsesor) { nueva(); escribir('REVISIÓN INTERNA DEL ASESOR', true, 18); }
   } else escribir(modelo.subtitulo || modelo.titulo, true);
   escribir(modelo.referencia); escribir(modelo.aviso, false, 9);
-  for (const section of modelo.secciones) {
+  for (const section of incluirRevisionAsesor || !modelo.lecturaCliente ? modelo.secciones : []) {
     iniciarTabla(section.titulo, ['Información', 'Detalle y cálculo'], [158 / maxWidth, 1 - 158 / maxWidth], section.filas[0]);
     for (const [label, value] of section.filas) fila(label, value);
     y -= 14;

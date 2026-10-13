@@ -1,4 +1,8 @@
-# Estado técnico de la entrega — 1.3.58
+# Estado técnico de la entrega — 1.3.59
+
+La revisión 1.3.59 separa el informe del cliente de la revisión interna: pantalla, impresión y PDF entregan montos, alternativas, ejemplos y pasos comprensibles. No incluyen fórmulas actuariales, identificadores de tablas ni errores técnicos del motor. Los cálculos y sus fuentes siguen disponibles en el modelo interno, sin cambiar los importes ni los datos del cliente.
+
+La matriz sintética de AFP y aseguradoras y las comparaciones entre contratos incorporadas después del cierre anterior se mantienen. Los ejemplos de pruebas usan identidades sintéticas y no credenciales de afiliados.
 
 La revisión 1.3.58 alinea la tabla orientativa de sobrevivencia con la familia actuarial: un hijo con invalidez parcial declarada conserva el 15% antes de los 24 años, sin exigir condición de estudiante, y pasa al 11% desde los 24. El porcentaje presupone derechos cotejados, no los acredita; la regresión verifica también el importe mostrado en el escenario.
 

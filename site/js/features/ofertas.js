@@ -7,6 +7,7 @@ import { DIRECTORIO_BASE } from '../data/aseguradoras.js';
 import { getUF, onUF } from '../core/uf.js';
 import { clp, uf, fechaCorta } from '../core/format.js';
 import { evaluarOferta, ordenarOfertas, mejores } from '../core/ofertas.js';
+import { diferenciasAnuales } from '../core/calculos.js';
 import { pensionLiquida } from '../core/liquida.js';
 import { evaluarBeneficios } from '../core/beneficios.js';
 import { abrirDialog, cerrarDialog, cablearCierre } from '../ui/dialog.js';
@@ -233,17 +234,16 @@ function render(main) {
 
   /* Diferencia anual vs la mejor pensión (columna del SCOMP real:
      se calcula desde los CLP redondeados, igual que el documento) */
-  const maxPensionUF = evaluadas.length ? Math.max(...evaluadas.map((e) => e._ev.pensionUF)) : 0;
-  const maxCLP = ufv ? Math.round(maxPensionUF * ufv) : null;
+  const diferencias = diferenciasAnuales(ofertas, ufv);
   const difAnual = (e) => {
-    if (!ufv || maxPensionUF <= 0) return null;
-    return (maxCLP - Math.round(e._ev.pensionUF * ufv)) * 12;
+    const delta = diferencias[ofertas.indexOf(e.oferta)]?.diferenciaAnualCLP;
+    return delta == null ? null : -delta;
   };
 
   /* Total mensual estimado (maestro §58): líquida + beneficios estatales */
   const salud = {
-    tipo: cliente.perfil?.saludTipo || 'fonasa',
-    planUF: Number(cliente.perfil?.saludPlanUF) || 0
+    tipo: cliente.perfil?.saludTipo,
+    planUF: cliente.perfil?.saludPlanUF
   };
   const benef = evaluarBeneficios(cliente, ufv);
   const extraMensual = (benef?.total?.pguCLP || 0) + (benef?.total?.bacCLP || 0);
@@ -317,7 +317,7 @@ function render(main) {
         <dt>Período garantizado</dt><dd>${o.periodoGarantizadoAnios ? o.periodoGarantizadoAnios + ' años' : '—'}</dd>
         <dt>Aumento temporal</dt><dd>${o.aumentoTemporalPct ? `${o.aumentoTemporalPct}% por ${o.aumentoTemporalMeses || '?'} meses` : '—'}</dd>
         <dt>Tasa descuento único</dt><dd>${o.tasaDescuentoPct != null ? o.tasaDescuentoPct + '%' : '—'}</dd>
-        <dt>Dif. anual vs mejor</dt><dd>${(() => { const d = difAnual(e); return d != null ? (d > 0 ? '−' + clp(d) : '$0') : '—'; })()}</dd>
+        <dt>Dif. anual en condiciones registradas iguales</dt><dd>${(() => { const d = difAnual(e); return d != null ? (d > 0 ? '−' + clp(d) : '$0') : '—'; })()}</dd>
         <dt>Cuota mortuoria</dt><dd>${o.cuotaMortuoriaUF ? o.cuotaMortuoriaUF + ' UF' : '—'}</dd>
         <dt>Aumento diferido</dt><dd>${o.aumentoDiferidoPct ? `${o.aumentoDiferidoPct}% mes ${o.aumentoDiferidoMes || '?'}${o.adelantable ? ' ↩' : ''}` : '—'}</dd>
         <dt>Sobrev. cónyuge/hijos</dt><dd>${[o.sobrevConyugePct, o.sobrevHijosPct].filter(x => x != null).join('% / ') || '—'}${o.sobrevConyugePct != null || o.sobrevHijosPct != null ? '%' : ''}</dd>

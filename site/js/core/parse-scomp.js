@@ -109,9 +109,9 @@ function extraerSaldo(plano, lineas) {
      quedar en la misma línea según el extractor, así que se barren las
      líneas siguientes hasta hallar la fila de valores UF y la de $. */
   const iRP = lineas.findIndex((l) => /Pensión mensual \(UF\)/i.test(l));
-  const iHead = lineas.findIndex((l, i) => i < iRP && AFPS.filter((a) => l.includes(a)).length >= 3);
+    const iHead = lineas.findIndex((l, i) => i < iRP && AFPS.filter((a) => new RegExp(`\\b${a}\\b`, 'i').test(l)).length >= 3);
   if (iRP >= 0 && iHead >= 0) {
-    const afps = [...lineas[iHead].matchAll(new RegExp(AFPS.join('|'), 'g'))].map((m) => m[0]);
+    const afps = [...lineas[iHead].matchAll(new RegExp(AFPS.join('|'), 'gi'))].map((m) => m[0].toUpperCase());
     let filaUF = '', filaCLP = '';
     for (let i = iRP; i < Math.min(iRP + 8, lineas.length); i++) {
       if (!filaUF && (lineas[i].match(/\d+,\d{2}/g) || []).length >= 3) filaUF = lineas[i];
@@ -119,12 +119,20 @@ function extraerSaldo(plano, lineas) {
     }
     const afpAfiliado = (plano.match(new RegExp(`AFP\\s+(${AFPS.join('|')})`, 'i')) || [])[1]?.toUpperCase();
     const idx = afps.indexOf(afpAfiliado);
-    if (idx >= 0 && filaUF) {
+    if (filaUF) {
       const ufs = filaUF.match(/\d+,\d{2}/g) || [];
       const clps = filaCLP.match(/\d{1,3}(?:\.\d{3})+/g) || [];
-      if (ufs[idx]) {
-        s.pensionEstimadaUF = numCL(ufs[idx]);
-        s.pensionEstimadaCLP = numCLP(clps[idx]) || null;
+      // Positional data cannot be assigned safely when a column is missing or repeated.
+      if (ufs.length === afps.length && new Set(afps).size === afps.length) {
+        s.retirosProgramados = afps.map((afp, index) => ({ afp, pensionUF: numCL(ufs[index]),
+          pensionCLPdocumento: clps.length === afps.length ? numCLP(clps[index]) : null }));
+      }
+    }
+    if (idx >= 0 && s.retirosProgramados) {
+      const row = s.retirosProgramados[idx];
+      if (row) {
+        s.pensionEstimadaUF = row.pensionUF;
+        s.pensionEstimadaCLP = row.pensionCLPdocumento;
         s.pensionEstimadaFuente = `SCOMP · retiro programado ${afpAfiliado} (primer año)`;
       }
     }

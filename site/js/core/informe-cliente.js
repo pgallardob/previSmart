@@ -13,6 +13,15 @@ import { prepararAseguradoras } from './preparacion-aseguradoras.js';
 const valido = (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0;
 const dinero = (v) => valido(v) ? clp(v) : 'Pendiente';
 const diferencia = (v) => typeof v === 'number' && Number.isFinite(v) ? clp(v) : 'Pendiente';
+const pendientesPension = (c) => {
+  const p = c.perfil || {}, d = c.sobrevivencia || {}, pendientes = [];
+  if (!p.fechaNacimiento || !p.sexo) pendientes.push('Completar los datos personales necesarios para estimar su pensión.');
+  if (d.rpGrupoConfirmado !== true || (c.beneficiarios || []).some((b) => !b.fechaNacimiento || !b.sexo))
+    pendientes.push('Revisar con su asesor los datos de su familia y quiénes podrían recibir una pensión si usted fallece.');
+  if (d.rpMesesDevengados == null) pendientes.push('Confirmar si existen mensualidades de pensión pendientes de pago; si no existen, indicarlo.');
+  if (!pendientes.length) pendientes.push('Su asesor debe revisar los antecedentes y los valores aplicables a la fecha antes de informar una pensión estimada.');
+  return pendientes;
+};
 const condiciones = (o) => [o.periodoGarantizadoAnios != null ? `Garantía ${o.periodoGarantizadoAnios * 12} meses` : 'Garantía no informada',
   o.aumentoTemporalPct > 0 ? `Aumento ${o.aumentoTemporalPct}% por ${o.aumentoTemporalMeses ?? '?'} meses` : '',
   o.aumentoDiferidoPct > 0 ? 'Aumento diferido: revisar póliza' : ''].filter(Boolean).join(' · ');
@@ -32,7 +41,7 @@ export function modeloLecturaCliente(original, ufMeta, generadoEn = new Date().t
   if (documento && valido(s.obligatorio) && valido(documento.saldo.obligatorio) && s.obligatorio !== documento.saldo.obligatorio) advertencias.push('Saldo AFP y capital destinado en SCOMP son distintos: revisar sus fechas y qué cuentas incluyen. Esa diferencia no actualiza los precios de las aseguradoras.');
   if (edad != null && legal != null && edad < legal) advertencias.push(`Edad actual: ${edad} años; edad legal: ${legal}. Este escenario no demuestra que pueda pensionarse hoy ni proyecta la pensión a esa edad futura.`);
   if (!['fonasa', 'isapre'].includes(p.saludTipo) || (p.saludTipo === 'isapre' && !valido(p.saludPlanUF))) advertencias.push('Falta declarar salud/plan: los montos líquidos no están confirmados.');
-  if (!valido(ref.clp)) advertencias.push(...(ref.faltantes || ['Falta pensión mensual de referencia.']));
+  if (!valido(ref.clp)) advertencias.push(...pendientesPension(c));
   const todas = (c.ofertas || []).filter((o) => valido(o.pensionUF) && o.pensionUF > 0);
   if (!todas.length) advertencias.push('No hay cotizaciones de renta vitalicia cargadas. Su precio no se deduce de la simulación de retiro programado.');
   if (c.scomp?.vigenciaHasta && c.scomp.vigenciaHasta < fecha) advertencias.push('El SCOMP tiene vigencia registrada vencida: sus importes sirven como referencia histórica, no como cotizaciones vigentes.');
@@ -60,7 +69,11 @@ export function modeloLecturaCliente(original, ufMeta, generadoEn = new Date().t
     companias.map((a) => [a.nombre, `${a.modalidades.join('; ')}. ${a.clausulas.join('; ')}`,
       `${a.riesgo.nota} · ${a.riesgo.agencia} · ${fechaCorta(a.riesgo.fecha)} · ${a.riesgo.perspectiva}`,
       `${a.estadoPrecio}. Arancel individual no publicado en la fuente de producto; no se presume costo cero.`]),
-    `Muestra inicial de tres entidades investigadas, no ranking ni recomendación; no representa todo el mercado. Fuentes revisadas ${fechaCorta(companias[0].consultadoEn)}. La clasificación no es un precio ni garantía de pago; las fuentes y observaciones de cada ficha están en el anexo.`);
+    `Estas tres compañías son opciones para iniciar la consulta, no una recomendación ni todo el mercado. Información revisada al ${fechaCorta(companias[0].consultadoEn)}. La calificación resume una evaluación de la compañía: no garantiza el pago ni informa cuánto le ofrecería a usted. Solicite una oferta personal y confirme sus condiciones.`);
+  if (documento?.saldo?.retirosProgramados?.length) tabla('Retiro programado: AFP informadas en el SCOMP seleccionado',
+    ['AFP', 'UF / mes, primer año', 'CLP / mes a UF de referencia', 'CLP del documento'],
+    documento.saldo.retirosProgramados.map((r) => [r.afp, uf(r.pensionUF), dinero(valorUF ? r.pensionUF * valorUF : null), dinero(r.pensionCLPdocumento)]),
+    `Fuente: ${documento.nombreArchivo || documento.documentoId} · ${fechaCorta(documento.scomp.fechaEmision)}. Se conservan las columnas reconocidas, no se recalcula una oferta AFP ni se modifica el saldo del expediente. Los pesos originales y su conversión actual son bases distintas. No es un ranking ni una aceptación; revisar vigencia y condiciones.`);
   if (ref.simulada && rp.comisionCLP != null) tabla('Cargo AFP declarado: efecto en el ingreso RP', ['Concepto', 'CLP / mes'], [
     ['RP bruto del escenario', dinero(rp.pensionCLP)], [`Comisión declarada ${rp.comisionPct}%`, dinero(rp.comisionCLP)],
     ['Después del cargo, antes de salud e impuesto', dinero(rp.pensionTrasComisionCLP)],
@@ -96,8 +109,8 @@ export function modeloLecturaCliente(original, ufMeta, generadoEn = new Date().t
     if (srp.estado === 'simulacion') tabla('Sobrevivencia RP: pagos desde el capital remanente declarado', ['Beneficiario', 'Pago bruto / mes', 'Tope aplicado'],
       srp.pensiones.map((b) => [b.nombre || NOMBRES_TIPO[b.tipo], dinero(b.pensionCLP), b.topeCLP != null ? dinero(b.topeCLP) : 'No aplica en este ejercicio'])
         .concat([['Total del grupo', dinero(srp.totalMensualCLP), 'No es pensión individual']]),
-      `${srp.advertencia} Capital ${clp(srp.capitalCLP)} · ${srp.capitalFecha} · ${srp.referencia}.`);
-    else advertencias.push(`Sobrevivencia RP declarada sin resultado: ${srp.faltantes.join('; ')}`);
+      `Ejercicio con ${clp(srp.capitalCLP)} disponibles para este grupo familiar, informados al ${fechaCorta(srp.capitalFecha)}. Los pagos deben ser confirmados por la AFP. No incluyen salud, impuestos ni otros descuentos. El total del grupo no es la pensión de una sola persona.`);
+    else advertencias.push('Aún no podemos informar cuánto recibiría cada familiar. Revise con su asesor el dinero disponible, los datos de los beneficiarios y sus derechos.');
   }
   const contrato = base || { ...c.sobrevivencia, pensionUF: c.sobrevivencia?.pensionUF ?? ref.uf };
   if (c.sobrevivencia?.proyMeses != null) {
@@ -105,12 +118,12 @@ export function modeloLecturaCliente(original, ufMeta, generadoEn = new Date().t
     if (proy.estado === 'hipotesis') {
       tabla('Planificación hipotética: capital en pesos de poder adquisitivo constante', ['Momento del ejercicio', 'Capital hipotético'],
         proy.puntos.map((punto) => [`Mes ${punto.mes}`, dinero(punto.capitalCLP)]),
-        `Aporte mensual ${clp(proy.aporteMensualCLP)}, retorno real ${proy.tasaRealAnualPct}%. ${proy.advertencia}`);
-      tabla('Pensión hipotética a la fecha de planificación', ['Fecha / edad', 'Bruta hipotética / mes', 'Hipótesis CNU'], [
+        `Se supone un aporte mensual de ${clp(proy.aporteMensualCLP)} y un cambio anual del ahorro de ${proy.tasaRealAnualPct}% después de inflación. Los aportes se realizan al final de cada mes. Estos valores son un ejercicio: pueden existir pérdidas y el resultado futuro puede ser distinto. No cambia su saldo actual.`);
+      tabla('Pensión estimada para su planificación', ['Fecha / edad', 'Estimación mensual antes de descuentos', 'Qué debe tener en cuenta'], [
         [`${proy.fechaFutura} / ${proy.edadFutura ?? 'edad pendiente'}`, dinero(proy.pensionHipoteticaCLP),
-          proy.pensionHipoteticaCLP != null ? `${proy.tasaCNUhipoteticaPct}% declarada; tablas TM2020 conservadas como hipótesis` : proy.faltantesPension.join('; ')]
+          proy.pensionHipoteticaCLP != null ? 'Se mantuvieron las condiciones de cálculo del ejercicio. Las condiciones reales futuras pueden cambiar.' : 'Faltan datos o supuestos por revisar con su asesor; todavía no se puede estimar esta pensión.']
       ], 'No se usa esta cifra como pensión actual ni como precio de una renta vitalicia. Las condiciones reales futuras pueden ser distintas.');
-    } else advertencias.push(`Planificación sin resultado: ${proy.faltantes.join('; ')}`);
+    } else advertencias.push('Para mostrar una planificación, acuerde con su asesor el plazo, cuánto aportaría cada mes y los supuestos del ejercicio.');
   }
   if (c.beneficiarios?.length && valido(contrato.pensionUF) && contrato.pensionUF > 0) {
     const sov = escenarioSobrevivencia(contrato, c.beneficiarios, valorUF, pctSobrevivencia);
@@ -126,9 +139,20 @@ export function modeloLecturaCliente(original, ufMeta, generadoEn = new Date().t
     ['Diferencia en 12 pagos', diferencia(presencial.deltaAnualCLP)],
     ['Referencia del papel', `${presencial.fecha} · ${presencial.referencia}`]
   ], 'Solo comparable bajo iguales condiciones declaradas; no equivale a una aceptación ni verifica el documento físico.');
+  if (todas.length > mostradas.length) tabla('Todas las ofertas registradas para revisar con su asesor',
+    ['Compañía', 'Antes de descuentos / mes', 'Condiciones informadas'],
+    todas.map((o) => [o.aseguradora || 'Compañía no informada', dinero(valorUF ? o.pensionUF * valorUF : null), condiciones(o)]),
+    'No se elige automáticamente la oferta con el monto más alto. Revise plazo, coberturas y descuentos antes de comparar.');
+  tabla('De dónde salen estos montos', ['Información', 'Cómo interpretarla'], [
+    ['Ahorro registrado', `Saldo informado en sus antecedentes${s.capturadoEn || s.saldoAl ? ` al ${fechaCorta(s.capturadoEn || s.saldoAl)}` : '; falta confirmar su fecha'}.`],
+    ['Pensión de retiro programado', ref.simulada ? 'Estimación con el ahorro, edad y familia revisados. La AFP debe confirmar cuánto pagaría realmente.'
+      : valido(ref.clp) ? 'Monto informado en sus antecedentes. Revise la fecha y si corresponde a su situación actual.' : 'Todavía no se informa un monto: faltan antecedentes por revisar.'],
+    ['Ofertas de aseguradoras', todas.length ? 'Montos del documento seleccionado o ingresados por su asesor. Confirme origen, vigencia y condiciones con cada compañía.' : 'No hay ofertas personales cargadas; las fichas de compañías no son cotizaciones.'],
+    ['Dinero que recibiría', 'Los montos antes de descuentos no son el dinero final a recibir. Para estimarlo necesitamos su previsión de salud, plan y demás cargos aplicables.']
+  ], 'Este documento ayuda a preparar una decisión. No reemplaza la confirmación de la AFP ni la oferta o contrato de la aseguradora.');
   return { titulo: 'Su panorama previsional', cliente: c.nombre || 'Cliente', fecha: fechaCorta(fecha),
     indicadores: [{ etiqueta: 'Saldo obligatorio registrado', valor: dinero(s.obligatorio), detalle: s.capturadoEn ? `Captura ${fechaCorta(s.capturadoEn)}` : s.saldoAl ? `Corte ${fechaCorta(s.saldoAl)}` : 'Fecha no informada' },
-      { etiqueta: 'Retiro programado bruto / mes', valor: dinero(ref.clp), detalle: ref.simulada ? 'Simulación a la edad actual' : 'Monto informado en el expediente' },
+      { etiqueta: 'Retiro programado antes de descuentos / mes', valor: dinero(ref.clp), detalle: !valido(ref.clp) ? 'Faltan antecedentes por revisar con su asesor' : ref.simulada ? 'Estimación a su edad actual' : 'Monto informado en sus antecedentes' },
       { etiqueta: 'Cotizaciones de renta vitalicia', valor: String(todas.length), detalle: 'Documentadas o registradas; revisar el origen' },
       ...(documento ? [{ etiqueta: 'Capital destinado en SCOMP', valor: dinero(documento.saldo.obligatorio), detalle: `Emisión ${fechaCorta(documento.scomp.fechaEmision)}; base distinta al saldo AFP` }] : [])],
     ufReferencia: `UF utilizada: ${valorUF ? clp(valorUF) : 'Pendiente'} · ${ufMeta?.fecha || 'sin fecha'} · ${ufMeta?.origen || 'origen no informado'}`,

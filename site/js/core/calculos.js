@@ -49,7 +49,9 @@ export function garantiaEstatal(pensionUF, valorUF, pguCLP = parametroPGUGaranti
 /** SCOMP tables compare annual differences using their rounded monthly peso amounts. */
 export function diferenciasAnuales(ofertas, valorUF) {
   const grupo = (o) => JSON.stringify([o.documentoId || null, o.modalidad || null, o.periodoGarantizadoAnios ?? null,
-    o.aumentoTemporalPct ?? null, o.aumentoTemporalMeses ?? null, o.aumentoDiferidoPct ?? null, o.aumentoDiferidoMes ?? null]);
+    o.aumentoTemporalPct ?? null, o.aumentoTemporalMeses ?? null, o.aumentoDiferidoPct ?? null, o.aumentoDiferidoMes ?? null,
+    o.primaUF ?? null, o.incrementoConyugeUF ?? null, o.sobrevConyugePct ?? null, o.sobrevHijosPct ?? null,
+    o.cuotaMortuoriaUF ?? null, o.comisionUF ?? null, o.ofertaBruta ?? null]);
   return ofertas.map((o) => {
     const validas = ofertas.filter((x) => grupo(x) === grupo(o) && positivo(x.pensionUF));
     const mejor = validas.length ? Math.max(...validas.map((x) => x.pensionUF)) : null;

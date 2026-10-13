@@ -10,8 +10,13 @@ const OFERTA = ['aseguradora', 'codigoOferta', 'modalidad', 'pensionUF', 'pensio
 
 /** Immutable, whitelisted extraction linked to the archived original, separate from operator edits. */
 export function crearFuenteSCOMP(resultado, documento) {
+  const saldo = seleccionar(resultado.saldo, SALDO);
+  if (Array.isArray(resultado.saldo?.retirosProgramados)) saldo.retirosProgramados = resultado.saldo.retirosProgramados
+    .filter((r) => r && typeof r.afp === 'string' && Number.isFinite(r.pensionUF) && r.pensionUF >= 0)
+    .map((r) => ({ afp: r.afp, pensionUF: r.pensionUF,
+      pensionCLPdocumento: Number.isSafeInteger(r.pensionCLPdocumento) && r.pensionCLPdocumento >= 0 ? r.pensionCLPdocumento : null }));
   return { documentoId: documento?.id || null, clienteId: documento?.clienteId || null, sha256: documento?.sha256 || null, nombreArchivo: documento?.nombreArchivo || null,
-    perfil: seleccionar(resultado.perfil, PERFIL), saldo: seleccionar(resultado.saldo, SALDO),
+    perfil: seleccionar(resultado.perfil, PERFIL), saldo,
     scomp: seleccionar(resultado.scomp, ['codigoConsulta', 'fechaEmision', 'vigenciaDesde', 'vigenciaHasta']),
     beneficiarios: (resultado.beneficiarios || []).map((b) => seleccionar(b, ['rut', 'nombre', 'tipo', 'fechaNacimiento', 'sexo', 'estudiante', 'invalidez'])),
     ofertas: (resultado.ofertas || []).map((o) => ({ ...seleccionar(o, OFERTA), fuente: 'certificado-scomp', documentoId: documento?.id || null })) };

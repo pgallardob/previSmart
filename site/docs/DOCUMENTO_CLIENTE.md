@@ -27,4 +27,10 @@ Screen charts are capped at their 480-pixel design width instead of being enlarg
 
 Health is never inferred as Fonasa, and an unknown Isapre plan is not treated as zero. A declared AFP charge in a simulated RP is shown separately from gross pension and from the health/tax model; its cash-flow effect does not assume a tax deduction. Missing health/plan information keeps net amounts pending on screen and in the client document.
 
+## Client language and internal review
+
+The standard screen, browser print and native PDF now contain the client reading only: amounts, alternatives, family examples, missing information expressed as next actions, and a plain-language explanation of where the figures came from. They do not include actuarial formulas, table identifiers, raw validation errors or the previous technical appendix. Native PDF charts and table layout are unchanged.
+
+Internal calculations and provenance remain in the model so the advisor can audit the arithmetic. An internal renderer call may explicitly request `{ incluirRevisionAsesor: true }`; ordinary client actions never enable that option. Missing information is not concealed or converted into a fabricated amount. Regression tests verify both the default client output and the separate internal review without changing stored client data.
+
 `rpa/test/informe-cliente.test.mjs` checks arithmetic, hypothetical labels, missing data, source selection, negative differences and escaped markup. The isolated browser test checks 320/390/768/1280 layouts, chart bounds, print-state restoration, first-page results, later appendix content and unchanged client data.

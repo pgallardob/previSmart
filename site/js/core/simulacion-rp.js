@@ -24,11 +24,13 @@ export function simularRP(cliente, fecha) {
   const faltantes = [];
   const parametroTasa = obtenerTasaRP(fecha);
   if (!parametroTasa) faltantes.push('Fecha sin tasa RP revisada vigente; actualizar parámetros en Ajustes con la circular aplicable');
+  if (!fechaValida(fecha) || fecha < '2023-07-01') faltantes.push('El ejercicio actual TM2020 no reproduce una pensión calculada antes de julio de 2023; ese cálculo requiere sus parámetros históricos');
   if (fecha >= '2029-07-01') faltantes.push('Revisar nuevas tablas de mortalidad: TM2020 tiene un período máximo de seis años desde julio de 2023');
   if (d.rpGrupoConfirmado !== true || d.rpHuella !== huellaGrupoRP(cliente)) faltantes.push('Confirmar el grupo familiar completo y las condiciones del escenario');
   if (p.rutaTipo && !['vejez', 'invalidez'].includes(p.rutaTipo)) faltantes.push('La ruta terminal/sobrevivencia requiere un escenario específico; no se calcula como pensión del titular vivo');
   if (p.yaPensionado || p.rutaTipo === 'invalidez') {
-    if (!fechaValida(d.rpFechaInicio) || d.rpFechaInicio < '2023-07-01' || d.rpFechaInicio > fecha) faltantes.push('Fecha de inicio/siniestro válida desde 01/07/2023 para las tablas TM2020; los casos anteriores necesitan tablas históricas');
+    if (!fechaValida(d.rpFechaInicio) || d.rpFechaInicio > fecha
+        || (fechaValida(p.fechaNacimiento) && d.rpFechaInicio < p.fechaNacimiento)) faltantes.push('Fecha de inicio/siniestro válida, no futura ni anterior al nacimiento; no se infiere del expediente');
     if (d.rpCondicionesConfirmadas !== true || !String(d.rpReferenciaCondiciones || '').trim()) faltantes.push('Cotejar condiciones de recálculo/dictamen y registrar su referencia');
   }
   if (p.rutaTipo === 'invalidez' && !['total', 'parcial'].includes(p.invalidezTitular)) faltantes.push('Grado de invalidez declarado del titular en Perfil');
@@ -63,12 +65,13 @@ export function simularRP(cliente, fecha) {
       beneficiarios: miembros, anio: fechaCalculo.getFullYear(), tasa: parametroTasa.tasa });
     const pensionCLP = pensionRPSimulada(capital, resultado.total, z);
     return { estado: 'simulacion', ...resultado, parametroTasa, capitalCLP: capital, mesesDevengados: z, fecha,
-      pensionCLP, edad, tipoEscenario: p.yaPensionado ? 'recálculo referencial TM2020' : p.rutaTipo === 'invalidez' ? 'invalidez declarada TM2020' : 'vejez',
+      pensionCLP, edad, tipoEscenario: p.yaPensionado ? 'simulación actual para pensionado, referencia TM2020' : p.rutaTipo === 'invalidez' ? 'invalidez declarada TM2020' : 'vejez',
+      fechaInicioInformada: d.rpFechaInicio || null,
       capitalFuente: usaCapitalDeclarado ? `Capital declarado para el escenario · ${d.rpCapitalFecha} · ${d.rpCapitalReferencia}` : 'Saldo obligatorio registrado',
       revisionCondiciones: d.rpCondicionesConfirmadas === true ? d.rpReferenciaCondiciones : null,
       comisionPct: comision ?? null, comisionCLP: comision != null ? pensionCLP * comision / 100 : null,
       pensionTrasComisionCLP: comision != null ? pensionCLP * (1 - comision / 100) : null,
       comisionReferencia: comision != null ? d.rpComisionReferencia : null,
-      advertencia: 'Ejercicio con edades en años cumplidos y grupo declarado, no pensión AFP ni liquidación SIS. El capital destinado, dictamen, saldo retenido y derechos requieren cotejo; no se inventan aportes adicionales ni se suman APV/bonos. No acredita elegibilidad ni ajustes regulatorios. La comisión, si se declara, se muestra aparte del bruto; salud, impuesto y beneficios requieren sus antecedentes. No proyecta aportes ni rentabilidad futura.' };
+      advertencia: 'Ejercicio a la fecha indicada con edades en años cumplidos, capital registrado/declarado y grupo revisado. Una fecha antigua de inicio no transforma este ejercicio actual en una reproducción de la pensión original. No es recálculo administrativo AFP, pensión concedida ni liquidación SIS. El capital, dictamen, saldo retenido y derechos requieren cotejo; no se inventan aportes adicionales ni se suman APV/bonos. No acredita elegibilidad ni ajustes regulatorios. La comisión se muestra aparte si se declara; salud, impuesto y beneficios requieren sus antecedentes. No proyecta aportes ni rentabilidad futura.' };
   } catch (error) { return { estado: 'pendiente', faltantes: [error.message] }; }
 }
