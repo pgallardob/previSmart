@@ -1,4 +1,8 @@
-# Estado técnico de la entrega — 1.3.59
+# Estado técnico de la entrega — 1.3.60
+
+La entrega 1.3.60 añade acceso directo a instalación y descargas desde Ajustes y GitHub Releases: ZIP completo de Windows, copia web y sumas SHA-256. Las entregas contienen solo software. En teléfonos se instala la PWA desde su dirección HTTPS; el ZIP web no es APK ni IPA. La actualización conserva los expedientes locales y no requiere desinstalar.
+
+La verificación entre motores distingue Chromium con tamaño Android y WebKit con tamaño iPhone como **emulación**, no como dispositivos físicos. Se comprueba instalación del servicio sin conexión, actualización confirmada, conservación de clientes y originales, descarga de PDF y apertura de documentos sin conexión. Esto no constituye certificación de todos los equipos ni amplía las funciones actuariales o adaptadores previamente declarados.
 
 La revisión 1.3.59 separa el informe del cliente de la revisión interna: pantalla, impresión y PDF entregan montos, alternativas, ejemplos y pasos comprensibles. No incluyen fórmulas actuariales, identificadores de tablas ni errores técnicos del motor. Los cálculos y sus fuentes siguen disponibles en el modelo interno, sin cambiar los importes ni los datos del cliente.
 

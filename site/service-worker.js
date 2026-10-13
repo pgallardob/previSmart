@@ -2,7 +2,7 @@
    Estrategia: precache del app shell; network-first con timeout para la API de UF;
    cache-first para el resto de recursos propios. */
 
-const VERSION = 'prevismart-1.3.59-2026.10.13-informe-cliente-sin-anexo-tecnico';
+const VERSION = 'prevismart-1.3.60-2026.10.13-distribucion-instalacion-y-descargas';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `rt-${VERSION}`;
 
@@ -234,6 +234,8 @@ async function cacheFirst(request) {
       const inicio = await caches.match('./index.html');
       if (inicio) return inicio;
     }
-    return Response.error();
+    return new Response('Recurso no disponible sin conexión.', {
+      status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+    });
   }
 }
