@@ -1,4 +1,6 @@
-# Estado técnico de la entrega — 1.3.55
+# Estado técnico de la entrega — 1.3.56
+
+La revisión 1.3.56 conserva la lógica funcional de 1.3.55 y retira importes particulares que habían quedado como ejemplos en una guía y un comentario del parser. Añade una regresión de publicación para impedir que esos ejemplos reaparezcan; no incorpora expedientes ni nuevos datos personales a la distribución.
 
 ## Alcance vigente de la entrega
 
@@ -17,7 +19,7 @@ Los cálculos bloqueados por datos faltantes o casos no verificados no se habili
 
 ### Verificación del 13/10/2026
 
-**232 comprobaciones aprobadas:** 65 Node, 10 profundas, 35 de endurecimiento, 1 CSP, 86 especializadas, 21 de aplicación, 13 de compatibilidad/Pages y 1 portable. Los escenarios nuevos y sus PDF se verificaron en Edge, Firefox y WebKit emulado. Las 28 comprobaciones adicionales de esta entrega no se presentan como una reimplementación de las funciones anteriores.
+**232 comprobaciones funcionales aprobadas en 1.3.55:** 65 Node, 10 profundas, 35 de endurecimiento, 1 CSP, 86 especializadas, 21 de aplicación, 13 de compatibilidad/Pages y 1 portable. Los escenarios nuevos y sus PDF se verificaron en Edge, Firefox y WebKit emulado. La revisión de publicación 1.3.56 añade una comprobación de ejemplos sin importes particulares y vuelve a verificar distribución e ingesta; no se presenta como una nueva batería funcional ni como una reimplementación.
 
 App y RPA locales coinciden en 1.3.55/runtime v22.23.3 y modo real; preflight e integridad aprobados. Portable: 958 archivos verificados; web/Pages: 193 archivos de software y guías públicas. No se consultaron cuentas AFP durante este cierre ni se importaron valores hipotéticos a un expediente real. Tras el reinicio del entorno, el navegador de revisión estaba sin cartera; no se reconstruyeron ni sustituyeron expedientes a ciegas, ni se afirma haber vuelto a cotejar la huella del cliente anterior desde esa sesión.
 
@@ -57,7 +59,7 @@ La ayuda y el ejemplo comparten un bloque de diseño, con separación entre pár
 
 En 1.3.54 se añade **Ajustes → Parámetros de cálculo** para incorporar tablas SII mensuales y tasas RP cotejadas, con responsable, vigencia e historial local. Los motores ya entregados se reutilizan, sin reescribir CNU ni expedientes. La aplicación no obtiene ni inventa nuevas publicaciones; los archivos de prueba de períodos futuros son sintéticos. Guía y formato: [PARAMETROS_CALCULO.md](PARAMETROS_CALCULO.md). Esto no completa por sí solo las otras ampliaciones actuariales, actualizaciones normativas ni validaciones en teléfonos físicos.
 
-Verificación de 1.3.54: 204 comprobaciones aprobadas (65 Node, 10 profundas, 30 de endurecimiento, 1 CSP, 65 especializadas, 21 de aplicación, 11 de compatibilidad/Pages y 1 portable). Las ocho comprobaciones adicionales cubren el motor de parámetros, revisión desde Ajustes y carga/exportación de historial en Edge, Firefox y WebKit emulado. Los paquetes incluyen la guía de actualización de parámetros y se preparan sin publicar. En la sesión real, sin importar parámetros de prueba, la simulación conserva $89.018 mensuales y la huella del expediente permanece idéntica.
+Verificación de 1.3.54: 204 comprobaciones aprobadas (65 Node, 10 profundas, 30 de endurecimiento, 1 CSP, 65 especializadas, 21 de aplicación, 11 de compatibilidad/Pages y 1 portable). Las ocho comprobaciones adicionales cubren el motor de parámetros, revisión desde Ajustes y carga/exportación de historial en Edge, Firefox y WebKit emulado. Los paquetes incluyen la guía de actualización de parámetros y se preparan sin publicar. La comprobación local conservó la huella del expediente, sin incorporar parámetros de prueba; sus importes particulares no forman parte de esta guía pública.
 
 En 1.3.53 se compacta la presentación en pantalla: gráficos con ancho máximo 480 px sin ampliación automática, barras de 20 px y títulos Inter con jerarquía moderada en todas las vistas. Se corrigen tokens tipográficos inválidos en etiquetas y tablas del informe. No cambian los montos, las fuentes ni el diseño del PDF nativo; los controles mantienen su tamaño de uso.
 

@@ -1,8 +1,8 @@
 {
   "tipo": "prevismart-release",
-  "version": "1.3.55",
+  "version": "1.3.56",
   "runtime": "navegador",
-  "creadoEn": "2026-10-13T14:51:29.221Z",
+  "creadoEn": "2026-10-13T15:21:33.954Z",
   "archivos": [
     {
       "path": "assets/fonts/fraunces-latin-full-normal.woff2",
@@ -266,7 +266,7 @@
     },
     {
       "path": "docs/ESTADO_ENTREGA.md",
-      "sha256": "00678abf543ff240016244502be2102bc8b90ca58d6a2f14008a3fea43c281c3"
+      "sha256": "4b79de3e6e48f391ba62b1010eb3c7f71647968f8d0fc904867a7d1680388927"
     },
     {
       "path": "docs/GITHUB_PAGES.md",
@@ -406,7 +406,7 @@
     },
     {
       "path": "js/core/parse-certsaldo.js",
-      "sha256": "9eee1749b6e3130712d60dce6af37eacd87eee663c374bacebad37002f8be222"
+      "sha256": "f148f00d09c43ef08a1db79f6b600f9388d8da10a09b0b187f9b49a408cfb179"
     },
     {
       "path": "js/core/parse-scomp.js",
@@ -466,7 +466,7 @@
     },
     {
       "path": "js/core/version.js",
-      "sha256": "c9b95e18e81dff86d9d9734e160519cf7e74921a45d54aed5d519938aab2797a"
+      "sha256": "1797463194567dcb7fe831b2303e5107cf2561e3fe5104d2b8ff07c402f062fb"
     },
     {
       "path": "js/data/aseguradoras.js",
@@ -622,7 +622,7 @@
     },
     {
       "path": "service-worker.js",
-      "sha256": "97be77584aff8d6b9d3213cfdaabedf3b299335d90f69bcd5bb5f615d74420c0"
+      "sha256": "14627c7ba61a06d5670301404902911a74825e99282d519b832625395956e2b9"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -718,7 +718,7 @@
     },
     {
       "path": "views/ajustes.html",
-      "sha256": "021acdfb344e70621d84ab4af485008b7d273307c59c561d6557a476bd686728"
+      "sha256": "f32bc34c788f44b93400d89c21b4939e438652dcd74332b362a203ebcc0065f1"
     },
     {
       "path": "views/beneficios.html",

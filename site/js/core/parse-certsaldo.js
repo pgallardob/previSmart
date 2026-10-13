@@ -46,7 +46,7 @@ export function parsearCertSaldo(texto) {
   const perfil = {};
   const detectado = [];
   /* Candidatos con fecha explícita: cartola AFP (p.ej. Modelo) declara
-     "Ahorro en CUENTA OBLIGATORIA al 30/04/2026 $23.272.997" para saldo
+     "Ahorro en CUENTA OBLIGATORIA al DD/MM/AAAA $N.NNN.NNN" para saldo
      inicial Y final, y "¿Cuánto ahorro tenía al <fecha>?" en el resumen.
      Gana la fecha mayor por cuenta = saldo al cierre del período. */
   const candidatos = {};
