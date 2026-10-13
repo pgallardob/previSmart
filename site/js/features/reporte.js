@@ -10,6 +10,10 @@ import { escenarioSobrevivencia } from '../core/liquida.js';
 import { edadExacta, fechaCumple } from '../core/dates.js';
 import { NORMATIVA } from '../data/normativa-2026.js';
 import { ETAPAS } from '../data/ruta.js';
+import { modeloInformeCalculos, renderInformeCalculos } from '../core/informe-calculos.js';
+import { iniciarDescargaCalculos } from './informe-calculos.js';
+import { pensionReferencia } from '../core/calculos.js';
+import { clienteParaPropuesta } from '../core/consolidacion-scomp.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const icono = (n) => `<svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#${n}"></use></svg>`;
@@ -19,15 +23,16 @@ export function init(main) {
   if (unsub) { unsub(); unsub = null; }
   main.querySelector('#btn-imprimir')?.addEventListener('click', () => window.print());
   render(main);
+  const limpiarPDF = iniciarDescargaCalculos(main, 'rep');
   unsub = subscribe(() => render(main));
   const unsubUF = onUF(() => render(main));
-  return () => { unsub?.(); unsubUF(); };
+  return () => { unsub?.(); unsubUF(); limpiarPDF(); };
 }
 
 const f = (v) => (v == null || v === '') ? '—' : esc(v);
 
 function render(main) {
-  const cliente = getClienteActivo();
+  const cliente = clienteParaPropuesta(getClienteActivo());
   const vacio = main.querySelector('#rep-vacio');
   const cuerpo = main.querySelector('#rep-cuerpo');
 
@@ -43,6 +48,7 @@ function render(main) {
   const ufMeta = getUF();
   const p = cliente.perfil || {};
   const s = cliente.saldo || {};
+  const pension = pensionReferencia(cliente, ufv);
   const edad = p.fechaNacimiento ? edadExacta(p.fechaNacimiento) : null;
   const legal = p.sexo ? NORMATIVA.edadLegal[p.sexo === 'F' ? 'mujer' : 'hombre'] : null;
   const veredictos = evaluarElegibilidad(cliente, ufv);
@@ -82,7 +88,7 @@ function render(main) {
       ${fila('Tipo de pensión', f(p.rutaTipo) || 'vejez')}
       ${fila('Meses cotizados', f(p.mesesCotizados))}
       ${fila('Promedio remuneraciones', p.promedioRemuneraciones ? clp(p.promedioRemuneraciones) : '—')}
-      ${fila('Salud', p.saludTipo === 'isapre' ? `Isapre ${f(p.saludPlanUF)} UF` : 'Fonasa 7%')}
+      ${fila('Salud declarada', p.saludTipo === 'isapre' ? `Isapre ${f(p.saludPlanUF)} UF` : p.saludTipo === 'fonasa' ? 'Fonasa 7% (revisar exenciones)' : 'No informada')}
     </tbody></table>
   </section>
 
@@ -97,7 +103,7 @@ function render(main) {
       ${fila('Bono de Reconocimiento', s.bonoReconocimiento?.monto ? `${clp(s.bonoReconocimiento.monto)} (${esc(s.bonoReconocimiento.estado || 'sin estado')})` : '—')}
       ${fila('Bono por Hijo', s.bonoPorHijo ? clp(s.bonoPorHijo) : '—')}
       ${fila('Otros bonos', s.otrosBonos ? clp(s.otrosBonos) : '—')}
-      ${fila('Pensión estimada', s.pensionEstimadaUF ? `${uf(s.pensionEstimadaUF)} ≈ ${ufv ? clp(s.pensionEstimadaUF * ufv) : '—'}` : '—')}
+      ${fila('Pensión estimada informada', pension.clp != null ? `${pension.uf != null ? uf(pension.uf) + ' · ' : ''}${clp(pension.clp)} · ${esc(pension.fuente)}` : 'No informada por las fuentes; no se deduce del saldo')}
     </tbody></table>
   </section>
 
@@ -165,4 +171,5 @@ function render(main) {
   </section>`;
 
   main.querySelector('#rep-doc').innerHTML = html;
+  main.querySelector('#rep-calculos').innerHTML = renderInformeCalculos(modeloInformeCalculos(cliente, ufMeta));
 }

@@ -55,6 +55,29 @@
   </form>
 </section>
 
+<section class="card u-mt-6 no-print" aria-labelledby="aj-param-titulo">
+  <h2 id="aj-param-titulo" class="u-mt-0">Parámetros de cálculo</h2>
+  <p class="small muted">Actualiza tablas tributarias mensuales y tasas RP con un archivo JSON cotejado con SII o Superintendencia. Se conservan por período y con historial local, sin cambiar los expedientes. La validación del archivo no acredita su autenticidad ni actualiza otras normas.</p>
+  <p id="aj-param-vigencia" class="small"></p>
+  <div class="u-flex u-gap-2 u-wrap">
+    <button id="aj-param-cargar" class="btn btn--secondary btn--sm" type="button">Cargar parámetros para revisar</button>
+    <button id="aj-param-ejemplo" class="btn btn--ghost btn--sm" type="button">Descargar formato con valores incluidos</button>
+    <button id="aj-param-exportar" class="btn btn--ghost btn--sm" type="button">Exportar historial de revisión</button>
+  </div>
+  <input id="aj-param-file" class="visually-hidden" type="file" accept="application/json,.json">
+  <div id="aj-param-revision" class="u-mt-4" hidden>
+    <ul id="aj-param-fuentes" class="small"></ul>
+    <details><summary>Valores completos del archivo</summary><pre id="aj-param-json" class="parametros-json"></pre></details>
+    <form id="aj-param-form" class="u-mt-3">
+      <div class="field"><label for="aj-param-responsable">Responsable del cotejo</label><input id="aj-param-responsable" maxlength="200" required></div>
+      <label><input id="aj-param-confirmar" type="checkbox" required> Cotejé cada valor y su vigencia con la publicación oficial. Si corrige un período existente, esta revisión se usará para los nuevos cálculos, conservando la anterior.</label>
+      <button id="aj-param-aplicar" class="btn btn--primary btn--sm u-mt-3" type="submit" disabled>Aplicar parámetros revisados</button>
+    </form>
+  </div>
+  <p id="aj-param-estado" class="small" role="status" aria-live="polite"></p>
+  <details class="u-mt-3"><summary>Historial de parámetros locales</summary><ul id="aj-param-historial" class="small"></ul></details>
+</section>
+
 <section class="card u-mt-6" aria-labelledby="aj-respaldo">
   <h2 id="aj-respaldo" class="u-mt-0">Guardado automático en archivo</h2>
   <p class="muted small" id="aj-res-estado">Consultando…</p>

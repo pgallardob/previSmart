@@ -9,7 +9,7 @@ const oyentes = new Set();
 const SECCIONES = ['perfil', 'beneficiarios', 'saldo', 'elegibilidad', 'beneficios', 'modalidades', 'ofertas', 'liquida', 'sobrevivencia', 'ruta', 'checklist', 'scomp', 'ingesta'];
 const SENSIBLES = new Set(['clave', 'password', 'contrasena', 'contraseña', 'token', 'authorization', 'credenciales', 'credentials', '__proto__', 'constructor', 'prototype']);
 const NUMERICOS = ['pensionUF', 'primaUF', 'periodoGarantizadoAnios', 'incrementoConyugeUF', 'sobrevConyugePct', 'sobrevHijosPct', 'cuotaMortuoriaUF', 'aumentoDiferidoMes', 'aumentoDiferidoPct', 'comisionUF', 'tasaDescuentoPct', 'aumentoTemporalPct', 'aumentoTemporalMeses', 'obligatorio', 'apv', 'depositosConvenidos', 'cotizacionesVoluntarias', 'cuenta2', 'bonoPorHijo', 'otrosBonos', 'pensionEstimadaUF', 'mesesCotizados', 'promedioRemuneraciones', 'saludPlanUF', 'maxConsultas'];
-const BOOLEANOS = ['yaPensionado', 'hijosComunes', 'embarazo', 'cotizacionesImpagas', 'trabajoPesado', 'sigueTrabajando', 'estudiante', 'ofertaBruta', 'adelantable', 'eld'];
+const BOOLEANOS = ['yaPensionado', 'hijosComunes', 'hijoComun', 'embarazo', 'cotizacionesImpagas', 'trabajoPesado', 'sigueTrabajando', 'estudiante', 'ofertaBruta', 'adelantable', 'eld'];
 const idValido = (id) => typeof id === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(id);
 let cargaBloqueada = false;
 let puedeEditar = typeof window === 'undefined';

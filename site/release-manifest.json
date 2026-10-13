@@ -1,8 +1,8 @@
 {
   "tipo": "prevismart-release",
-  "version": "1.3.42",
+  "version": "1.3.55",
   "runtime": "navegador",
-  "creadoEn": "2026-10-11T00:39:28.926Z",
+  "creadoEn": "2026-10-13T14:51:29.221Z",
   "archivos": [
     {
       "path": "assets/fonts/fraunces-latin-full-normal.woff2",
@@ -222,15 +222,15 @@
     },
     {
       "path": "css/base.css",
-      "sha256": "6ce94f1631da283dc942617b8088440ceea337063603f9e066faf97c7ffa9939"
+      "sha256": "11f345821187496c6e766325d84ca4fbbfdd3f66ad5182a24d658505033ea684"
     },
     {
       "path": "css/components.css",
-      "sha256": "7c843d31b8e967891301c209a3afb321978d6a3e063f5c1048daa5cb1ae5b8a4"
+      "sha256": "cd4a5c1ec0e4203ede86f747675292e6f2b5e04fa8888853e6e7bdd43ec51a4b"
     },
     {
       "path": "css/pico.overrides.css",
-      "sha256": "f4085a1178af16bf7dbc72c75076aa51067376c52b7897e2e40f65ae4c24faa4"
+      "sha256": "baa54f2c801f5cda30e5c20063475284c277d21163d5dab1f255140a2dc6a319"
     },
     {
       "path": "css/print.css",
@@ -238,7 +238,7 @@
     },
     {
       "path": "css/tokens.css",
-      "sha256": "aa8aa7b003c3c142c003b108fb7bf232bf20ef2d80d05b0a22308d6160090a08"
+      "sha256": "4e7427a4d0c0b4d5e8770dbf596292c434dd21095830ddd7fbb3b333b11085b5"
     },
     {
       "path": "css/vendor/PICO-LICENSE.txt",
@@ -249,20 +249,52 @@
       "sha256": "fbc9a63fc9fc9f72d12fd7fc9806e11fa9f77ae4f9cad146b27003a1119ba3db"
     },
     {
+      "path": "docs/ASEGURADORAS_PREPARACION.md",
+      "sha256": "aef94d8976fd11341902f54e1c72275b1225498c68561403289f75b1a7f2b675"
+    },
+    {
+      "path": "docs/CNU_FAMILIAS.md",
+      "sha256": "fc14df4504b4900955624a7a08e8a92ec79d3d86ee3b61663378fd591370395d"
+    },
+    {
+      "path": "docs/CONSOLIDACION_SCOMP.md",
+      "sha256": "a9e5b3504db254ae42988173dd5639baee466c57efa36c105e8ddf23010d6038"
+    },
+    {
+      "path": "docs/DOCUMENTO_CLIENTE.md",
+      "sha256": "ba3891a6e27418b60dd168bb49b24e6942741de5f1c68e6dbcaf919067d4cab3"
+    },
+    {
       "path": "docs/ESTADO_ENTREGA.md",
-      "sha256": "358dd14bca3e77f1ff084a3d780b1f2da7a6766ec95c53cc2fcfc6037ed63434"
+      "sha256": "00678abf543ff240016244502be2102bc8b90ca58d6a2f14008a3fea43c281c3"
     },
     {
       "path": "docs/GITHUB_PAGES.md",
-      "sha256": "ae994f270def26f4d7eb1d44cda79c0ed0c80040846eec8d24541809cbf46b0c"
+      "sha256": "81d6ca5a0a1ebf5703ce866e80142238f803d29f9c3254b4aafa8d9009f9a33b"
     },
     {
       "path": "docs/INSTALACION_INDIVIDUAL.md",
       "sha256": "11ec951b49e36fa680664045c7056df435d9768d474d96d16c49c31d7703d0bb"
     },
     {
+      "path": "docs/PARAMETROS_CALCULO.md",
+      "sha256": "c750c0a17ae4002996ea6c544a8fcbcf5c1ee613cb771ff0c1813dd488ccc7f7"
+    },
+    {
       "path": "docs/PROCEDIMIENTO_PRIVACIDAD.md",
       "sha256": "420b08a26ca5e9f6e133f576a0404937fbd46391a1e559ce975ac725174b47a4"
+    },
+    {
+      "path": "docs/PROYECCION_HIPOTETICA.md",
+      "sha256": "456e0252d4396ebdb881445f5be531bf2aba744b35ca26e713270d9215bb7751"
+    },
+    {
+      "path": "docs/SIMULACION_RP.md",
+      "sha256": "a7fbb7b4bf55daba98b4e7dea2f5f61759e6048758a8f226510d8d9bebb5bd63"
+    },
+    {
+      "path": "docs/SOBREVIVENCIA_RP.md",
+      "sha256": "47c5af3d555e63034561bda023de79a491f13962de1f40a10f45f4df6c8dfd2d"
     },
     {
       "path": "index.html",
@@ -294,7 +326,23 @@
     },
     {
       "path": "js/core/beneficios.js",
-      "sha256": "eee05f505830ec7af1d549280cb8722ac7dd4d2f8a415523d6f0db8f7d32a7db"
+      "sha256": "499608fe1978265f0f9799e59db56dc6f08a4451a2f7de5d90a6b00a43416943"
+    },
+    {
+      "path": "js/core/calculos.js",
+      "sha256": "617882febb5ce65fa38dbce82a3f2a26bc9092605cc69881835e73514064a72a"
+    },
+    {
+      "path": "js/core/cnu-familia.js",
+      "sha256": "d3840fe22b54635e0edf3d7138942c86681dd3ec99b32f1ec573e51217b62116"
+    },
+    {
+      "path": "js/core/cnu.js",
+      "sha256": "26285d655834078bac559c42a146fc4a4879847ec448e3e395afdfd7e72ad670"
+    },
+    {
+      "path": "js/core/consolidacion-scomp.js",
+      "sha256": "5dd4a68b2ee620169717eb22ff0bf19fa9e2c0d22be3d997277f35ddbbe5c66c"
     },
     {
       "path": "js/core/dates.js",
@@ -306,19 +354,31 @@
     },
     {
       "path": "js/core/elegibilidad.js",
-      "sha256": "5a55cc98e3a25bd39c355afeefecf5dd4b76405211865882a1e27519feb227b2"
+      "sha256": "18fa6d957aaea2c155b420971deba93ff84896ef6da2c2532011963f098a1bd3"
     },
     {
       "path": "js/core/format.js",
       "sha256": "a849bb2a2838fb279ca134d6fdfd83e2cdf9661775b1676b6339cfd3217b2383"
     },
     {
+      "path": "js/core/informe-calculos.js",
+      "sha256": "4e0449478a675bb35f15b297c31eb56148396923bf117232ad802f8a5fd033e9"
+    },
+    {
+      "path": "js/core/informe-cliente.js",
+      "sha256": "edcc553aaf0cef8b9c6566bb5214c24a33af0d19f44e114dccb32f9a712e9014"
+    },
+    {
+      "path": "js/core/informe-pdf.js",
+      "sha256": "9548fc62121ff1d9c6b61e2a8cd67e77bf438cd1de369e228a491798578d6c8a"
+    },
+    {
       "path": "js/core/ingesta.js",
-      "sha256": "c608902a14419c0549104f37a107ec1d2da7e3d782dd33b317abd977f8a96d2f"
+      "sha256": "7f7961674d88093a2bebb4cb598a56242f9fcfc4d543063b39669d5b04969410"
     },
     {
       "path": "js/core/integracion.js",
-      "sha256": "3a97fbb7af412de8014e1169b9177b907a0636e48ca8c07dafd172c0b1fb1225"
+      "sha256": "dd139d722f044981b427a93255fe212394de0b3fb803d4732c5ca0370a985400"
     },
     {
       "path": "js/core/lectura-documentos.js",
@@ -326,15 +386,19 @@
     },
     {
       "path": "js/core/liquida.js",
-      "sha256": "e50b92b3648eb3151974513bbdd5a61447c5e091b1e9ff58ef60a5051033f07d"
+      "sha256": "8796992ca23c4e17ff125955ef772981c6aca34bf1b482b8931f3d47501ce25d"
     },
     {
       "path": "js/core/ofertas.js",
-      "sha256": "6109e5ff99ce13d272a4af65049b8d3f87e9efb4b30501a8fa6bc90486503628"
+      "sha256": "0ee7319ea756fef9a6ecdb5548f474360bcf4aab675a0f9c1f74a984b885c3af"
     },
     {
       "path": "js/core/operacion.js",
       "sha256": "75fa7de1881643718befc0c17224854d64ee42e26d5b768498e80fce82c36ab6"
+    },
+    {
+      "path": "js/core/parametros-normativos.js",
+      "sha256": "6b6202d0d5b8359d639aec69d0a98a5660debfb2b2653620262f4cf98a487f93"
     },
     {
       "path": "js/core/parse-antecedentes.js",
@@ -346,19 +410,27 @@
     },
     {
       "path": "js/core/parse-scomp.js",
-      "sha256": "0fdc540f3df47adc2585f6112fa3b01a48855274327527f80b5c623dac568110"
+      "sha256": "37bfe6986ff85e7b9e56a70a37d4e0419bd8a17500fea232c66e8626fc8baaf8"
     },
     {
       "path": "js/core/pdf.js",
       "sha256": "38c0a6038ceacc4dfe4a5076909084363bd09796434119820510eee02da536d8"
     },
     {
+      "path": "js/core/preparacion-aseguradoras.js",
+      "sha256": "d79849169655b008c3392f91185222ffe890cdbf5317d21f71ae63bd2d700f4e"
+    },
+    {
       "path": "js/core/privacidad.js",
-      "sha256": "b756281e1e30ea74084e6f96c89a50f876b9916239c59237f8769fd7556ca1d7"
+      "sha256": "b4984bc62ff9b13c679a20d3ec0c732795a98cee817bcd24d1029e675b35dd77"
     },
     {
       "path": "js/core/propuesta.js",
-      "sha256": "e81d4c0dd93bb95028d8771a242512a0a244d5627e6c7eb691bb96138953ee79"
+      "sha256": "dc3a6432a4e1d7a78f0967c07f5a77dd37f45317bcb23f6de41890222e3e424d"
+    },
+    {
+      "path": "js/core/proyeccion-rp.js",
+      "sha256": "20d3c1490a4ea88a17b067ccdb818386270086f276ba03d01783b3e2e2c0e898"
     },
     {
       "path": "js/core/respaldo-integral.js",
@@ -377,8 +449,16 @@
       "sha256": "51a7a1ea356b9adfa3d2469f0d2ce794035dd3ded26fc0f7487e5126963fb021"
     },
     {
+      "path": "js/core/simulacion-rp.js",
+      "sha256": "502b68d53d72293bee8cfcf8f9ffc14b7f0fa1b20ba954375aefde3d9f2cd32f"
+    },
+    {
+      "path": "js/core/simulacion-sobrevivencia-rp.js",
+      "sha256": "047a99d3693e9fd5553ab6b63eb379f439d60645143d8abceb5f1f62a72ea43a"
+    },
+    {
       "path": "js/core/store.js",
-      "sha256": "a7efc6f115229618b9e56f57ebe4c4c1075c5f7319f51e33cd2fde9897a5e052"
+      "sha256": "4de05032cb15ae6de8cdd8d2bf846d5d796353bfb46d4524453686990b362b0b"
     },
     {
       "path": "js/core/uf.js",
@@ -386,7 +466,7 @@
     },
     {
       "path": "js/core/version.js",
-      "sha256": "3e64c26c15d2a9174bb255e1bfd6b8179e545ca710ca4730bc631e86a47aab85"
+      "sha256": "c9b95e18e81dff86d9d9734e160519cf7e74921a45d54aed5d519938aab2797a"
     },
     {
       "path": "js/data/aseguradoras.js",
@@ -406,11 +486,15 @@
     },
     {
       "path": "js/data/modulos.js",
-      "sha256": "6fb602e5eb3976cb3147fe9689129526b96dece79c6f7af8e640621b31650054"
+      "sha256": "ffb6b893052b34dfcc91fbf1a5d334d799e74a095b7e24b064d4a9a3698c5f53"
     },
     {
       "path": "js/data/normativa-2026.js",
-      "sha256": "94b55794ad715eea4f243a30de3f34101bf0da3ea84d27a7b25f6b24e41b12d9"
+      "sha256": "dc14354f5160e18612669c1f101701ced47b453deb5c92ad411b890a1eab3c18"
+    },
+    {
+      "path": "js/data/perfiles-aseguradoras.js",
+      "sha256": "00e400da691f0d492d10ac44765ae10df7d44eb79ee7d74a0a89f8b9929b89bc"
     },
     {
       "path": "js/data/portales-afp.js",
@@ -425,12 +509,16 @@
       "sha256": "047bcf6a45a117a7e74760d8c9ae448834f05975bb45e2778e2ce8e4393dc153"
     },
     {
+      "path": "js/data/tm2020.js",
+      "sha256": "8d1dc9675a0ef6c37c4f190f89bdb081daf18c22e7cca9701cebcc5498907f14"
+    },
+    {
       "path": "js/data/uf-referencia.js",
       "sha256": "9b5c3f9eea342fa40dd8b426920bd273bbb921016bb59592026d16c3c5471be8"
     },
     {
       "path": "js/features/ajustes.js",
-      "sha256": "8f13dd8ecd3cf0bca0e3417b07ac3904e96341fd5e2de66128d760f20645ee98"
+      "sha256": "84dd73432668e614c1b820eaee358f9a2bfa09c6535b906781abe2b8dfd7a33d"
     },
     {
       "path": "js/features/archivo-cliente.js",
@@ -442,15 +530,19 @@
     },
     {
       "path": "js/features/beneficios.js",
-      "sha256": "55a8738cca7814bebbc2b17460103f6d8ee47bd7783204bdfd141c8d6272219f"
+      "sha256": "078c3796ca12193d1e547085e6e4594404f66ea8b9e07db05bc51876618088f6"
     },
     {
       "path": "js/features/captura.js",
-      "sha256": "51c12c2f55117dd4a2f37ad9b212b9e1f77256ae73753289b031f59d5101752b"
+      "sha256": "653959626471c8bbfe9c98d185fd2525d2e5989bac77dd8d558884f833120965"
     },
     {
       "path": "js/features/checklist.js",
       "sha256": "2faa0a739828896e47f4891debf89157867a2435d2c19ea4d97c7879b4499b7e"
+    },
+    {
+      "path": "js/features/consolidacion-scomp.js",
+      "sha256": "20f64add4a4085fe2df3d7f7334fbc8e72f05d4f47a80c3544a97d3e8dcf3f45"
     },
     {
       "path": "js/features/elegibilidad.js",
@@ -461,40 +553,60 @@
       "sha256": "974e2a8025b09a65ff13a9db7b152fd2bec8faddc12091476cf25ab975f8124a"
     },
     {
+      "path": "js/features/informe-calculos.js",
+      "sha256": "bd28226baf29834852dfae2ab9f8ad20983677900fc8a30e29963150c2f0a0cd"
+    },
+    {
       "path": "js/features/liquida.js",
-      "sha256": "f9ec45157a7c63a8f6ff7dd2c726bff64d6a37801c246406720a8d7b2cf05f03"
+      "sha256": "729aae65fd6a068c24e6a4e100bf78058f1973fdecf4f7031490fc645b2c5559"
     },
     {
       "path": "js/features/modalidades.js",
-      "sha256": "bc83c66243fc520980f279644bd9b932572aa8e4c3c03eb87bbb2692d94f7bba"
+      "sha256": "642c7e8362db9a9cca97d96ea2937e98e21868511a2bccc0e5036167bcf1ac25"
     },
     {
       "path": "js/features/ofertas.js",
-      "sha256": "5e656efc30ccba1dee3811c78a0250bdcf5b9e36594cafa392c06559de3cf273"
+      "sha256": "247bc952dba9392b3a046d7623845df93ad93c57a004ddaa325b9eeba66f21dc"
     },
     {
       "path": "js/features/panel.js",
       "sha256": "0bfec0c165ad73508c61fab33a131e8c15611331b9c97fc583888205cc435146"
     },
     {
+      "path": "js/features/parametros-normativos.js",
+      "sha256": "0f45b634db5162feea302e386a78e67cdf3e52fb755498b2741cb92d2f688aff"
+    },
+    {
       "path": "js/features/perfil.js",
-      "sha256": "e65fb61b26e1a91d0939e339d2403e5c4e64ea8bb5bb6c41d23437018615c61e"
+      "sha256": "bcafb8f485a398415eb57590b855f4054b0838611081481323996d5f72637ed4"
+    },
+    {
+      "path": "js/features/preparacion-aseguradoras.js",
+      "sha256": "1fbdcc2ce6e0889617f084cac550952824d3285fc04f72aaa36697406cbf66b7"
     },
     {
       "path": "js/features/privacidad.js",
-      "sha256": "8b6681867aa831b3bd35de100c1eefd0780b4fb08f76edb96641d4420c1ae1ae"
+      "sha256": "82c2ca87c8a0ad0ad60ea616c2b1498db5d5255a65e62cc8af04dedfe81524f9"
+    },
+    {
+      "path": "js/features/proyeccion-rp.js",
+      "sha256": "1330fcd827e6e9b4b6ecca7823a4a9c3ed835949185ca6ec3a6fe5eb77ade50d"
     },
     {
       "path": "js/features/reporte.js",
-      "sha256": "004968ec37c7999d87d5064c3e98101b359a25e9e00141c650dbed597318291b"
+      "sha256": "d4c39b6c24240b1dc9d756f93d694760f937af356e548d25624d61eee350333e"
     },
     {
       "path": "js/features/ruta.js",
       "sha256": "5925212d6b2cb45187f3239123cd5c06446a6c4ffaa7da08d880d3e4ab501870"
     },
     {
+      "path": "js/features/sobrevivencia-rp.js",
+      "sha256": "f995403fdef74d68df8978285d2e11b3a39c5cf6eb3c4b0146f280c35207f627"
+    },
+    {
       "path": "js/features/sobrevivencia.js",
-      "sha256": "8850ec1355d39be6d624bea5c4f5dad1ba71682b5774f23c4f6e30e547a847cb"
+      "sha256": "1b15dccfc51ed43c3f0ed9fb2a5b1aec1deb3c625c00c118a8ce519222193310"
     },
     {
       "path": "js/ui/dialog.js",
@@ -510,11 +622,35 @@
     },
     {
       "path": "service-worker.js",
-      "sha256": "740da21d197d2e421839ccd012a1b1b0da092b6ed254ff1a9d8145dcb50ca032"
+      "sha256": "97be77584aff8d6b9d3213cfdaabedf3b299335d90f69bcd5bb5f615d74420c0"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "407dead7c8c0a489db8191d75e6189aa5cc6db39f377be7ffeea3a68a3f533aa"
+      "sha256": "b4e0d774f0149691c96e80cced79ddb2365a9f1f74299b94c0d57c555c73a136"
+    },
+    {
+      "path": "vendor/pdf-lib/LICENSE.md",
+      "sha256": "f2c9fc00fdb66eb99ac156ba52d734af66d8d309f65753ae809ad34ee2883bcb"
+    },
+    {
+      "path": "vendor/pdf-lib/PAKO-LICENSE.txt",
+      "sha256": "a04665b3b2de56c66730c1f720f528175739e4104f79073614aa611da1e85539"
+    },
+    {
+      "path": "vendor/pdf-lib/pdf-lib.min.js",
+      "sha256": "0f9a5cad07941f0826586c94e089d89b918c46e5c17cf2d5a3c6f666e3bc694f"
+    },
+    {
+      "path": "vendor/pdf-lib/STANDARD-FONTS-LICENSE.md",
+      "sha256": "45cc2bb9957ed43f5c7f5eb1912f9f670730394d614079510477cae626194649"
+    },
+    {
+      "path": "vendor/pdf-lib/TSLIB-LICENSE.txt",
+      "sha256": "a7d00bfd54525bc694b6e32f64c7ebcf5e6b7ae3657be5cc12767bce74654a47"
+    },
+    {
+      "path": "vendor/pdf-lib/UPNG-LICENSE.txt",
+      "sha256": "c1fb8861eca211bf5aea574358aba7039396c0c1824c2a1477cc126d398efd89"
     },
     {
       "path": "vendor/pdfjs/LICENSE.txt",
@@ -582,7 +718,7 @@
     },
     {
       "path": "views/ajustes.html",
-      "sha256": "d125aa26c25962b912f152e6d5cc82cf456c14fc6124d7f609d191ef933aac10"
+      "sha256": "021acdfb344e70621d84ab4af485008b7d273307c59c561d6557a476bd686728"
     },
     {
       "path": "views/beneficios.html",
@@ -590,7 +726,7 @@
     },
     {
       "path": "views/captura.html",
-      "sha256": "8067c3dc39bf3524aa87c6095368a928334bc704211159d188df8aeb469cd27e"
+      "sha256": "b47f68de6c28e11c63ba83608453d193834cf23f0d0ca90ef8f317fa819c9248"
     },
     {
       "path": "views/checklist.html",
@@ -610,7 +746,7 @@
     },
     {
       "path": "views/liquida.html",
-      "sha256": "e26b84cda37a43d2ded07cc399e094cb5a3000b5d69295be379e033612f8877f"
+      "sha256": "bb15d26ea332e3dcdbf1f47b2451638fa117b6a3943368d7980a64bf0db970b3"
     },
     {
       "path": "views/modalidades.html",
@@ -618,7 +754,7 @@
     },
     {
       "path": "views/ofertas.html",
-      "sha256": "5f6c5d14de1d0a58746077d1cdbb2761aa60a234402087ab1b2396e7be72338c"
+      "sha256": "3cd574abead6242989593715d9c74da1dddafde11c0e48ce9b15e4bd22cde005"
     },
     {
       "path": "views/panel.html",
@@ -626,11 +762,11 @@
     },
     {
       "path": "views/perfil.html",
-      "sha256": "52835d7e593361ee741dfa618d6988f2867f8bd5d36e6d4aa4f6220198968ad1"
+      "sha256": "5a2d01343d8bf70425ec49bc08955e081e5b5bcd117e77f0875da0e2caa98507"
     },
     {
       "path": "views/reporte.html",
-      "sha256": "8ca5778dc2475ce28f05e21381efc6b358bd250f97458d4fa50565bfc3e38b87"
+      "sha256": "aaa552c33cee1dac9fbe76fd94ca606b680231136b711e6ccef66421fe909efc"
     },
     {
       "path": "views/ruta.html",
@@ -638,7 +774,7 @@
     },
     {
       "path": "views/sobrevivencia.html",
-      "sha256": "9dc798c583d96fccbdbab75701874fdf0cfd49a9b9183709af76bca6bfefaab0"
+      "sha256": "65bc76819db8370892b764ef13bcaa66c8fd3dd1725bf53064a4d80d57a69853"
     }
   ]
 }

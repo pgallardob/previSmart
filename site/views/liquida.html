@@ -1,5 +1,5 @@
 <h1>Pensión líquida</h1>
-<p class="view__lead">De la renta bruta en UF a los pesos que efectivamente llegan: salud e impuesto único. Todo en pesos chilenos con la UF vigente.</p>
+<p class="view__lead">De la pensión bruta a una líquida referencial: salud y plan declarados, impuesto del período y cargos AFP registrados por separado. Todo en pesos chilenos.</p>
 
 <div id="liq-vacio"></div>
 <div id="liq-cuerpo" hidden>
@@ -15,6 +15,7 @@
       <div class="field">
         <label for="liq-salud">Previsión de salud</label>
         <select id="liq-salud" name="saludTipo">
+          <option value="">No declarado</option>
           <option value="fonasa">Fonasa (7%)</option>
           <option value="isapre">Isapre (plan UF)</option>
         </select>
@@ -33,7 +34,7 @@
     <ul class="muted small u-mb-0">
       <li>Impuesto único de segunda categoría sobre la renta líquida (bruta − salud), tabla SII mensual. Oct-2026: exento hasta $974.038,50.</li>
       <li>Salud: Fonasa descuenta 7% de la pensión; en Isapre se paga el plan pactado en UF. Puede haber exenciones y trato distinto con PGU.</li>
-      <li>Comisión del agente: referencia del mercado ~2% del capital (máx. 60 UF); preguntar si sale de la oferta o la paga la aseguradora.</li>
+      <li>Comisiones: cotejar porcentaje, base, tope y quién soporta cada cargo. No se deduce un arancel individual desde la renta cotizada.</li>
       <li>Los beneficios del Seguro Social (BAC, CEV) se expresan como pensión y pueden sumar al ingreso final.</li>
     </ul>
   </section>

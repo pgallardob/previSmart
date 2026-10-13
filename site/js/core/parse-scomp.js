@@ -199,6 +199,7 @@ function extraerOfertas(lineas, paginas = null) {
     const f = T.match(RE_FILA);
     if (f && enSeccionRVI) {
       ofertas.push({
+        modalidad: 'rvi',
         aseguradora: f[2].trim(),
         codigoOferta: f[1],
         pensionUF: numCL(f[3]),

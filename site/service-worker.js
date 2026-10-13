@@ -2,7 +2,7 @@
    Estrategia: precache del app shell; network-first con timeout para la API de UF;
    cache-first para el resto de recursos propios. */
 
-const VERSION = 'prevismart-1.3.42-2026.10.10-afp-movil';
+const VERSION = 'prevismart-1.3.55-2026.10.13-familias-sobrevivencia-planificacion';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `rt-${VERSION}`;
 
@@ -21,6 +21,8 @@ const SHELL = [
   './js/core/uf.js',
   './js/data/uf-referencia.js',
   './js/core/dates.js',
+  './js/core/parametros-normativos.js',
+  './js/features/parametros-normativos.js',
   './js/core/store.js',
   './js/core/actividad.js',
   './js/core/operacion.js',
@@ -38,6 +40,25 @@ const SHELL = [
   './js/core/beneficios.js',
   './js/core/ofertas.js',
   './js/core/liquida.js',
+  './js/core/calculos.js',
+  './js/core/consolidacion-scomp.js',
+  './js/features/consolidacion-scomp.js',
+  './js/core/cnu.js',
+  './js/core/cnu-familia.js',
+  './js/core/simulacion-rp.js',
+  './js/core/simulacion-sobrevivencia-rp.js',
+  './js/features/sobrevivencia-rp.js',
+  './js/core/proyeccion-rp.js',
+  './js/features/proyeccion-rp.js',
+  './js/data/tm2020.js',
+  './js/core/informe-calculos.js',
+  './js/core/informe-cliente.js',
+  './js/core/preparacion-aseguradoras.js',
+  './js/data/perfiles-aseguradoras.js',
+  './js/features/preparacion-aseguradoras.js',
+  './js/core/informe-pdf.js',
+  './js/features/informe-calculos.js',
+  './vendor/pdf-lib/pdf-lib.min.js',
   './js/core/router.js',
   './js/core/respaldo.js',
   './js/core/respaldo-integral.js',

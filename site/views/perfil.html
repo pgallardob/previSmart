@@ -68,6 +68,13 @@
         <p class="field__ayuda">Invalidez, terminal y sobrevivencia siguen rutas legales distintas.</p>
       </div>
       <div class="field">
+        <label for="f-invalidez-titular">Grado de invalidez del titular según dictamen</label>
+        <select id="f-invalidez-titular" data-grupo="perfil" name="invalidezTitular">
+          <option value="">No declarado / no aplica</option><option value="total">Total</option><option value="parcial">Parcial</option>
+        </select>
+        <p class="field__ayuda">Solo para la ruta de invalidez. No equivale a obtener un dictamen ni calcula aportes SIS.</p>
+      </div>
+      <div class="field">
         <label for="f-ecivil">Estado civil</label>
         <select id="f-ecivil" data-grupo="perfil" name="estadoCivil">
           <option value="">—</option>
@@ -88,13 +95,13 @@
         </div>
       </div>
       <div class="field">
-        <label><input type="checkbox" data-grupo="perfil" name="yaPensionado"> El afiliado ya está pensionado</label>
         <label><input type="checkbox" data-grupo="perfil" name="hijosComunes"> Hay hijos comunes con el cónyuge actual</label>
         <label><input type="checkbox" data-grupo="perfil" name="embarazo"> Embarazo en curso (exime plazo de matrimonio)</label>
         <label><input type="checkbox" data-grupo="perfil" name="matrimoniosAnteriores"> Matrimonios anteriores (con divorcio/nulidad documentada)</label>
       </div>
     </div>
     <div class="field">
+      <label><input type="checkbox" data-grupo="perfil" name="yaPensionado"> El afiliado ya está pensionado</label>
       <label><input type="checkbox" data-grupo="perfil" name="trabajoPesado"> Cotizaciones por trabajo pesado</label>
       <label><input type="checkbox" data-grupo="perfil" name="sigueTrabajando"> Seguirá trabajando después de pensionarse</label>
     </div>
@@ -260,16 +267,27 @@
       <input id="benef-fnac" name="fechaNacimiento" type="date">
       <p class="field__ayuda" id="benef-edad"></p>
     </div>
+    <div class="field">
+      <label for="benef-sexo">Sexo declarado (tabla de mortalidad)</label>
+      <select id="benef-sexo" name="sexo">
+        <option value="">No informado</option>
+        <option value="F">Mujer</option>
+        <option value="M">Hombre</option>
+      </select>
+      <p class="field__ayuda">No se deduce del nombre ni del parentesco. Se usa en la simulación actuarial.</p>
+    </div>
     <div id="benef-hijo-extra" hidden>
       <label><input type="checkbox" name="estudiante"> Estudiante (hasta 24 años)</label>
       <div class="field">
-        <label for="benef-invalidez">Invalidez</label>
-        <select id="benef-invalidez" name="invalidez">
-          <option value="">Sin invalidez</option>
-          <option value="parcial">Parcial</option>
-          <option value="total">Total</option>
+        <label for="benef-hijo-comun">¿Es hijo común con el conviviente civil declarado?</label>
+        <select id="benef-hijo-comun" name="hijoComun">
+          <option value="">No declarado / no aplica</option><option value="si">Sí</option><option value="no">No</option>
         </select>
       </div>
+    </div>
+    <div class="field">
+      <label for="benef-invalidez">Invalidez del beneficiario según dictamen</label>
+      <select id="benef-invalidez" name="invalidez"><option value="">Sin invalidez declarada</option><option value="parcial">Parcial</option><option value="total">Total</option></select>
     </div>
     <div class="dlg-actions">
       <button class="btn btn--secondary btn--sm" type="button" data-cerrar>Cancelar</button>

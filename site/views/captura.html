@@ -43,7 +43,25 @@
     <form id="cap-priv-form">
       <div class="grid-modulos">
         <div class="field"><label for="cap-priv-fecha">Fecha efectiva de firma</label><input id="cap-priv-fecha" type="date" required></div>
-        <div class="field"><label for="cap-priv-referencia">Referencia o ubicación de autorización firmada</label><input id="cap-priv-referencia" maxlength="200" required placeholder="Referencia de documento, sin claves"></div>
+        <div class="field">
+          <label for="cap-priv-soporte">¿Dónde guardaste la autorización firmada?</label>
+          <select id="cap-priv-soporte" required aria-describedby="cap-priv-ayuda">
+            <option value="">Selecciona dónde la conservas</option>
+            <option value="archivo-local">PDF o imagen en este dispositivo</option>
+            <option value="papel">Documento en papel / carpeta física</option>
+            <option value="correo">Correo electrónico</option>
+            <option value="otra">Otra ubicación</option>
+          </select>
+          <p id="cap-priv-ayuda" class="tiny muted">Se refiere al documento que el afiliado ya firmó, no a su clave AFP. El selector no firma ni adjunta un documento, y no cambia una autorización ya registrada.</p>
+        </div>
+        <div class="field">
+          <label for="cap-priv-referencia">Nombre o referencia del documento firmado</label>
+          <input id="cap-priv-referencia" maxlength="200" required placeholder="Nombre del archivo, carpeta o identificación del documento" aria-describedby="cap-priv-detalle-ayuda cap-priv-ejemplo">
+          <div class="field__ayudas">
+            <p id="cap-priv-detalle-ayuda" class="tiny muted">Escribe una nota que te permita encontrarlo. No necesitas un código especial ni debes ingresar claves AFP aquí.</p>
+            <p id="cap-priv-ejemplo" class="small" aria-live="polite">Selecciona dónde lo guardaste para ver un ejemplo de qué escribir.</p>
+          </div>
+        </div>
       </div>
       <label class="small"><input id="cap-priv-cotejo" type="checkbox" required> He cotejado la autorización previa firmada y sus datos. Registro una declaración del operador, no una firma electrónica.</label>
       <div class="u-flex u-gap-2 u-wrap u-mt-4"><button type="submit" class="btn btn--secondary btn--sm">Registrar autorización cotejada</button><button id="cap-priv-revocar" type="button" class="btn btn--secondary btn--sm">Registrar revocación</button></div>
@@ -128,12 +146,23 @@
       <div id="cap-desc-resultado" class="u-mt-3"></div>
     </article>
 
+    <section class="card card--flat u-mt-4" aria-labelledby="cap-periodos-titulo">
+      <h3 id="cap-periodos-titulo" class="u-mt-0">Mes de cotización y fecha de saldo no son lo mismo</h3>
+      <p class="small">Para trabajadores dependientes, las cotizaciones se pagan en el mes siguiente al de la remuneración: hasta el día 10 (con prórroga al siguiente hábil cuando corresponde), o hasta el 13 si declaración y pago son electrónicos. No se cambian los meses informados en tus documentos.</p>
+      <p class="small">La cartola cuatrimestral muestra un saldo a su fecha de corte, no al día en que la descargas. La de mayo–agosto se despacha entre el 15 y el 31 de octubre. Un importe distinto del portal puede corresponder a otras fechas, movimientos o valorización; por sí solo no demuestra error ni cotizaciones impagas. Conservamos ambas referencias sin sustituirlas.</p>
+      <p class="tiny muted u-mb-0">Fuente: Superintendencia de Pensiones · <a href="https://www.spensiones.cl/portal/institucional/594/w3-article-2728.html" target="_blank" rel="noopener noreferrer">Plazos de cotizaciones</a> · <a href="https://www.spensiones.cl/portal/compendio/596/w3-propertyvalue-5814.html" target="_blank" rel="noopener noreferrer">Cartolas, números 3, 4 y 8.1</a>.</p>
+    </section>
+
     <article class="card u-mt-6">
       <div class="u-flex u-items-center u-justify-between u-gap-2 u-wrap">
         <h3 class="u-mt-0 u-mb-0">Carga de documentos oficiales</h3>
         <span class="badge badge--info">respaldo legal</span>
       </div>
       <p class="small muted u-mt-3 u-mb-0">Sube PDFs que el cliente trae por otro canal (mail, papel escaneado, USB). Los que el RPA descarga directo de la AFP ya aparecen abajo solos — no hace falta subirlos de nuevo. Todo queda custodiado en este dispositivo (IndexedDB) asociado al expediente; "Guardar" los baja como archivo a tu carpeta de descargas.</p>
+      <div class="u-mt-4 no-print">
+        <button id="cap-subir-scomp" class="btn btn--secondary btn--sm" type="button">Subir SCOMP recibido por correo</button>
+        <p class="small muted">Se lee localmente y se cruza por RUT con este cliente. Tras revisar e importar, se activa la propuesta consolidada AFP + SCOMP; el saldo AFP y los originales se conservan. La oferta presencial se registra por separado en Propuesta y ofertas.</p>
+      </div>
       <form id="cap-form-doc" class="u-mt-4">
         <div class="grid-modulos">
           <div class="field">

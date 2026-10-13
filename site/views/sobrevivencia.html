@@ -1,8 +1,67 @@
 <h1>Sobrevivencia y garantías</h1>
-<p class="view__lead">Qué pasa si el titular fallece: período garantizado, pensiones de sobrevivencia por beneficiario y cuota mortuoria. Elige la oferta a simular o ingresa los datos manualmente.</p>
+<p class="view__lead">Cálculos orientativos con las pensiones y los beneficiarios informados en el expediente. Se actualizan automáticamente con sus fuentes; no generan cotizaciones ni acreditan derechos.</p>
 
 <div id="sov-vacio"></div>
 <div id="sov-cuerpo" hidden>
+  <section class="card u-mb-4" aria-labelledby="rp-simulacion-titulo">
+    <h2 id="rp-simulacion-titulo">Simulación actuarial de retiro programado</h2>
+    <p class="small">Método CNU de la Superintendencia y tablas TM2020, incluida invalidez declarada. Usa el saldo obligatorio registrado o un capital destinado expresamente cotejado. No es una cotización ni prueba de elegibilidad; las edades se modelan en años cumplidos.</p>
+    <div class="field">
+      <label for="rp-meses">Meses de pensión devengados pendientes</label>
+      <input id="rp-meses" type="number" min="0" max="120" step="1" placeholder="Declara 0 si no existen">
+    </div>
+    <details class="u-mb-3">
+      <summary>Condiciones especiales, capital destinado y comisión</summary>
+      <div class="grid-modulos u-mt-3">
+        <div class="field"><label for="rp-fecha-inicio">Inicio de pensión / siniestro (invalidez o recálculo)</label><input id="rp-fecha-inicio" type="date"><p class="field__ayuda">Desde 01/07/2023 para TM2020. No se inventa la fecha ni el dictamen.</p></div>
+        <div class="field"><label for="rp-condiciones-referencia">Referencia del cotejo de derechos / dictamen / recálculo</label><input id="rp-condiciones-referencia" maxlength="200" placeholder="Documento y fecha de revisión"></div>
+      </div>
+      <label><input id="rp-condiciones-confirmar" type="checkbox"> Cotejé los derechos del grupo ampliado y, cuando corresponde, el dictamen, capital disponible y saldo retenido. Este ejercicio no liquida SIS.</label>
+      <div class="grid-modulos u-mt-3">
+        <div class="field"><label for="rp-capital">Capital destinado al escenario (CLP, opcional)</label><input id="rp-capital" type="text" inputmode="numeric" class="money"><p class="field__ayuda">Vacío: saldo obligatorio. No suma APV, bonos, aportes SIS ni otros fondos automáticamente.</p></div>
+        <div class="field"><label for="rp-capital-fecha">Fecha del capital declarado</label><input id="rp-capital-fecha" type="date"></div>
+        <div class="field"><label for="rp-capital-referencia">Referencia del capital destinado</label><input id="rp-capital-referencia" maxlength="200"></div>
+      </div>
+      <label><input id="rp-capital-confirmar" type="checkbox"> Cotejé este capital destinado; es una base separada y no reemplaza el saldo AFP.</label>
+      <div class="grid-modulos u-mt-3">
+        <div class="field"><label for="rp-comision">Comisión AFP sobre la pensión (%)</label><input id="rp-comision" type="number" min="0" max="100" step="any"><p class="field__ayuda">Vacío: costo no informado. El cargo se muestra aparte de la pensión bruta.</p></div>
+        <div class="field"><label for="rp-comision-referencia">Fuente del porcentaje de comisión</label><input id="rp-comision-referencia" maxlength="200"></div>
+      </div>
+    </details>
+    <label><input id="rp-confirmar" type="checkbox"> Confirmo que registré todo el grupo familiar aplicable y revisé las condiciones de este escenario.</label>
+    <p class="field__ayuda">Completa nacimiento y sexo de cada beneficiario en <a href="#/perfil">Perfil → Beneficiarios</a>. La confirmación se invalida si cambia el grupo. El resultado y sus supuestos aparecen en el documento inferior; no reemplaza una pensión descargada de AFP.</p>
+  </section>
+
+  <section class="card u-mb-4" aria-labelledby="srp-titulo">
+    <h2 id="srp-titulo" class="u-mt-0">Sobrevivencia RP: capital remanente y pagos del grupo</h2>
+    <p class="small muted">Escenario separado del titular y de una póliza. No reutiliza el saldo actual como si fuera el capital al fallecimiento ni incorpora este total a beneficios individuales.</p>
+    <details><summary>Declarar y cotejar el escenario de sobrevivencia RP</summary>
+      <div class="grid-modulos u-mt-3">
+        <div class="field"><label for="srp-capital">Capital remanente declarado (CLP)</label><input id="srp-capital" type="text" inputmode="numeric" class="money"></div>
+        <div class="field"><label for="srp-fecha">Fecha del capital</label><input id="srp-fecha" type="date"></div>
+        <div class="field"><label for="srp-referencia">Referencia del capital y derechos cotejados</label><input id="srp-referencia" maxlength="200"></div>
+        <div class="field"><label for="srp-meses">Meses devengados (declarar cero si no existen)</label><input id="srp-meses" type="number" min="0" max="120" step="1"></div>
+        <div class="field"><label for="srp-pension-causante">Pensión de referencia del causante (CLP, para orfandad)</label><input id="srp-pension-causante" type="text" inputmode="numeric" class="money"><p class="field__ayuda">Necesaria para el tope cuando el grupo solo tiene hijos no inválidos. No se infiere desde el capital.</p></div>
+        <div class="field"><label for="srp-meses-hijo">Hijo único de 23 años: meses reales hasta los 24</label><input id="srp-meses-hijo" type="number" min="1" max="12" step="1"></div>
+      </div>
+      <label><input id="srp-confirmar" type="checkbox"> Cotejé capital, fecha, derechos, parentesco y las referencias aplicables a este escenario. No equivale a una pensión AFP concedida.</label>
+    </details>
+  </section>
+
+  <section class="card u-mb-4" aria-labelledby="proy-titulo">
+    <h2 id="proy-titulo" class="u-mt-0">Planificación: capital y pensión bajo hipótesis</h2>
+    <p class="small muted">Ejercicio separado del retiro programado a la edad actual. No tiene retorno ni tasa futura predeterminados y no crea ofertas de aseguradoras.</p>
+    <details><summary>Definir hipótesis de planificación</summary>
+      <div class="grid-modulos u-mt-3">
+        <div class="field"><label for="proy-meses">Plazo hipotético (meses, hasta 360)</label><input id="proy-meses" type="number" min="1" max="360" step="1"></div>
+        <div class="field"><label for="proy-aporte">Aporte mensual destinado a este ahorro (CLP)</label><input id="proy-aporte" type="text" inputmode="numeric" class="money"><p class="field__ayuda">Declarar cero si no habrá aportes. No se infiere desde sueldo ni años cotizados.</p></div>
+        <div class="field"><label for="proy-retorno">Retorno real anual hipotético (%)</label><input id="proy-retorno" type="number" min="-50" max="50" step="any"><p class="field__ayuda">Incluye pérdidas posibles; no es una rentabilidad prometida.</p></div>
+        <div class="field"><label for="proy-tasa">Tasa anual CNU hipotética (%)</label><input id="proy-tasa" type="number" min="0" max="20" step="any"><p class="field__ayuda">Opcional para el capital; necesaria para la pensión hipotética. No se presenta como tasa SP vigente en el futuro.</p></div>
+      </div>
+      <label><input id="proy-estudios" type="checkbox"> Para este ejercicio supongo continuidad de estudios hasta los 24 años de los hijos proyectados entre 18 y 24. No cambia su condición actual.</label>
+      <label><input id="proy-confirmar" type="checkbox"> Acepto estas hipótesis: saldo obligatorio como capital inicial, aportes al fin de mes, retorno real y tasa declarados, tablas TM2020 mantenidas hipotéticamente y familia proyectada sin nuevas incorporaciones. No es pensión ni elegibilidad certificada.</label>
+    </details>
+  </section>
 
   <section class="card" aria-labelledby="sov-inputs">
     <h2 id="sov-inputs" class="u-mt-0">Contrato a simular</h2>
@@ -22,6 +81,16 @@
   </section>
 
   <div id="sov-resultado" class="u-mt-6"></div>
+  <section class="u-mt-6" aria-labelledby="sov-calculos-titulo">
+    <h2 id="sov-calculos-titulo">Certificado informativo de cálculos — no oficial</h2>
+    <div class="u-flex u-gap-2 u-wrap no-print">
+      <button id="sov-generar-pdf" class="btn btn--secondary btn--sm" type="button">Generar PDF con datos del expediente</button>
+      <a id="sov-descargar-pdf" class="btn btn--primary btn--sm" hidden>Descargar PDF listo</a>
+      <a id="sov-ver-pdf" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer" hidden>Ver PDF listo</a>
+    </div>
+    <p id="sov-pdf-estado" class="small no-print" role="status"></p>
+    <div id="sov-informe" class="print-doc u-mt-4"></div>
+  </section>
 
   <section class="card card--flat u-mt-8">
     <h2 class="u-mt-0">Lo que dice la ley (maestro §14-15, §21-22)</h2>

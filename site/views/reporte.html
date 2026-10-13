@@ -1,5 +1,5 @@
 <h1>Reporte</h1>
-<p class="view__lead">Resumen imprimible del expediente del cliente: perfil, saldo, elegibilidad, beneficios, ofertas comparadas y sobrevivencia. Listo para llevar a la AFP o entregar al asesor.</p>
+<p class="view__lead">Expediente y certificado informativo de cálculos con datos del cliente. Vista previa, impresión y PDF local descargable; no reemplaza certificados oficiales ni acredita una oferta o beneficio.</p>
 
 <div id="rep-vacio"></div>
 <div id="rep-cuerpo" hidden>
@@ -11,6 +11,13 @@
       Imprimir / PDF
     </button>
   </div>
+  <div class="u-flex u-gap-2 u-wrap no-print u-mt-4">
+    <button id="rep-generar-pdf" class="btn btn--secondary btn--sm" type="button">Generar certificado de cálculos no oficial (PDF)</button>
+    <a id="rep-descargar-pdf" class="btn btn--primary btn--sm" hidden>Descargar PDF listo</a>
+    <a id="rep-ver-pdf" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer" hidden>Ver PDF listo</a>
+  </div>
+  <p id="rep-pdf-estado" class="small no-print" role="status"></p>
 
-  <article id="rep-doc" class="reporte u-mt-6"></article>
+  <div id="rep-calculos" class="print-doc u-mt-6"></div>
+  <details class="cliente-anexo"><summary>Expediente del asesor: ruta y verificaciones</summary><article id="rep-doc" class="reporte u-mt-6"></article></details>
 </div>

@@ -4,6 +4,7 @@ import { getClienteActivo, guardarSeccion, subscribe } from '../core/store.js';
 import { getUF, onUF } from '../core/uf.js';
 import { clp, uf, pct } from '../core/format.js';
 import { NORMATIVA } from '../data/normativa-2026.js';
+import { pensionReferencia } from '../core/calculos.js';
 
 const icono = (n) => `<svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#${n}"></use></svg>`;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -73,8 +74,9 @@ function render(main) {
 
   /* ELD: mostrar si probable */
   const promedio = Number(cliente.perfil?.promedioRemuneraciones) || 0;
-  const estUF = Number(s.pensionEstimadaUF) || 0;
-  const eldProbable = ufv && promedio > 0 && estUF * ufv >= NORMATIVA.excedenteLibreDisposicion.pctPromedioMinimo * promedio
+  const referencia = pensionReferencia(cliente, ufv);
+  const estUF = referencia.uf || 0;
+  const eldProbable = !referencia.simulada && ufv && promedio > 0 && estUF * ufv >= NORMATIVA.excedenteLibreDisposicion.pctPromedioMinimo * promedio
     && estUF >= NORMATIVA.excedenteLibreDisposicion.pensionMinUF;
   const eldWrap = main.querySelector('#m-eld-wrap');
   eldWrap.hidden = !eldProbable;
@@ -93,7 +95,7 @@ function render(main) {
     return;
   }
 
-  const tasaRP = NORMATIVA.retiroProgramado.tasaCalculo;
+  const tasaRP = referencia.escenario?.tasa ?? null;
 
   const capTemporal = capital * (pctTemporal / 100);
   const capDiferida = capital - capTemporal;
@@ -110,8 +112,9 @@ function render(main) {
       <h3 class="u-mt-0 u-mb-0">${icono('i-refresh-cw')} Retiro programado</h3>
       <span class="badge badge--info">AFP</span>
     </div>
-    <p class="stat__valor u-fs-h3">Pendiente de cálculo AFP</p>
-    <p class="small muted">Tasa técnica SP: ${pct(tasaRP)} desde octubre 2026. No es rentabilidad del saldo ni permite obtener la pensión dividiendo intereses por 12. Requiere tablas y capital necesario unitario.</p>
+    <p class="stat__valor money u-fs-h3">${referencia.clp != null ? clp(referencia.clp) + '/mes' : 'Faltan datos de simulación'}</p>
+    <p class="small muted">${esc(referencia.fuente)}. ${tasaRP !== null ? `Tasa técnica del escenario: ${pct(tasaRP)}.` : 'Revisar la tasa vigente en Ajustes antes de simular.'} No es rentabilidad del saldo ni un precio de aseguradora.</p>
+    ${referencia.simulada ? '<p class="small muted">CNU y grupo declarado, con saldo obligatorio actual; no proyecta aportes futuros, no acredita jubilación ni incluye comisiones y ajustes.</p>' : ''}
     <ul class="small muted u-mt-4 u-mb-0">
       <li>Pensión variable: se recalcula anualmente</li>
       <li>El saldo <strong>es heredable</strong></li>

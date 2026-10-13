@@ -12,6 +12,9 @@ import { evaluarBeneficios } from '../core/beneficios.js';
 import { abrirDialog, cerrarDialog, cablearCierre } from '../ui/dialog.js';
 import { toast } from '../ui/toast.js';
 import { crearPropuesta } from '../core/propuesta.js';
+import { iniciarDescargaCalculos } from './informe-calculos.js';
+import { cablearConsolidacion, renderConsolidacion } from './consolidacion-scomp.js';
+import { renderPreparacionAseguradoras } from './preparacion-aseguradoras.js';
 
 const icono = (n) => `<svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#${n}"></use></svg>`;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -25,12 +28,14 @@ export function init(main) {
   cablearCierre(main.querySelector('#dlg-oferta'));
   cablearCierre(main.querySelector('#dlg-ofe-confirmar'));
   cablear(main);
+  cablearConsolidacion(main);
   render(main);
+  const limpiarPDF = iniciarDescargaCalculos(main, 'ofe');
   unsub = subscribe(() => render(main));
   unsubUF = onUF(() => render(main));
   main.querySelector('#ofe-directorio-actualizar')?.addEventListener('click', () => cargarDirectorio(main));
   cargarDirectorio(main);
-  return () => { unsub?.(); unsubUF?.(); };
+  return () => { unsub?.(); unsubUF?.(); limpiarPDF(); };
 }
 
 async function cargarDirectorio(main) {
@@ -171,7 +176,7 @@ function render(main) {
       <div class="empty">
         <span class="empty__icono">${icono('i-table')}</span>
         <p class="empty__titulo">Sin cliente activo</p>
-        <p>Selecciona un cliente para registrar y comparar sus ofertas SCOMP.</p>
+        <p>Selecciona un cliente para generar su propuesta y comparar cotizaciones recibidas.</p>
         <a class="btn btn--primary" href="#/panel">${icono('i-users')} Ir a la cartera</a>
       </div>`;
     return;
@@ -180,6 +185,8 @@ function render(main) {
   vacio.innerHTML = '';
   if (cliente.ingesta?.demostracion) vacio.innerHTML = '<p class="badge badge--warning">DEMOSTRACIÓN: datos sintéticos, sin ofertas oficiales.</p>';
   cuerpo.hidden = false;
+  renderConsolidacion(main, cliente);
+  renderPreparacionAseguradoras(main, cliente);
 
   const ufv = getUF().valor;
   const ofertas = cliente.ofertas || [];
@@ -200,8 +207,8 @@ function render(main) {
     detalle.innerHTML = `
       <div class="empty u-p-6">
         <span class="empty__icono">${icono('i-file-text')}</span>
-        <p class="empty__titulo">Sin ofertas registradas</p>
-        <p>Agrega cada oferta del Certificado de Ofertas y la contraoferta de la AFP.</p>
+        <p class="empty__titulo">Propuesta disponible sin cotizaciones de aseguradoras</p>
+        <p>Los cálculos propios se generan automáticamente en la propuesta inferior, sin requerir un SCOMP. Este bloque compara cotizaciones cuando se reciben; no genera precios comerciales de aseguradoras.</p>
       </div>`;
     return;
   }

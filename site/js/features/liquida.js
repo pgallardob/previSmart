@@ -4,12 +4,14 @@ import { getClienteActivo, guardarSeccion, subscribe } from '../core/store.js';
 import { getUF, onUF } from '../core/uf.js';
 import { clp, uf, pct } from '../core/format.js';
 import { pensionLiquida } from '../core/liquida.js';
+import { pensionReferencia } from '../core/calculos.js';
 import { NORMATIVA, tablaImpuestoVigente } from '../data/normativa-2026.js';
 
 const icono = (n) => `<svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#${n}"></use></svg>`;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const num = (v) => Number(String(v ?? '').replace(/\./g, '').replace(',', '.')) || 0;
 let unsubUF = null, cableado = null;
+let ultimaFuenteUF = null;
 
 export function init(main) {
   if (unsubUF) { unsubUF(); unsubUF = null; }
@@ -30,17 +32,21 @@ function cablear(main) {
     el.addEventListener('input', () => {
       const c = getClienteActivo();
       if (!c) return;
-      guardarSeccion(c.id, 'liquida', leer(main));
+      const d = leer(main);
+      if (id !== 'liq-pension' && !c.liquida?.pensionUF) d.pensionUF = null;
+      guardarSeccion(c.id, 'liquida', d);
       render(main);
     });
   });
 }
 
 function leer(main) {
+  const planRaw = main.querySelector('#liq-plan').value.trim();
+  const plan = planRaw ? Number(planRaw.replace(/\./g, '').replace(',', '.')) : null;
   return {
     pensionUF: num(main.querySelector('#liq-pension').value) || null,
     saludTipo: main.querySelector('#liq-salud').value,
-    planUF: num(main.querySelector('#liq-plan').value) || null
+    planUF: Number.isFinite(plan) ? plan : null
   };
 }
 
@@ -63,21 +69,31 @@ function render(main) {
   vacio.innerHTML = '';
   cuerpo.hidden = false;
 
+  const referencia = pensionReferencia(cliente, getUF().valor);
+  const fuenteUF = referencia.uf;
   if (cableado !== cliente.id) {
     cableado = cliente.id;
     const d = cliente.liquida || {};
     const p = cliente.perfil || {};
-    main.querySelector('#liq-pension').value = String(d.pensionUF ?? cliente.saldo?.pensionEstimadaUF ?? '').replace('.', ',');
-    main.querySelector('#liq-salud').value = d.saludTipo ?? p.saludTipo ?? 'fonasa';
+    main.querySelector('#liq-pension').value = String(d.pensionUF ?? fuenteUF ?? '').replace('.', ',');
+     main.querySelector('#liq-salud').value = d.saludTipo ?? p.saludTipo ?? '';
     main.querySelector('#liq-plan').value = String(d.planUF ?? p.saludPlanUF ?? '').replace('.', ',');
+  } else if (!cliente.liquida?.pensionUF) {
+    const input = main.querySelector('#liq-pension');
+    if (!input.value.trim() || num(input.value) === ultimaFuenteUF) input.value = String(fuenteUF ?? '').replace('.', ',');
   }
+  ultimaFuenteUF = fuenteUF;
 
   const d = leer(main);
   main.querySelector('#liq-plan-wrap').hidden = d.saludTipo !== 'isapre';
 
   const zona = main.querySelector('#liq-resultado');
+  if (!['fonasa', 'isapre'].includes(d.saludTipo) || (d.saludTipo === 'isapre' && d.planUF == null)) {
+    zona.innerHTML = '<div class="veredicto veredicto--info"><div><p class="veredicto__titulo">Declarar previsión de salud y plan</p><p>No se supone Fonasa ni un plan Isapre de costo cero. Completa los datos para calcular la líquida referencial.</p></div></div>';
+    return;
+  }
   if (!tablaImpuestoVigente()) {
-    zona.innerHTML = `<div class="veredicto veredicto--warning"><div><p class="veredicto__titulo">Actualizar tabla tributaria antes de calcular</p><p>La tabla cargada corresponde a ${esc(NORMATIVA.impuestoUnico.vigencia)}, no al mes actual en Chile. No se calcula una líquida con una tabla vencida.</p></div></div>`;
+    zona.innerHTML = `<div class="veredicto veredicto--warning"><div><p class="veredicto__titulo">Actualizar tabla tributaria antes de calcular</p><p>No hay una tabla revisada válida para el mes actual en Chile. En <a href="#/ajustes">Ajustes → Parámetros de cálculo</a> puedes cargar la tabla SII del período sin reinstalar la aplicación. No se reutiliza una tabla vencida.</p></div></div>`;
     return;
   }
   const r = pensionLiquida(d.pensionUF, getUF().valor, { tipo: d.saludTipo, planUF: d.planUF });
@@ -86,17 +102,20 @@ function render(main) {
     zona.innerHTML = `<div class="veredicto veredicto--info"><span class="veredicto__icono">${icono('i-info')}</span><div><p class="veredicto__titulo">Ingresa la pensión bruta</p><p class="veredicto__texto">Se calcula con la UF vigente.</p></div></div>`;
     return;
   }
+  const cargoAFP = referencia.simulada && !cliente.liquida?.pensionUF ? referencia.escenario?.comisionCLP : null;
 
   zona.innerHTML = `
+  <p class="small muted">${esc(cliente.liquida?.pensionUF ? 'Escenario manual del operador' : referencia.fuente)}${referencia.simulada && !cliente.liquida?.pensionUF ? ' · Simulación bruta RP reutilizada automáticamente; no es una pensión AFP.' : ''}</p>
   <section class="card card--accent">
     <div class="u-flex u-items-center u-justify-between u-gap-4 u-wrap">
       <div class="stat">
-        <span class="stat__label">Pensión líquida estimada</span>
+        <span class="stat__label">Pensión líquida estimada${cargoAFP != null ? ' antes del cargo AFP declarado' : ''}</span>
         <span class="stat__valor money">${clp(r.liquida)}</span>
         <span class="stat__uf">≈ ${uf(r.liquidaUF)}/mes · tasa de descuento ${pct(r.tasaEfectiva)}</span>
       </div>
     </div>
   </section>
+  ${cargoAFP != null ? `<section class="card card--flat u-mt-3"><h3 class="u-mt-0">Cargo AFP declarado en el escenario RP</h3><p class="small">${clp(cargoAFP)} / mes · ${esc(referencia.escenario.comisionReferencia)}.</p><p class="small">Después de salud, impuesto y este cargo: <strong>${clp(Math.max(0, r.liquida - cargoAFP))} / mes</strong>. No se presume que la comisión reduzca la base tributaria.</p></section>` : ''}
 
   <article class="card card--flat u-mt-4">
     <h3 class="u-mt-0">Desglose</h3>
@@ -109,7 +128,7 @@ function render(main) {
         <tr><td><strong>= Líquida</strong></td><td class="money"><strong>${clp(r.liquida)}</strong></td><td class="tiny muted">${uf(r.liquidaUF)}</td></tr>
       </tbody>
     </table>
-    <p class="tiny muted u-mt-2 u-mb-0">Imponible ${clp(r.imponible)} · exento hasta ${clp(NORMATIVA.impuestoUnico.exentoHasta)} (SII oct-2026)</p>
+    <p class="tiny muted u-mt-2 u-mb-0">Imponible ${clp(r.imponible)} · exento hasta ${clp(r.tablaTributaria.tramos[0].hasta)} · ${esc(r.tablaTributaria.fuente)} · ${esc(r.tablaTributaria.periodo)} (${esc(r.tablaTributaria.origen)})</p>
   </article>
 
   <article class="card card--flat u-mt-6">

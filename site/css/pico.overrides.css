@@ -84,14 +84,15 @@
   --pico-modal-overlay-background-color: rgb(16 24 22 / 0.55);
 }
 
-/* Titulares con la serif editorial */
-h1, h2, h3, .display {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-variation-settings: "SOFT" 60, "WONK" 0;
-  letter-spacing: -0.02em;
+/* Compact interface headings; display branding stays separate. */
+h1, h2, h3 {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-variation-settings: normal;
+  letter-spacing: -0.01em;
   line-height: var(--lh-head);
 }
+.display { font-family: var(--font-display); line-height: var(--lh-head); }
 h4, h5, h6 {
   font-family: var(--font-ui);
   font-variation-settings: normal;

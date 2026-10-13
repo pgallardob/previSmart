@@ -6,6 +6,8 @@
    de aquí. Al cambiar la norma se crea normativa-AAAA.js nuevo.
    ============================================================ */
 
+import { seleccionarParametro } from '../core/parametros-normativos.js';
+
 export const NORMATIVA = {
 
   meta: {
@@ -234,17 +236,31 @@ export const NORMATIVA = {
 
 /** Calcula el impuesto único mensual para una renta líquida imponible (CLP). */
 export function tablaImpuestoVigente(fecha = new Date()) {
-  const date = fecha instanceof Date ? fecha : new Date(fecha);
-  if (Number.isNaN(date.getTime())) return false;
-  const periodo = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit' }).format(date);
-  return periodo === NORMATIVA.impuestoUnico.vigencia;
+  return obtenerTablaImpuesto(fecha) !== null;
+}
+
+export function parametrosIncluidos() {
+  return [{ tipo: 'impuesto-mensual', periodo: NORMATIVA.impuestoUnico.vigencia,
+    fuente: NORMATIVA.impuestoUnico.fuente, url: NORMATIVA.fuentes.find((f) => f.nombre.startsWith('SII')).url,
+    publicadoEn: '2026-10-01', tramos: NORMATIVA.impuestoUnico.tramos.map((t) => ({ ...t, hasta: Number.isFinite(t.hasta) ? t.hasta : null })) },
+  { tipo: 'tasa-rp', desde: '2026-10-01', hasta: '2026-12-31', tasa: NORMATIVA.retiroProgramado.tasaCalculo,
+    fuente: NORMATIVA.retiroProgramado.fuente, url: NORMATIVA.retiroProgramado.url, publicadoEn: '2026-10-02' }];
+}
+
+export function obtenerTablaImpuesto(fecha = new Date()) {
+  return seleccionarParametro('impuesto-mensual', fecha, parametrosIncluidos()[0]);
+}
+
+export function obtenerTasaRP(fecha = new Date()) {
+  return seleccionarParametro('tasa-rp', fecha, parametrosIncluidos()[1]);
 }
 
 export function impuestoUnicoMensual(rentaLiquidaImponible, fecha = new Date()) {
-  if (!tablaImpuestoVigente(fecha)) return null;
+  const tabla = obtenerTablaImpuesto(fecha);
+  if (!tabla) return null;
   if (!Number.isFinite(rentaLiquidaImponible) || rentaLiquidaImponible <= 0) return 0;
-  const tramo = NORMATIVA.impuestoUnico.tramos.find(
-    (t) => rentaLiquidaImponible > t.desde - 0.005 && rentaLiquidaImponible <= t.hasta
+  const tramo = tabla.tramos.find(
+    (t, i) => (i === 0 || rentaLiquidaImponible > tabla.tramos[i - 1].hasta) && (t.hasta === null || rentaLiquidaImponible <= t.hasta)
   );
   if (!tramo || tramo.factor === 0) return 0;
   return Math.max(0, rentaLiquidaImponible * tramo.factor - tramo.rebaja);

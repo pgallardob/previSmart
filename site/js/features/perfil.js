@@ -276,8 +276,10 @@ function cablearBeneficiarios(main, cliente) {
     form.querySelector('#benef-tipo').value = b?.tipo || 'conyuge';
     form.querySelector('#benef-nombre').value = b?.nombre || '';
     form.querySelector('#benef-fnac').value = b?.fechaNacimiento || '';
+    form.querySelector('#benef-sexo').value = b?.sexo || '';
     form.querySelector('[name="estudiante"]').checked = Boolean(b?.estudiante);
     form.querySelector('#benef-invalidez').value = b?.invalidez || '';
+    form.querySelector('#benef-hijo-comun').value = b?.hijoComun === true ? 'si' : b?.hijoComun === false ? 'no' : '';
     toggleHijoExtra(form);
     actualizarEdadBenef(form);
     abrirDialog(dlg);
@@ -302,8 +304,10 @@ function cablearBeneficiarios(main, cliente) {
       tipo: f.get('tipo'),
       nombre: String(f.get('nombre') || '').trim(),
       fechaNacimiento: f.get('fechaNacimiento') || null,
+      sexo: f.get('sexo') || null,
       estudiante: f.get('tipo') === 'hijo' ? Boolean(f.get('estudiante')) : false,
-      invalidez: f.get('tipo') === 'hijo' ? (f.get('invalidez') || null) : null
+      invalidez: f.get('invalidez') || null,
+      ...(f.get('tipo') === 'hijo' ? { hijoComun: f.get('hijoComun') === 'si' ? true : f.get('hijoComun') === 'no' ? false : null } : {})
     };
     const lista = [...(getCliente(cliente.id).beneficiarios || [])];
     const idxEd = form.querySelector('#benef-idx').value;

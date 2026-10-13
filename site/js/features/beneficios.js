@@ -68,14 +68,15 @@ function render(main) {
         ${r.total.pguCLP ? ` + PGU ${clp(r.total.pguCLP)}` : ''}
         ${r.total.bacCLP ? ` + BAC ${clp(r.total.bacCLP)}` : ''}
       </span>
+      <span class="stat__label">${esc(r.total.fuente)}${r.total.simulada ? ' · Base con saldo obligatorio actual y edades cumplidas; no proyecta la jubilación futura ni concede beneficios.' : ''}</span>
     </div>
     <span class="badge badge--primary">${icono('i-landmark')} ${esc(cliente.nombre)}</span>`
   : `
     <div class="stat">
       <span class="stat__valor u-fs-h3">Falta la pensión estimada</span>
-      <span class="stat__label">Ingrésala en el perfil (UF mensual) para ver el total.</span>
+      <span class="stat__label">Se completa automáticamente con una pensión informada o con la simulación CNU cuando sus antecedentes están completos. No requiere un SCOMP.</span>
     </div>
-    <a class="btn btn--secondary btn--sm" href="#/perfil">${icono('i-user-round')} Completar perfil</a>`;
+    <a class="btn btn--secondary btn--sm" href="#/sobrevivencia">${icono('i-calculator')} Revisar datos de simulación</a>`;
 
   /* ---- tarjetas ---- */
   const cards = [];
@@ -110,7 +111,10 @@ function render(main) {
     iconoNombre: 'i-shield-check',
     titulo: 'Garantía estatal ante quiebra de la aseguradora',
     monto: `${r.garantia.topeUF} UF/mes tope`,
-    detalle: r.garantia.detalle,
+    detalle: r.garantia.calculo
+      ? `Ejercicio referencial de renta vitalicia: ${clp(r.garantia.calculo.garantiaCLP)} de garantía calculada, con parámetro PGU ${clp(r.garantia.calculo.parametroPGU)}. No acredita una renta vitalicia contratada ni un pago del Estado.`
+      : r.garantia.baseRP ? 'La base actual corresponde a retiro programado, no a una renta vitalicia contratada. No se le aplica la garantía por quiebra de una aseguradora.'
+        : `${r.garantia.detalle} Fórmula: P si P ≤ G; si P > G, mínimo de G + 75% × (P − G) y 45 UF. Requiere pensión mensual, UF y parámetro PGU verificado para evaluar el ejercicio.`,
     estado: 'info'
   }));
 

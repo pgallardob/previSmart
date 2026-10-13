@@ -223,6 +223,10 @@ export function mapearSaldos(json = {}) {
     if (typeof json.pensionEstimadaUF !== 'number' || !Number.isFinite(json.pensionEstimadaUF) || json.pensionEstimadaUF < 0) throw new Error('Pensión UF recibida inválida.');
     out.pensionEstimadaUF = json.pensionEstimadaUF;
   }
+  if (json.pensionEstimadaCLP != null) {
+    if (typeof json.pensionEstimadaCLP !== 'number' || !Number.isSafeInteger(json.pensionEstimadaCLP) || json.pensionEstimadaCLP < 0) throw new Error('Pensión CLP recibida inválida.');
+    out.pensionEstimadaCLP = json.pensionEstimadaCLP;
+  }
   const bono = json.bonoReconocimiento;
   if (bono != null) {
     if (!bono || typeof bono !== 'object' || typeof bono.monto !== 'number' || !Number.isSafeInteger(bono.monto) || bono.monto < 0

@@ -64,7 +64,7 @@ export const MODULOS = [
     desc: 'Retiro programado, renta vitalicia inmediata y combinadas.'
   },
   {
-    id: 'ofertas', nombre: 'Ofertas SCOMP', icono: 'i-table', grupo: 'decision',
+    id: 'ofertas', nombre: 'Propuesta y ofertas', icono: 'i-table', grupo: 'decision',
     estado: 'listo', fase: 6,
     desc: 'Matriz multi-criterio para comparar contratos completos.',
     tabbar: true

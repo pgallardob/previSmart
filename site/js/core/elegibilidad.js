@@ -5,6 +5,7 @@
 import { NORMATIVA } from '../data/normativa-2026.js';
 import { edadExacta, fechaCumple, diasCorridosEntre, hoy, parseLocal } from './dates.js';
 import { ufAclp } from './format.js';
+import { pensionReferencia } from './calculos.js';
 
 const MESES_ANIO = 12;
 
@@ -78,7 +79,8 @@ export function evaluarElegibilidad(cliente, valorUF) {
   }
 
   /* ---- Datos de pensión ---- */
-  const pensionUF = Number(s.pensionEstimadaUF) || null;
+  const pension = pensionReferencia(cliente, valorUF);
+  const pensionUF = pension.uf;
   const pensionCLP = pensionUF != null && Number.isFinite(valorUF) && valorUF > 0 ? ufAclp(pensionUF, valorUF) : null;
   const promedio = Number(p.promedioRemuneraciones) || null;
   const edadLegalOk = p.sexo && edad
@@ -88,6 +90,9 @@ export function evaluarElegibilidad(cliente, valorUF) {
   /* ---- Mínimo 2 UF para renta vitalicia (§8) ---- */
   if (pensionUF == null) {
     v.push({ id: 'min2uf', estado: 'pendiente', titulo: 'Mínimo 2 UF para renta vitalicia', texto: 'Ingresa la pensión estimada (UF) en el perfil para verificar.', fuente: N.rentaVitaliciaMinUF.fuente });
+  } else if (pension.simulada || pension.retiroProgramado === true) {
+    v.push({ id: 'min2uf', estado: 'info', titulo: 'Referencia RP; no es precio de renta vitalicia',
+      texto: `Referencia RP: ${pensionUF.toFixed(2)} UF/mes. No verifica el mínimo de una renta vitalicia: esa modalidad necesita su propia cotización. No se exige SCOMP para preparar el análisis.`, fuente: pension.fuente });
   } else if (pensionUF >= N.rentaVitaliciaMinUF.valor) {
     v.push({
       id: 'min2uf', estado: 'success',
@@ -199,6 +204,12 @@ export function evaluarElegibilidad(cliente, valorUF) {
     fuente: N.ley21818.fuente
   });
 
+  if (pension.simulada) for (const item of v) {
+    if (!['anticipada', 'eld'].includes(item.id)) continue;
+    item.estado = 'info';
+    item.titulo = `Escenario orientativo: ${item.id === 'anticipada' ? 'vejez anticipada' : 'ELD'}`;
+    item.texto += ' Base: simulación RP con saldo obligatorio; no acredita el derecho, la pensión final ni un monto retirable.';
+  }
   return v;
 }
 

@@ -43,6 +43,10 @@ export function init(main) {
 }
 
 function cablear(main) {
+  main.querySelector('#cap-subir-scomp')?.addEventListener('click', () => {
+    main.querySelector('#cap-doc-tipo').value = 'certificado-ofertas';
+    main.querySelector('#cap-doc-archivo').click();
+  });
   main.querySelector('#cap-movil-afp')?.addEventListener('change', () => renderPortalMovil(main));
   main.querySelector('#cap-movil-cargar')?.addEventListener('click', () => {
     main.querySelector('#cap-form-doc')?.scrollIntoView({ block: 'center' });
@@ -162,8 +166,10 @@ function cablear(main) {
     if (!archivo) { toast('Elige un archivo PDF', 'warning'); return; }
     try {
       const resultado = await leerDocumento(archivo, tipo);
+      if (tipo === 'certificado-ofertas' && resultado?.tipo !== 'scomp') throw new Error('No se reconoció un Certificado de Ofertas SCOMP en este archivo. No se incorporó como fuente SCOMP.');
       if (resultado) comprobarIdentidad(cliente, resultado.perfil || {});
-      const documento = await guardarDocumento({ clienteId: cliente.id, clienteNombre: cliente.nombre, tipo, archivo });
+      if (resultado?.tipo === 'scomp') planearDocumento(cliente, resultado, null);
+      const documento = await guardarDocumento({ clienteId: cliente.id, clienteNombre: cliente.nombre, tipo: resultado?.tipoDoc || tipo, archivo });
       toast(`${etiquetaTipo(tipo)} guardado en el expediente`, 'success');
       e.target.reset();
       renderDocs(main, cliente.id);
@@ -199,7 +205,13 @@ function cablear(main) {
       flujoExtraccion(main, doc.blob, doc.nombreArchivo, doc.tipo, doc);
     }
     if (btn.dataset.acciondoc === 'eliminar') {
+      const doc = await obtenerDocumento(id);
       await eliminarDocumento(id);
+      const cliente = getCliente(doc?.clienteId);
+      if (cliente?.scomp?.certificados?.some((s) => s.documentoId === id)) {
+        actualizarExpediente(cliente.id, { scomp: { ...cliente.scomp,
+          certificados: cliente.scomp.certificados.map((s) => s.documentoId === id ? { ...s, originalEliminado: true } : s) } });
+      }
       toast('Documento eliminado', 'info');
       renderDocs(main, getClienteActivo()?.id);
     }
@@ -385,7 +397,7 @@ function mostrarLote(main, clienteId, resultados) {
   }
   const plan = planearLote(getClienteActivo(), resultados);
   extraccionPendiente = { tipo: 'lote', clienteId, resultados };
-  renderExtraccion(main, { tipo: 'lote', perfil: plan.patch.perfil, saldo: plan.patch.saldo,
+  renderExtraccion(main, { tipo: 'lote', perfil: plan.patch.perfil, saldo: plan.patch.saldo, conflictos: plan.conflictos,
     detectado: resultados.map((r) => `${etiquetaTipo(r.tipoDoc)}: ${Object.keys(r.perfil || {}).join(', ') || 'sin datos personales'}${r.cotizaciones ? `; ${r.cotizaciones.mesesObservados} meses observados (no vida laboral completa)` : ''}`) }, `${resultados.length} documentos descargados`);
 }
 
@@ -416,6 +428,13 @@ function renderExtraccion(main, r, nombreArchivo) {
     if (!lineas.length) lineas.push('<strong>Sin campos reconocibles</strong> — certificado con formato aún no mapeado');
   }
 
+  if (r.saldo?.cartolaReferencia) {
+    const cartola = r.saldo.cartolaReferencia;
+    lineas.push(`<strong>Saldo del portal conservado</strong> ${clp(r.saldo.obligatorio)} · captura ${esc(r.saldo.capturadoEn?.slice(0, 10) || 'sin fecha')}`);
+    lineas.push(`<strong>Cartola como referencia separada</strong> ${clp(cartola.obligatorio)} · corte ${esc(cartola.saldoAl || 'sin fecha')}. No reemplaza el saldo capturado en el portal. Distintos cortes no prueban un error ni cotizaciones impagas.`);
+  }
+  if (r.conflictos?.length) lineas.push(`<strong>Diferencias conservadas para revisión</strong> ${esc(r.conflictos.join(', '))}`);
+
   const hayAlgo = r.tipo === 'scomp'
     ? (r.ofertas?.length || r.saldo?.obligatorio || Object.keys(r.perfil || {}).length)
     : Object.keys(r.saldo || {}).length || Object.keys(r.perfil || {}).length;
@@ -428,7 +447,7 @@ function renderExtraccion(main, r, nombreArchivo) {
       </div>
       <p class="tiny muted u-mt-2 u-mb-0">${esc(nombreArchivo)}</p>
       <div class="small u-mt-3 u-flex u-col u-gap-2">${lineas.map((l) => `<p class="u-mb-0">${l}</p>`).join('')}</div>
-      ${actuales && r.ofertas?.length ? `<p class="small u-mt-3 u-mb-0"><span class="badge badge--warning">reemplazará las ${actuales} ofertas actuales</span></p>` : ''}
+      ${r.tipo === 'scomp' ? `<p class="small u-mt-3 u-mb-0">La importación conserva el saldo AFP y las ${actuales} ofertas registradas. Archivará los datos de este SCOMP por separado y activará su uso en los documentos consolidados; no acepta una oferta.</p>` : ''}
       <div class="dlg-actions">
         <button class="btn btn--ghost btn--sm" type="button" id="cap-ext-descartar">Descartar</button>
         <button class="btn btn--primary btn--sm" type="button" id="cap-ext-aplicar" ${hayAlgo ? '' : 'disabled'}>

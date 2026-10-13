@@ -3,6 +3,7 @@ import { parseLocal } from './dates.js';
 import { validarPDF } from './documentos.js';
 import { ETAPAS } from '../data/ruta.js';
 import { cruzarAseguradoras } from './aseguradoras.js';
+import { crearFuenteSCOMP } from './consolidacion-scomp.js';
 
 const texto = (v) => typeof v === 'string' && v.trim() ? v.trim() : null;
 const vacio = (v) => v == null || v === '' || (Array.isArray(v) && v.length === 0);
@@ -47,7 +48,8 @@ function completar(actual, entrante, prefijo, conflictos) {
   for (const [key, value] of Object.entries(entrante)) {
     if (vacio(value)) continue;
     if (vacio(out[key])) out[key] = value;
-    else if (String(out[key]) !== String(value)) conflictos.push(`${prefijo}.${key}`);
+    else if (String(out[key]) !== String(value)
+      && !(key === 'rut' && rut(out[key]) === rut(value))) conflictos.push(`${prefijo}.${key}`);
   }
   return out;
 }
@@ -126,6 +128,8 @@ export function planearDescarga(cliente, json, credenciales, documentos = []) {
 export function planearDocumento(cliente, r, documento) {
   if (cliente.ingesta?.demostracion) throw new Error('No se mezclan documentos reales con la cartera de demostración. Crea otro cliente.');
   comprobarIdentidad(cliente, r.perfil || {});
+  if (documento?.clienteId && documento.clienteId !== cliente.id) throw new Error('El archivo archivado pertenece a otro expediente.');
+  if (r.tipo === 'scomp' && !rut(r.perfil?.rut)) throw new Error('No se reconoció el RUT del SCOMP; revisar su lectura antes de consolidarlo.');
   const conflictos = [];
   const entrante = { ...(r.perfil || {}), ...(['A', 'B', 'C', 'D', 'E'].includes(r.saldo?.fondo) ? { multifondo: r.saldo.fondo } : {}) };
   const perfil = completar(cliente.perfil || {}, entrante, 'perfil', conflictos);
@@ -135,14 +139,32 @@ export function planearDocumento(cliente, r, documento) {
   if (!cliente.perfil?.nombre && perfil.nombre) patch.nombre = [perfil.nombre, perfil.apellidoPaterno, perfil.apellidoMaterno].filter(Boolean).join(' ');
   const saldo = Object.fromEntries(Object.entries(r.saldo || {}).filter(([, value]) => value != null && ['number', 'string'].includes(typeof value)));
   if (typeof saldo.bonoReconocimiento === 'number') saldo.bonoReconocimiento = { ...(cliente.saldo?.bonoReconocimiento || {}), monto: saldo.bonoReconocimiento };
-  if (Object.keys(saldo).length) patch.saldo = { ...(cliente.saldo || {}), ...saldo };
+  if (Object.keys(saldo).length) {
+    const actual = cliente.saldo || {};
+    if (r.tipo === 'scomp') {
+      // SCOMP capital is the amount destined for pension, not a fresh mandatory-account snapshot.
+      patch.saldo = { ...actual };
+    } else if (r.esCartola && actual.capturadoPor === 'rpa-directo' && typeof actual.obligatorio === 'number') {
+      // A statement is a separate dated snapshot, not a replacement for the live portal capture.
+      patch.saldo = { ...actual, cartolaReferencia: { ...saldo, documentoId: documento?.id || null, sha256: documento?.sha256 || null } };
+      // Different dated sources are not, by themselves, evidence of a balance error or unpaid contributions.
+    } else patch.saldo = { ...actual, ...saldo };
+  }
   if (r.tipo === 'scomp') {
     patch.scomp = { ...(cliente.scomp || {}), ...(r.scomp || {}),
       ...Object.fromEntries(Object.entries({ ufEmisionCLP: r.saldo?.ufEmisionCLP, certSaldoEmitido: r.saldo?.certSaldoEmitido, certSaldoVence: r.saldo?.certSaldoVence,
         saldoDestinadoUF: r.saldo?.saldoDestinadoUF, ...r.meta }).filter(([, value]) => value != null)), fuente: documento || null };
+    const source = crearFuenteSCOMP(r, documento);
+    const anteriores = Array.isArray(cliente.scomp?.certificados) ? cliente.scomp.certificados : [];
+    patch.scomp.certificados = [...anteriores.filter((s) => s.documentoId !== source.documentoId), source];
+    patch.scomp.documentoActivoId = source.documentoId;
+    patch.scomp.usarParaPropuesta = true;
+    patch.scomp.ofertaBaseIdx = null;
+    // Preserve comparisons and older certificates; their document IDs prevent cross-source reuse.
     if (r.beneficiarios?.length && !cliente.beneficiarios?.length) patch.beneficiarios = r.beneficiarios;
     else if (r.beneficiarios?.length) conflictos.push('beneficiarios');
-    if (r.ofertas?.length) patch.ofertas = cruzarAseguradoras(r.ofertas).map((o) => ({ ...o, fuente: 'certificado-scomp', documentoId: documento?.id || null }));
+    if (r.ofertas?.length) patch.ofertas = [...(cliente.ofertas || []).filter((o) => o.documentoId !== documento?.id || o.fuente !== 'certificado-scomp'),
+      ...cruzarAseguradoras(source.ofertas)];
   }
   const campos = Object.keys(patch);
   const fechas = {};

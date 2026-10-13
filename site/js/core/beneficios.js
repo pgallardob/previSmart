@@ -5,6 +5,7 @@
 import { NORMATIVA, cevPctPorEdad, pguEdadMinimaMontoMaximo } from '../data/normativa-2026.js';
 import { edadExacta, hoy } from './dates.js';
 import { ufAclp } from './format.js';
+import { pensionReferencia, garantiaEstatal } from './calculos.js';
 
 const N = NORMATIVA;
 
@@ -49,8 +50,9 @@ export function evaluarBeneficios(cliente, valorUF) {
   const N_ = NORMATIVA;
 
   const edad = p.fechaNacimiento ? edadExacta(p.fechaNacimiento, hoy())?.anios ?? null : null;
-  const pensionUF = Number(s.pensionEstimadaUF) || null;
-  const pensionCLP = pensionUF != null && valorUF ? ufAclp(pensionUF, valorUF) : null;
+  const pension = pensionReferencia(cliente, valorUF);
+  const pensionUF = pension.uf;
+  const pensionCLP = pension.clp;
   const pensionada = Boolean(p.yaPensionado) && ['vejez', 'invalidez'].includes(p.rutaTipo || 'vejez');
 
   /* ============ PGU ============ */
@@ -134,6 +136,8 @@ export function evaluarBeneficios(cliente, valorUF) {
 
   /* ============ Informativos (§21, §23) ============ */
   const garantia = {
+    baseRP: pension.simulada || pension.retiroProgramado === true,
+    calculo: pension.simulada || pension.retiroProgramado === true ? null : garantiaEstatal(pensionUF, valorUF),
     estado: 'info',
     topeUF: N.garantiaEstatal.topeUFmensual,
     detalle: `Si la aseguradora quiebra, la garantía estatal cubre la pensión hasta ${N.garantiaEstatal.topeUFmensual} UF/mes por pensionado o beneficiario. ${N.garantiaEstatal.advertencia}`
@@ -148,10 +152,18 @@ export function evaluarBeneficios(cliente, valorUF) {
   const pguCLP = pgu?.beneficio || 0;
   const bacCLP = bac?.clp || 0;
   const total = {
+    fuente: pension.fuente, simulada: pension.simulada,
     pensionCLP, pguCLP, bacCLP,
     totalCLP: pensionCLP != null ? pensionCLP + pguCLP + bacCLP : null,
     completo: pensionCLP != null
   };
+
+  if (pension.simulada) {
+    if (pgu.estado === 'success') pgu.estado = 'info';
+    pgu.supuestos = [...(pgu.supuestos || []), pension.fuente];
+    if (cev.estado === 'success') cev.estado = 'info';
+    cev.supuestos = [...(cev.supuestos || []), 'La simulación RP no certifica una PAFE ni el factor oficial de CEV.'];
+  }
 
   return { edad, pgu, bac, cev, garantia, cuotaMortuoria, total };
 }

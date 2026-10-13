@@ -1,6 +1,8 @@
 import { clp, clpDec, uf, fechaCorta } from './format.js';
 import { parseLocal } from './dates.js';
 import { etiquetaOrigen } from './uf.js';
+import { modeloInformeCalculos, renderInformeCalculos } from './informe-calculos.js';
+import { clienteParaPropuesta } from './consolidacion-scomp.js';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const monto = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : null;
@@ -14,6 +16,7 @@ export function fuenteOferta(oferta) {
 /** Render an independent, non-official proposal, never a fabricated SCOMP certificate. */
 export function crearPropuesta(cliente, ufMeta, generadoEn = new Date().toISOString()) {
   if (!cliente) return '';
+  cliente = clienteParaPropuesta(cliente);
   const valorUF = monto(ufMeta?.valor) > 0 ? ufMeta.valor : null;
   const fecha = generadoEn.slice(0, 10);
   const ofertas = Array.isArray(cliente.ofertas) ? cliente.ofertas : [];
@@ -24,7 +27,7 @@ export function crearPropuesta(cliente, ufMeta, generadoEn = new Date().toISOStr
       : parseLocal(sc.vigenciaDesde) && sc.vigenciaDesde > fecha ? 'Todavía no comienza según las fechas registradas.'
         : 'Dentro de las fechas registradas; confirmar vigencia con el partícipe.'
     : 'Sin vigencia documental verificable; confirmar con el partícipe.';
-  return `<article class="reporte propuesta" aria-label="Propuesta previsional no oficial">
+  const detalle = `<article class="reporte propuesta" aria-label="Detalle de ofertas y fuentes para el asesor">
     <p class="propuesta__aviso"><strong>PROPUESTA NO OFICIAL · SIN VALIDEZ PARA ACEPTAR OFERTAS</strong></p>
     <header class="rep-head"><div><h2 class="rep-titulo">Propuesta comparativa previsional</h2>
       <p class="small">PreviSmart · elaboración ${esc(fechaCorta(fecha))}</p></div>
@@ -38,7 +41,8 @@ export function crearPropuesta(cliente, ufMeta, generadoEn = new Date().toISOStr
       <tr><td>RUT</td><td>${esc(cliente.perfil?.rut || 'Sin registrar')}</td></tr>
       <tr><td>AFP</td><td>${esc(cliente.perfil?.afp || 'Sin registrar')}</td></tr>
       <tr><td>Saldo obligatorio registrado</td><td>${saldo != null ? clp(saldo) : 'Sin dato de fuente'} · no equivale al capital final certificado para pensionarse</td></tr>
-      <tr><td>Origen y fechas del saldo</td><td>${esc(cliente.saldo?.capturadoPor || 'Origen sin confirmar')} · captura ${esc(fechaCorta(cliente.saldo?.capturadoEn))} · corte documental registrado ${esc(fechaCorta(cliente.saldo?.saldoAl))}. La captura no prueba que el monto corresponda al corte de una cartola.</td></tr>
+       <tr><td>Origen y fechas del saldo</td><td>${esc(cliente.saldo?.capturadoPor || 'Origen sin confirmar')} · captura ${esc(fechaCorta(cliente.saldo?.capturadoEn))} · corte documental registrado ${esc(fechaCorta(cliente.saldo?.saldoAl))}. La captura no prueba que el monto corresponda al corte de una cartola.</td></tr>
+       ${cliente.saldo?.cartolaReferencia ? `<tr><td>Cartola archivada, referencia separada</td><td>${clp(cliente.saldo.cartolaReferencia.obligatorio)} · corte ${esc(fechaCorta(cliente.saldo.cartolaReferencia.saldoAl))}. No reemplaza el saldo capturado en el portal. La diferencia entre cortes no demuestra por sí sola un error ni cotizaciones impagas.</td></tr>` : ''}
       <tr><td>Documento de referencia</td><td>${sc.codigoConsulta ? `Consulta registrada ${esc(sc.codigoConsulta)} · emisión ${esc(fechaCorta(sc.fechaEmision))}` : 'No hay consulta oficial registrada'}</td></tr>
     </tbody></table><p class="small">${esc(vigencia)}</p></section>
     ${Array.isArray(cliente.ingesta?.eventos) && cliente.ingesta.eventos.some((e) => e?.conflictos?.length) ? '<p class="small"><strong>Hay diferencias en el historial de ingesta.</strong> Revisar fuentes, fechas y montos en Captura; no asumir que son datos del mismo corte.</p>' : ''}
@@ -61,7 +65,7 @@ export function crearPropuesta(cliente, ufMeta, generadoEn = new Date().toISOStr
           </dl>
           <p class="tiny">${o.codigoOferta ? `Referencia del registro: ${esc(o.codigoOferta)}. ` : ''}${o.documentoId ? `Documento vinculado: ${esc(o.documentoId)}. ` : ''}La conversión a pesos es referencial con la UF indicada; no actualiza ni reemite la oferta.</p>
           <p class="small">${esc(o.notas || 'Revisar coberturas y condiciones completas en el documento original.')}</p></div>`;
-      }).join('') : '<p>No hay cotizaciones documentadas para comparar. El saldo por sí solo no permite calcular una renta vitalicia fiel: faltan oferta del emisor, tablas, beneficiarios y condiciones. Solicitar ofertas por un partícipe autorizado.</p>'}
+      }).join('') : '<p>La propuesta y la simulación RP se elaboran sin SCOMP con los datos disponibles. No hay cotizaciones comerciales de aseguradoras registradas; esa ausencia no bloquea los cálculos propios ni la descarga del documento. El precio de una renta vitalicia y su aceptación corresponden al emisor.</p>'}
     </section>
     <section class="rep-sec"><h3>Condiciones antes de decidir</h3><ul>
       <li>Cotejar identidad, capital destinado a pensión y todos los beneficiarios con los documentos originales.</li>
@@ -72,4 +76,5 @@ export function crearPropuesta(cliente, ufMeta, generadoEn = new Date().toISOStr
     <p class="propuesta__aviso"><strong>PROPUESTA NO OFICIAL — cotejar con fuentes y partícipe autorizado.</strong></p>
     <p class="tiny">Datos personales: compartir solo con el destinatario autorizado. © 2026 Todos los derechos reservados · Desarrollado por P. Gallardo</p>
   </article>`;
+  return `${renderInformeCalculos(modeloInformeCalculos(cliente, ufMeta, generadoEn))}<details class="cliente-anexo"><summary>Detalle complementario de ofertas para el asesor</summary>${detalle}</details>`;
 }

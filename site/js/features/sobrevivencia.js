@@ -8,20 +8,30 @@ import { pctSobrevivencia } from '../core/elegibilidad.js';
 import { NOMBRES_TIPO } from '../core/elegibilidad.js';
 import { edadExacta } from '../core/dates.js';
 import { NORMATIVA } from '../data/normativa-2026.js';
+import { pensionReferencia } from '../core/calculos.js';
+import { modeloInformeCalculos, renderInformeCalculos } from '../core/informe-calculos.js';
+import { iniciarDescargaCalculos } from './informe-calculos.js';
+import { huellaGrupoRP } from '../core/simulacion-rp.js';
+import { cablearSobrevivenciaRP, poblarSobrevivenciaRP } from './sobrevivencia-rp.js';
+import { cablearProyeccionRP, poblarProyeccionRP } from './proyeccion-rp.js';
 
 const icono = (n) => `<svg class="icon" aria-hidden="true"><use href="./assets/icons/sprite.svg#${n}"></use></svg>`;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const num = (v) => Number(String(v ?? '').replace(/\./g, '').replace(',', '.')) || 0;
 let unsubUF = null, cableado = null;
+let ultimaFuenteUF = null;
 
 export function init(main) {
   if (unsubUF) { unsubUF(); unsubUF = null; }
   cableado = null;
   cablear(main);
+  cablearSobrevivenciaRP(main);
+  cablearProyeccionRP(main);
   render(main);
+  const limpiarPDF = iniciarDescargaCalculos(main, 'sov');
   unsubUF = onUF(() => render(main));
   const unsubCliente = subscribe(() => render(main));
-  return () => { unsubUF?.(); unsubCliente(); };
+  return () => { unsubUF?.(); unsubCliente(); limpiarPDF(); };
 }
 
 function leer(main) {
@@ -37,6 +47,34 @@ function leer(main) {
 }
 
 function cablear(main) {
+  const guardarRP = (event) => {
+    const c = getClienteActivo();
+    if (!c) return;
+    const value = main.querySelector('#rp-meses').value;
+    if (event.target.id === 'rp-fecha-inicio') main.querySelector('#rp-confirmar').checked = false;
+    if (['rp-capital', 'rp-capital-fecha', 'rp-capital-referencia'].includes(event.target.id)) main.querySelector('#rp-capital-confirmar').checked = false;
+    const capital = main.querySelector('#rp-capital').value;
+    const comision = main.querySelector('#rp-comision').value;
+    const section = { ...c.sobrevivencia,
+      rpMesesDevengados: value.trim() ? Number(value) : null,
+      rpFechaInicio: main.querySelector('#rp-fecha-inicio').value || null,
+      rpReferenciaCondiciones: main.querySelector('#rp-condiciones-referencia').value.trim() || null,
+      rpCondicionesConfirmadas: main.querySelector('#rp-condiciones-confirmar').checked,
+      rpCapitalCLP: capital.trim() ? Number(capital.replace(/\./g, '').replace(',', '.')) : null,
+      rpCapitalFecha: main.querySelector('#rp-capital-fecha').value || null,
+      rpCapitalReferencia: main.querySelector('#rp-capital-referencia').value.trim() || null,
+      rpCapitalConfirmado: main.querySelector('#rp-capital-confirmar').checked,
+      rpComisionPct: comision.trim() ? Number(comision) : null,
+      rpComisionReferencia: main.querySelector('#rp-comision-referencia').value.trim() || null,
+      rpGrupoConfirmado: main.querySelector('#rp-confirmar').checked,
+    };
+    section.rpHuella = section.rpGrupoConfirmado ? huellaGrupoRP({ ...c, sobrevivencia: section }) : null;
+    guardarSeccion(c.id, 'sobrevivencia', section);
+  };
+  for (const id of ['rp-meses', 'rp-confirmar', 'rp-fecha-inicio', 'rp-condiciones-referencia', 'rp-condiciones-confirmar',
+    'rp-capital', 'rp-capital-fecha', 'rp-capital-referencia', 'rp-capital-confirmar', 'rp-comision', 'rp-comision-referencia']) {
+    main.querySelector(`#${id}`).addEventListener('change', guardarRP);
+  }
   const inputs = ['sov-oferta', 'sov-pension', 'sov-perg', 'sov-mort', 'sov-inc', 'sov-sobc', 'sov-sobh'];
   inputs.forEach((id) => {
     const el = main.querySelector(`#${id}`);
@@ -56,7 +94,9 @@ function cablear(main) {
           main.querySelector('#sov-sobh').value = o.sobrevHijosPct ?? '';
         }
       }
-      guardarSeccion(c.id, 'sobrevivencia', leer(main));
+      const d = leer(main);
+      if (id !== 'sov-pension' && d.ofertaIdx === '' && !c.sobrevivencia?.pensionUF) d.pensionUF = null;
+      guardarSeccion(c.id, 'sobrevivencia', { ...c.sobrevivencia, ...d });
       render(main);
     });
   });
@@ -80,6 +120,16 @@ function render(main) {
   }
   vacio.innerHTML = '';
   cuerpo.hidden = false;
+  main.querySelector('#rp-meses').value = cliente.sobrevivencia?.rpMesesDevengados ?? '';
+  poblarSobrevivenciaRP(main, cliente);
+  poblarProyeccionRP(main, cliente);
+  for (const [id, field] of [['rp-fecha-inicio', 'rpFechaInicio'], ['rp-condiciones-referencia', 'rpReferenciaCondiciones'],
+    ['rp-capital', 'rpCapitalCLP'], ['rp-capital-fecha', 'rpCapitalFecha'], ['rp-capital-referencia', 'rpCapitalReferencia'],
+    ['rp-comision', 'rpComisionPct'], ['rp-comision-referencia', 'rpComisionReferencia']]) main.querySelector(`#${id}`).value = cliente.sobrevivencia?.[field] ?? '';
+  main.querySelector('#rp-condiciones-confirmar').checked = cliente.sobrevivencia?.rpCondicionesConfirmadas === true;
+  main.querySelector('#rp-capital-confirmar').checked = cliente.sobrevivencia?.rpCapitalConfirmado === true;
+  main.querySelector('#rp-confirmar').checked = cliente.sobrevivencia?.rpGrupoConfirmado === true
+    && cliente.sobrevivencia?.rpHuella === huellaGrupoRP(cliente);
 
   // poblar selector de ofertas
   const sel = main.querySelector('#sov-oferta');
@@ -88,12 +138,13 @@ function render(main) {
   const previo = sel.value;
   sel.innerHTML = opts.join('');
 
+  const fuenteUF = pensionReferencia(cliente, getUF().valor).uf;
   if (cableado !== cliente.id) {
     cableado = cliente.id;
     const d = cliente.sobrevivencia || {};
     sel.value = d.ofertaIdx ?? '';
     if (d.ofertaIdx !== '' && d.ofertaIdx != null) sel.value = d.ofertaIdx;
-    main.querySelector('#sov-pension').value = String(d.pensionUF ?? cliente.saldo?.pensionEstimadaUF ?? '').replace('.', ',');
+    main.querySelector('#sov-pension').value = String(d.pensionUF ?? fuenteUF ?? '').replace('.', ',');
     main.querySelector('#sov-perg').value = d.periodoGarantizadoAnios ?? 0;
     main.querySelector('#sov-mort').value = String(d.cuotaMortuoriaUF ?? NORMATIVA.cuotaMortuoriaMaxUF.valor).replace('.', ',');
     main.querySelector('#sov-inc').value = String(d.incrementoConyugeUF ?? '').replace('.', ',');
@@ -101,13 +152,21 @@ function render(main) {
     main.querySelector('#sov-sobh').value = d.sobrevHijosPct ?? '';
   } else if (previo !== '') sel.value = previo;
 
+  if (!cliente.sobrevivencia?.pensionUF && sel.value === '') {
+    const input = main.querySelector('#sov-pension');
+    if (!input.value.trim() || num(input.value) === ultimaFuenteUF) input.value = String(fuenteUF ?? '').replace('.', ',');
+  }
+  ultimaFuenteUF = fuenteUF;
+  main.querySelector('#sov-informe').innerHTML = renderInformeCalculos(modeloInformeCalculos(cliente, getUF()));
+
   const d = leer(main);
+  const referencia = pensionReferencia(cliente, getUF().valor);
   const ufv = getUF().valor;
   const beneficiarios = cliente.beneficiarios || [];
   const zona = main.querySelector('#sov-resultado');
 
   if (!d.pensionUF) {
-    zona.innerHTML = `<div class="veredicto veredicto--info"><span class="veredicto__icono">${icono('i-info')}</span><div><p class="veredicto__titulo">Ingresa la pensión o elige una oferta</p><p class="veredicto__texto">La simulación usa la pensión del titular y los beneficiarios del perfil.</p></div></div>`;
+    zona.innerHTML = `<div class="veredicto veredicto--info"><span class="veredicto__icono">${icono('i-info')}</span><div><p class="veredicto__titulo">Faltan antecedentes para calcular</p><p class="veredicto__texto">No se requiere un SCOMP para simular. Revisar los datos del titular, beneficiarios y escenario RP en el bloque superior.</p></div></div>`;
     return;
   }
 
@@ -125,18 +184,19 @@ function render(main) {
   };
 
   zona.innerHTML = `
+  <p class="small muted">${esc(cliente.sobrevivencia?.pensionUF ? 'Escenario manual u oferta seleccionada' : referencia.fuente)}${referencia.simulada && !cliente.sobrevivencia?.pensionUF ? ' · Aplicación orientativa de porcentajes sobre la simulación RP; la AFP recalcula al fallecimiento y determina los derechos. No es cobertura de una renta vitalicia contratada.' : ''}</p>
   <article class="card">
     <h3 class="u-mt-0">${icono('i-hourglass')} Si fallece dentro del período garantizado</h3>
       ${esc_.periodoGarantizadoAnios > 0
         ? `<p class="small muted">Los beneficiarios/legítimos herederos reciben <strong>${esc_.mesesGarantia} meses</strong> de pensión (o el resto del período). Luego aplican las pensiones de sobrevivencia de la tabla.</p>`
-        : `<p class="small muted"><strong>Sin período garantizado:</strong> el capital no se hereda; quedan solo las pensiones de sobrevivencia legales y la cuota mortuoria.</p>`}
+        : `<p class="small muted"><strong>Escenario sin período garantizado:</strong> en una renta vitalicia simple contratada, el capital no se hereda. En retiro programado el tratamiento del saldo remanente es distinto. Cotejar modalidad y beneficiarios; este ejercicio no acredita un contrato.</p>`}
       ${esc_.cuotaMortuoriaUF > 0 ? `<p class="small muted u-mt-2">Cuota mortuoria: <strong>${uf(esc_.cuotaMortuoriaUF)}${ufv ? ` ≈ ${clp(esc_.cuotaMortuoriaUF * ufv)}` : ''}</strong> (tope legal ${NORMATIVA.cuotaMortuoriaMaxUF.valor} UF)</p>` : ''}
       ${esc_.excede100 ? `<div class="veredicto veredicto--warning u-mt-3"><span class="veredicto__icono">${icono('i-triangle-alert')}</span><div><p class="veredicto__titulo">La suma supera el 100%</p><p class="veredicto__texto">Los porcentajes legales se prorratean según el reglamento — verificar distribución con la aseguradora.</p></div></div>` : ''}
     </article>
 
     <article class="card u-mt-6">
       <h3 class="u-mt-0">${icono('i-heart-handshake')} Si vive muchos años (longevidad)</h3>
-      <p class="small muted">La renta vitalicia sigue <strong>fija en UF de por vida</strong> — la aseguradora asume el riesgo de longevidad. Con garantía estatal hasta ${NORMATIVA.garantiaEstatal.topeUFmensual} UF/mes si la aseguradora quiebra.</p>
+      <p class="small muted">Si se contrata una renta vitalicia, la pensión pactada se paga en UF de por vida según la póliza. Este ejercicio no afirma que el cliente ya tenga ese contrato. La garantía estatal se calcula por fórmula, no como cobertura automática del 100%; consulta el informe inferior.</p>
       <p class="small muted u-mt-2">La pensión del titular: <strong class="money">${uf(d.pensionUF)}${ufv ? ` ≈ ${clp(d.pensionUF * ufv)}` : ''}/mes</strong>, más aumentos diferidos pactados.</p>
     </article>
 

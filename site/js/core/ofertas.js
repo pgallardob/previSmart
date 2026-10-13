@@ -33,7 +33,9 @@ export function evaluarOferta(o, valorUF) {
   if (pensionUF > 0 && pensionUF < NORMATIVA.rentaVitaliciaMinUF.valor) {
     alertas.push({ tipo: 'danger', texto: `Pensión ${pensionUF.toFixed(2)} UF < mínimo legal 2 UF: la oferta no debería existir.` });
   }
-  if (indiceClasificacion(o.clasificacion) > INDICE_BBB) {
+  if (!o.clasificacion) {
+    alertas.push({ tipo: 'info', texto: 'Clasificación no reconocida: cotejar el certificado y la fuente vigente. No se presume una clasificación inferior a BBB.' });
+  } else if (indiceClasificacion(o.clasificacion) > INDICE_BBB) {
     alertas.push({ tipo: 'danger', texto: `Clasificación ${o.clasificacion || 'desconocida'} bajo el mínimo BBB: la aseguradora no podría participar en SCOMP.` });
   }
   if (pensionUF > NORMATIVA.garantiaEstatal.topeUFmensual) {

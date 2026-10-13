@@ -3,20 +3,22 @@ import { vencimientoRetencion } from './retencion.js';
 
 const texto = (v) => typeof v === 'string' ? v.trim() : '';
 const historial = (previous, evento) => [...(Array.isArray(previous?.historial) ? previous.historial.slice(-49) : []), evento];
+const soportes = ['archivo-local', 'papel', 'correo', 'otra'];
 
 /** Operator declaration about a checked paper/digital authorization, not a cryptographic signature. */
-export function registrarAutorizacion(cliente, { fechaFirma, referencia, firmaCotejada, responsable }, fechaActual = aISO(hoy())) {
+export function registrarAutorizacion(cliente, { fechaFirma, referencia, firmaCotejada, responsable, soporte = '' }, fechaActual = aISO(hoy())) {
   if (!cliente) throw new Error('Selecciona un cliente.');
   const fecha = parseLocal(fechaFirma);
   if (!fecha || fechaFirma !== aISO(fecha) || fechaFirma > fechaActual) throw new Error('Indica la fecha efectiva de firma, válida y no futura.');
   if (firmaCotejada !== true) throw new Error('Debes confirmar el cotejo de la autorización firmada; generar una plantilla no es firmarla.');
   if (!texto(referencia) || texto(referencia).length > 200) throw new Error('Indica una referencia de la autorización firmada, sin claves y hasta 200 caracteres.');
   if (!texto(responsable) || texto(responsable).length > 200) throw new Error('Configura al responsable de esta instalación en Ajustes.');
+  if (soporte !== '' && !soportes.includes(soporte)) throw new Error('Selecciona una ubicación válida para la autorización firmada.');
   const previous = cliente.ruta?.privacidad;
-  const evento = { tipo: 'autorizacion-declarada', registradoEn: new Date().toISOString(), fechaFirma, referencia: texto(referencia), responsable: texto(responsable) };
+  const evento = { tipo: 'autorizacion-declarada', registradoEn: new Date().toISOString(), fechaFirma, referencia: texto(referencia), responsable: texto(responsable), soporte: soporte || null };
   return { ...(cliente.ruta || {}), privacidad: {
     estado: 'vigente', fechaFirma, conservarHasta: vencimientoRetencion(fechaFirma), referencia: texto(referencia),
-    firmaCotejada: true, responsable: texto(responsable), registradoEn: evento.registradoEn, historial: historial(previous, evento)
+    firmaCotejada: true, responsable: texto(responsable), soporte: soporte || null, registradoEn: evento.registradoEn, historial: historial(previous, evento)
   } };
 }
 

@@ -5,6 +5,7 @@
 | Component | Included license |
 |---|---|
 | PDF.js 4.10.38 (Mozilla Foundation and contributors) | `app/vendor/pdfjs/LICENSE.txt` — Apache-2.0 |
+| pdf-lib 1.17.1 (Andrew Dillon) and bundled pako, tslib, standard-fonts and upng | `app/vendor/pdf-lib/*LICENSE*` — original licenses retained; local PDF creation, no client data sent to a CDN |
 | Tesseract.js 5.1.1, core and bundled dependencies | `app/vendor/tesseract/*LICENSE.txt` — Apache-2.0 and bundled notices |
 | Pico CSS 2.1.1 | `app/css/vendor/PICO-LICENSE.txt` — MIT |
 | Lucide and derived Feather icons | `app/assets/icons/LUCIDE-LICENSE.txt` — ISC/MIT |

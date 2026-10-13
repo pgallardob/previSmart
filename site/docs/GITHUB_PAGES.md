@@ -1,6 +1,6 @@
 # Distribuir PreviSmart con GitHub Pages
 
-Se preparó una distribución estática separada del repositorio de desarrollo. **No se subió a GitHub ni se publicó aún.** Pages distribuye el software; los clientes y PDF permanecen en cada instalación, no en GitHub.
+La distribución estática está publicada en **https://pgallardob.github.io/previSmart/** desde el repositorio limpio `pgallardob/previSmart`, separado del desarrollo. Pages distribuye software; los clientes y PDF permanecen en cada instalación. La versión vigente debe comprobarse en la página y su manifest, no inferirse del paquete local.
 
 ## Antes de publicar
 
@@ -24,11 +24,16 @@ site/                         PWA y manifest de integridad
 .github/scripts/              verificación previa a publicación
 README.md
 .gitignore
+.gitattributes               conserva los bytes cubiertos por el manifest
 ```
 
 El preparador no crea un repositorio Git, no hace push ni cambia la visibilidad de ningún repositorio. El código de la app se conserva relativo a su subcarpeta, por ejemplo `/prevismart/`, sin necesidad de un dominio propio.
 
+La distribución incluye `site/** -text` en `.gitattributes`: Git debe conservar exactamente los bytes cubiertos por los hashes, sin normalizar finales de línea al pasar de Windows al checkout Linux de Actions. Comprobar también la copia obtenida desde Git antes de publicar.
+
 ## Publicación manual
+
+Para actualizar la instalación existente, usar un clon limpio de `pgallardob/previSmart`, comprobar que no tenga trabajo pendiente, copiar únicamente la distribución verificada y ejecutar el workflow manual. No copiar `.git` ni hacer push desde el repositorio de desarrollo. Los pasos siguientes describen una instalación nueva en otra cuenta, no pendientes de la URL ya existente.
 
 1. Crear un repositorio nuevo en tu cuenta u organización, después de revisar términos y visibilidad. No importar el historial del proyecto ni copiar su `.git`.
 2. Subir el contenido de **`dist/PreviSmart-pages/`**, incluyendo `.github`, a la raíz de ese repositorio. No subir la carpeta del proyecto, `rpa`, `dist/PreviSmart`, `respaldo`, `respaldos` ni el perfil de navegador.
@@ -50,7 +55,7 @@ git remote add origin https://github.com/USUARIO/REPOSITORIO.git
 git push -u origin main
 ```
 
-Sustituir la URL por la del repositorio nuevo y completar la autenticación de GitHub cuando se solicite. No poner tokens ni contraseñas en la URL o el documento. Estos comandos son instrucciones futuras; no se han ejecutado ni autorizan subir el historial de trabajo.
+Sustituir la URL por la del repositorio nuevo y completar la autenticación de GitHub cuando se solicite. No poner tokens ni contraseñas en la URL o el documento. Son instrucciones para una instalación nueva y no autorizan subir el historial de trabajo.
 
 ## Protección y límites
 

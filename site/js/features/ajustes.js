@@ -15,6 +15,7 @@ import { olvidarCarpetaRespaldo } from '../core/respaldo.js';
 import { exportarIntegral, restaurarIntegral } from '../core/respaldo-integral.js';
 import { iniciarOperacion } from '../core/actividad.js';
 import { getAsesor, guardarAsesor } from '../core/asesor.js';
+import { iniciarParametros } from './parametros-normativos.js';
 import {
   getConfig, guardarConfig, borrarConfig, estaConfigurada, borrarTodasCredenciales, consultarSaludRPA
 } from '../core/integracion.js';
@@ -34,9 +35,10 @@ export function init(main) {
   const asesor = getAsesor();
   for (const campo of ['nombre', 'registro', 'email', 'telefono']) main.querySelector(`#aj-asesor-${campo}`).value = asesor[campo];
   const unsubRespaldo = onRespaldo((e) => renderRespaldo(main, e));
+  const limpiarParametros = iniciarParametros(main);
   const ver = main.querySelector('#aj-version');
   if (ver) ver.textContent = `${APP_VERSION} · referencias normativas octubre 2026, revisión técnica parcial · RPA Modelo implementado; otras AFP con ruta documental`;
-  return () => { unsubUF?.(); unsubRespaldo(); };
+  return () => { unsubUF?.(); unsubRespaldo(); limpiarParametros(); };
 }
 
 /* ---- Servicio de descarga AFP (RPA propio · presiso.md vía 2) ---- */

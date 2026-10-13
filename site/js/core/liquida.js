@@ -4,7 +4,7 @@
    - Impuesto único de segunda categoría sobre la renta líquida
      (bruta − cotización de salud), tabla mensual SII. */
 
-import { NORMATIVA, impuestoUnicoMensual } from '../data/normativa-2026.js';
+import { NORMATIVA, impuestoUnicoMensual, obtenerTablaImpuesto } from '../data/normativa-2026.js';
 import { ufAclp } from './format.js';
 
 /**
@@ -15,7 +15,8 @@ import { ufAclp } from './format.js';
 export function pensionLiquida(pensionUF, valorUF, salud = { tipo: 'fonasa' }, fecha = new Date()) {
   if (!Number.isFinite(pensionUF) || pensionUF < 0 || !Number.isFinite(valorUF) || valorUF <= 0
       || !salud || !['fonasa', 'isapre'].includes(salud.tipo)
-      || (salud.tipo === 'isapre' && (!Number.isFinite(Number(salud.planUF)) || Number(salud.planUF) < 0))) return null;
+      || (salud.tipo === 'isapre' && (salud.planUF == null || (typeof salud.planUF === 'string' && !salud.planUF.trim())
+        || !Number.isFinite(Number(salud.planUF)) || Number(salud.planUF) < 0))) return null;
   const brutaCLP = ufAclp(pensionUF, valorUF);
 
   const saludCLP = salud.tipo === 'isapre'
@@ -35,6 +36,7 @@ export function pensionLiquida(pensionUF, valorUF, salud = { tipo: 'fonasa' }, f
     saludUF: clpAuf(saludCLP, valorUF),
     imponible,
     impuesto,
+    tablaTributaria: obtenerTablaImpuesto(fecha),
     liquida,
     liquidaUF: liquida / valorUF,
     tasaEfectiva: brutaCLP > 0 ? (brutaCLP - liquida) / brutaCLP : 0

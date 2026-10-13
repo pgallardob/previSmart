@@ -1,5 +1,5 @@
-<h1>Ofertas SCOMP</h1>
-<p class="view__lead">Revisa la propuesta no oficial y compara ofertas documentadas: pensión, coberturas, garantías, solvencia y costos.</p>
+<h1>Propuesta y ofertas</h1>
+<p class="view__lead">Propuesta local automática con los datos y cálculos disponibles, sin exigir un SCOMP. Las cotizaciones recibidas de aseguradoras se comparan por separado de las simulaciones propias.</p>
 
 <div id="ofe-vacio"></div>
 <div id="ofe-cuerpo" hidden>
@@ -27,6 +27,39 @@
   <h2 id="ofe-propuesta-titulo" class="no-print u-mt-4">Vista previa de la propuesta</h2>
   <p class="small muted no-print">Revisa aquí el mismo documento que se imprimirá. Es una propuesta propia de PreviSmart, no un certificado SCOMP ni una cotización del emisor. Si faltan ofertas, el documento muestra los antecedentes disponibles sin inventarlas.</p>
   <div id="ofe-print" class="print-doc u-mt-2" tabindex="-1" role="region" aria-labelledby="ofe-propuesta-titulo"></div>
+  <div class="u-flex u-gap-2 u-wrap no-print u-mt-4">
+    <button id="ofe-generar-pdf" class="btn btn--secondary btn--sm" type="button">Generar certificado de cálculos no oficial (PDF)</button>
+    <a id="ofe-descargar-pdf" class="btn btn--primary btn--sm" hidden>Descargar PDF listo</a>
+    <a id="ofe-ver-pdf" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer" hidden>Ver PDF listo</a>
+  </div>
+  <p id="ofe-pdf-estado" class="small no-print" role="status"></p>
+  <section class="no-print u-mt-4" aria-labelledby="ofe-preparacion-titulo">
+    <h2 id="ofe-preparacion-titulo">Preparación con aseguradoras — disponible sin SCOMP</h2>
+    <p class="small">Tres compañías investigadas con fuentes públicas fechadas. Es una muestra inicial, no un ranking ni una recomendación. Las modalidades y coberturas ayudan a preparar consultas comparables; la pensión y los costos particulares se cruzan con las ofertas cuando estén disponibles.</p>
+    <div id="ofe-preparacion-aseguradoras" class="grid-modulos"></div>
+  </section>
+  <section class="card no-print u-mt-4" aria-labelledby="ofe-consolidacion-titulo">
+    <h2 id="ofe-consolidacion-titulo">Consolidar AFP + SCOMP y comparar oferta presencial</h2>
+    <a class="btn btn--secondary btn--sm" href="#/captura">Subir SCOMP recibido por correo en Captura</a>
+    <div class="grid-modulos u-mt-4">
+      <div class="field"><label for="ofe-fuente-propuesta">Fuente de los documentos</label><select id="ofe-fuente-propuesta"><option value="afp">AFP / simulación independiente</option><option value="scomp">AFP + SCOMP consolidado</option></select></div>
+      <div class="field"><label for="ofe-scomp-documento">SCOMP importado que se utilizará</label><select id="ofe-scomp-documento"></select></div>
+      <div class="field"><label for="ofe-scomp-base">Oferta base para el escenario final</label><select id="ofe-scomp-base"></select></div>
+    </div>
+    <p id="ofe-consolidacion-estado" class="small" role="status"></p>
+    <form id="ofe-presencial-form" hidden>
+      <h3>Oferta real recibida presencialmente — ingreso manual</h3>
+      <div class="grid-modulos">
+        <div class="field"><label for="ofe-real-aseguradora">Aseguradora informada</label><input id="ofe-real-aseguradora" name="aseguradora" maxlength="150" required></div>
+        <div class="field"><label for="ofe-real-pension">Pensión ofrecida (UF/mes)</label><input id="ofe-real-pension" name="pensionUF" inputmode="decimal" required></div>
+        <div class="field"><label for="ofe-real-fecha">Fecha de recepción</label><input id="ofe-real-fecha" name="fecha" type="date" required></div>
+        <div class="field"><label for="ofe-real-referencia">Referencia del papel/oferta recibida</label><input id="ofe-real-referencia" name="referencia" maxlength="200" required></div>
+      </div>
+      <label><input name="mismasCondiciones" type="checkbox"> He cotejado iguales aseguradora, modalidad, prima, beneficiarios, garantías y cláusulas. Sin este cotejo no se calculan diferencias comparables.</label>
+      <button class="btn btn--secondary btn--sm u-mt-4" type="submit">Guardar comparación presencial</button>
+    </form>
+    <p id="ofe-presencial-resultado" class="small" role="status"></p>
+  </section>
   <h2 class="no-print u-mt-6">Ofertas registradas para comparar</h2>
 
   <div class="veredicto veredicto--warning">
