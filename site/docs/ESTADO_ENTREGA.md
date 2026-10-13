@@ -1,4 +1,6 @@
-# Estado técnico de la entrega — 1.3.60
+# Estado técnico de la entrega — 1.3.61
+
+La corrección 1.3.61 mantiene la versión visible en la cabecera de pantallas pequeñas y ofrece **Buscar actualización** de forma permanente en los navegadores compatibles. La búsqueda no activa ni recarga la app automáticamente; cuando hay una entrega lista, el botón cambia a **Actualizar app** y exige confirmación. Al volver a la app se comprueban actualizaciones sin reemplazar expedientes ni originales. No cambian los cálculos ni el footer.
 
 La entrega 1.3.60 añade acceso directo a instalación y descargas desde Ajustes y GitHub Releases: ZIP completo de Windows, copia web y sumas SHA-256. Las entregas contienen solo software. En teléfonos se instala la PWA desde su dirección HTTPS; el ZIP web no es APK ni IPA. La actualización conserva los expedientes locales y no requiere desinstalar.
 

@@ -213,12 +213,36 @@ function initSW() {
   navigator.serviceWorker.register('./service-worker.js').then((reg) => {
     const mostrarActualizacion = () => {
       const button = $('#btn-actualizar-app');
-      if (button && reg.waiting) button.hidden = false;
+      if (!button) return;
+      button.hidden = false;
+      button.textContent = reg.waiting ? 'Actualizar app' : 'Buscar actualización';
     };
     mostrarActualizacion();
-    $('#btn-actualizar-app')?.addEventListener('click', () => {
-      if (!reg.waiting) return;
+    $('#btn-actualizar-app')?.addEventListener('click', async () => {
       if (operacionesActivas() > 0) { toast('Termina las descargas o respaldos antes de actualizar la app.', 'warning'); return; }
+      if (!reg.waiting) {
+        const button = $('#btn-actualizar-app');
+        button.disabled = true;
+        button.textContent = 'Buscando…';
+        try {
+          await reg.update();
+          const worker = reg.installing;
+          if (worker && !['installed', 'redundant'].includes(worker.state)) {
+            await new Promise((resolve) => {
+              const timer = setTimeout(resolve, 30000);
+              worker.addEventListener('statechange', () => {
+                if (['installed', 'redundant'].includes(worker.state)) { clearTimeout(timer); resolve(); }
+              });
+            });
+          }
+          if (reg.waiting) toast('Nueva versión lista. Pulsa “Actualizar app” para aplicarla.', 'info');
+          else if (worker?.state === 'redundant') toast('No se pudo preparar la actualización. Revisa la conexión y vuelve a intentarlo.', 'warning');
+          else if (reg.installing) toast('La nueva versión sigue descargándose. Mantén la conexión y vuelve a comprobar.', 'info');
+          else toast(`Versión ${APP_VERSION}: no se detectó una actualización nueva.`, 'info');
+        } catch { toast('No se pudo buscar una actualización. Revisa la conexión y vuelve a intentarlo.', 'warning'); }
+        finally { button.disabled = false; mostrarActualizacion(); }
+        return;
+      }
       if (!window.confirm('Guarda los formularios abiertos. La app se recargará para aplicar la nueva versión. ¿Continuar?')) return;
       actualizacionSolicitada = true;
       window.dispatchEvent(new Event('prevismart:antes-de-recargar'));
@@ -241,6 +265,9 @@ function initSW() {
 function verificarSW() {
   window.__swReg?.update?.().catch(() => {});
 }
+
+window.addEventListener('pageshow', verificarSW);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) verificarSW(); });
 
 function initConexion() {
   window.addEventListener('offline', () => {

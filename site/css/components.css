@@ -620,7 +620,9 @@ details.card summary .badge {
 
 /* ---- Pulido mobile (<30rem / <26rem) ---- */
 @media (max-width: 30rem) {
-  .brand__tag { display: none; }
+  .brand__tag:not(#brand-version) { display: none; }
+  #brand-version { font-size: 0.75rem; }
+  .appbar__inner, .appbar__actions { flex-wrap: wrap; }
   .card { padding: var(--space-4); }
   .reporte { padding: var(--space-4); }
   .uf-pill { padding: var(--space-2); gap: var(--space-1); }

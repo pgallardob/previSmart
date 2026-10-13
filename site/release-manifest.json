@@ -1,8 +1,8 @@
 {
   "tipo": "prevismart-release",
-  "version": "1.3.60",
+  "version": "1.3.61",
   "runtime": "navegador",
-  "creadoEn": "2026-10-13T20:15:51.160Z",
+  "creadoEn": "2026-10-13T21:01:35.857Z",
   "archivos": [
     {
       "path": "assets/fonts/fraunces-latin-full-normal.woff2",
@@ -226,7 +226,7 @@
     },
     {
       "path": "css/components.css",
-      "sha256": "cd4a5c1ec0e4203ede86f747675292e6f2b5e04fa8888853e6e7bdd43ec51a4b"
+      "sha256": "3114a04c79b9d460ba1f232fffb482ba2e9f2ba0f48193c254b7462ef8592f26"
     },
     {
       "path": "css/pico.overrides.css",
@@ -266,7 +266,7 @@
     },
     {
       "path": "docs/ESTADO_ENTREGA.md",
-      "sha256": "26d4d95db2c2e2c782d640d9f1ace9da0f9d91486e62bdc0f119ff2f08302fb3"
+      "sha256": "86fbe4aaf5f593a4de49145b8d3c795e39dc8b10e5093ee7205c2cdb96963ca1"
     },
     {
       "path": "docs/GITHUB_PAGES.md",
@@ -274,7 +274,7 @@
     },
     {
       "path": "docs/INSTALACION_INDIVIDUAL.md",
-      "sha256": "e23f99831c29f1884ef6274180913bbe731a5311f6823252772b140758a96fb8"
+      "sha256": "1fac791de2314b1f3a7eb13384799f195c14482854643802d19f4700e74e530a"
     },
     {
       "path": "docs/PARAMETROS_CALCULO.md",
@@ -298,11 +298,11 @@
     },
     {
       "path": "index.html",
-      "sha256": "d1cc4e2b3d3fcf6de480cae5d47fe725300a90c872e5dbf49ef0632fc29d900d"
+      "sha256": "8d103e00ab164f88f211288e8af857ca683775d158d70a2a5fa38d0ce56c05d6"
     },
     {
       "path": "js/app.js",
-      "sha256": "33edbc57bfd72a49039468b8c9ec0a9e79b4b78b4e05bf8d74e90ddf81031854"
+      "sha256": "ca5c402bc14dc9b226c1fd2079b996276245cb2f95b9ee461b5d6221aae3dc84"
     },
     {
       "path": "js/core/actividad.js",
@@ -466,7 +466,7 @@
     },
     {
       "path": "js/core/version.js",
-      "sha256": "63c6901b1f22106ce363cbb1acbb87ac5a5f9db3813514ca3321ee7812837f9e"
+      "sha256": "5169942a6b00e23d231e208272a1f344db1d241f1eef81c90e41e7bd1db14834"
     },
     {
       "path": "js/data/aseguradoras.js",
@@ -622,7 +622,7 @@
     },
     {
       "path": "service-worker.js",
-      "sha256": "8d0e14ff6ef99ba7bb58cb1ab86f6b16eb1b7524f3361c2a71a0903c36b1459e"
+      "sha256": "cf3f562c7e86084a489960157006ffc92d50b2ec5cd1c9f93bb5d53f94b4009f"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -718,7 +718,7 @@
     },
     {
       "path": "views/ajustes.html",
-      "sha256": "6240cf77b5aa71f0f2736210864f490240d3b10bb7d9127a6100ea7bc2d9ea9a"
+      "sha256": "b16daf9deeea639872ea188c35d49ffdf4281a12c2f0ed50bb263afcb02b85b4"
     },
     {
       "path": "views/beneficios.html",

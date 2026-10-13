@@ -41,7 +41,7 @@ La app no puede confirmar dónde guardó el archivo el sistema ni escribir autom
 
 ## Actualizar y usar sin conexión
 
-Abre la app instalada con conexión para buscar una entrega nueva. Cuando aparezca **Actualizar app**, termina tus operaciones, guarda los formularios y confirma. La página se recarga con la nueva versión, sin reemplazar la cartera local ni los PDF archivados. Puedes consultar la versión en **Ajustes → Acerca de PreviSmart**. No desinstales ni borres datos para actualizar.
+Abre la app instalada con conexión y pulsa **Buscar actualización**, visible en la cabecera. Cuando cambie a **Actualizar app**, termina tus operaciones, guarda los formularios y confirma. La página se recarga con la nueva versión, sin reemplazar la cartera local ni los PDF archivados. La versión también se muestra en la cabecera móvil y en **Ajustes → Acerca de PreviSmart**. No desinstales ni borres datos para actualizar.
 
 Tras la primera carga completa, los módulos, expedientes locales y generación de PDF pueden usarse sin conexión. Consultar la UF en línea, descargar una actualización o ingresar a un portal AFP requiere conexión; sin ella, la app identifica las referencias guardadas y no las presenta como datos recién consultados.
 
