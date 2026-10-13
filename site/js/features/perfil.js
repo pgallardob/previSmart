@@ -241,7 +241,8 @@ function renderBeneficiarios(main, cliente) {
 
   zona.innerHTML = lista.length ? lista.map((b, i) => {
     const e = b.fechaNacimiento ? edadExacta(b.fechaNacimiento) : null;
-    const pct = Math.round(pctSobrevivencia(b, hayHijosConDerecho) * 100);
+    const legal = pctSobrevivencia(b, hayHijosConDerecho, lista);
+    const pct = legal == null ? null : Math.round(legal * 100);
     return `
     <article class="card card--flat u-flex u-items-center u-justify-between u-gap-3 u-wrap" data-idx="${i}">
       <div>
@@ -251,7 +252,7 @@ function renderBeneficiarios(main, cliente) {
           ${e ? `${e.anios} años` : 'sin fecha'}
           ${b.estudiante ? ' · estudiante' : ''}
           ${b.invalidez ? ` · invalidez ${esc(b.invalidez)}` : ''}
-          ${pct ? ` · sobrevivencia legal ≈ ${pct}%` : ' · sin derecho evidente a sobrevivencia'}
+          ${pct == null ? ' · porcentaje pendiente: revisar hijos comunes' : pct ? ` · sobrevivencia legal ≈ ${pct}%` : ' · sin derecho evidente a sobrevivencia'}
         </p>
       </div>
       <div class="u-flex u-gap-2">

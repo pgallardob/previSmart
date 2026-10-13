@@ -53,6 +53,7 @@ export const NORMATIVA = {
   sobrevivenciaPct: {
     conyuge: 0.60,
     conyugeConHijosConDerecho: 0.50,
+    convivienteSinHijosComunesConHijos: 0.15,
     hijoMenor18: 0.15,
     hijoEstudianteMenor24: 0.15,
     hijoInvalidoParcialMayor24: 0.11,

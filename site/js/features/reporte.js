@@ -113,7 +113,8 @@ function render(main) {
       ${cliente.beneficiarios.map((b) => {
         const e = b.fechaNacimiento ? edadExacta(b.fechaNacimiento) : null;
         const hayHijos = cliente.beneficiarios.some((x) => x.tipo === 'hijo' && pctSobrevivencia(x, false) > 0);
-        return `<tr><td>${esc(b.nombre || '—')}</td><td>${esc(NOMBRES_TIPO[b.tipo] || b.tipo)}</td><td>${e ? e.anios + 'a' : '—'}</td><td>${Math.round(pctSobrevivencia(b, hayHijos) * 100)}%</td></tr>`;
+        const legal = pctSobrevivencia(b, hayHijos, cliente.beneficiarios);
+        return `<tr><td>${esc(b.nombre || '—')}</td><td>${esc(NOMBRES_TIPO[b.tipo] || b.tipo)}</td><td>${e ? e.anios + 'a' : '—'}</td><td>${legal == null ? 'Pendiente' : `${Math.round(legal * 100)}%`}</td></tr>`;
       }).join('')}</tbody></table>`
     : '<p class="muted small">Sin beneficiarios declarados.</p>'}
   </section>
@@ -149,7 +150,7 @@ function render(main) {
     <h3>${ofertas.length ? '7' : '6'}. Sobrevivencia simulada</h3>
     <table class="rep-tabla"><thead><tr><th>Beneficiario</th><th>%</th><th>Pensión</th></tr></thead><tbody>
       ${escenarioSobrevivencia(sov, cliente.beneficiarios || [], ufv, pctSobrevivencia).items.map((b) =>
-        `<tr><td>${esc(b.nombre || NOMBRES_TIPO[b.tipo])}</td><td>${Math.round(b.pctLegal * 100)}%${b.nota ? ' *' : ''}</td><td>${uf(b.pensionUF)}</td></tr>`).join('')}</tbody></table>
+        `<tr><td>${esc(b.nombre || NOMBRES_TIPO[b.tipo])}</td><td>${b.pctLegal == null ? 'Pendiente' : `${Math.round(b.pctLegal * 100)}%`}${b.nota ? ' *' : ''}</td><td>${uf(b.pensionUF)}</td></tr>`).join('')}</tbody></table>
     <p class="tiny muted">Período garantizado ${sov.periodoGarantizadoAnios || 0} años · cuota mortuoria ${f(sov.cuotaMortuoriaUF)} UF</p>
   </section>` : ''}
 

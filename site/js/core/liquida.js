@@ -60,11 +60,11 @@ export function escenarioSobrevivencia(oferta, beneficiarios, valorUF, pctFn) {
   const hayHijos = beneficiarios.some((b) => b.tipo === 'hijo' && pctFn(b, false) > 0);
 
   const items = beneficiarios.map((b) => {
-    let pctLegal = pctFn(b, hayHijos);
-    let pensionUFB = pensionUF * pctLegal;
+    let pctLegal = pctFn(b, hayHijos, beneficiarios);
+    let pensionUFB = pctLegal == null ? null : pensionUF * pctLegal;
     let nota = null;
 
-    if (b.tipo === 'conyuge' || b.tipo === 'conviviente') {
+    if (pctLegal != null && (b.tipo === 'conyuge' || b.tipo === 'conviviente')) {
       // Incremento contractual (UF extra sobre la renta del cónyuge)
       const inc = Number(oferta?.incrementoConyugeUF) || 0;
       if (inc > 0) { pensionUFB += inc; nota = `incluye incremento conyugal +${inc} UF`; }
@@ -87,12 +87,12 @@ export function escenarioSobrevivencia(oferta, beneficiarios, valorUF, pctFn) {
       ...b,
       pctLegal,
       pensionUF: pensionUFB,
-      pensionCLP: valorUF ? ufAclp(pensionUFB, valorUF) : null,
+      pensionCLP: valorUF && pensionUFB != null ? ufAclp(pensionUFB, valorUF) : null,
       nota
     };
   });
 
-  const totalPct = items.reduce((a, x) => a + x.pctLegal, 0);
+  const totalPct = items.reduce((a, x) => a + (x.pctLegal ?? 0), 0);
   return {
     pensionUF,
     items,

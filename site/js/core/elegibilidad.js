@@ -222,18 +222,25 @@ export const NOMBRES_TIPO = {
 };
 
 /** % legal de sobrevivencia según beneficiario (maestro §14). */
-export function pctSobrevivencia(b, hayHijosConDerecho) {
+export function pctSobrevivencia(b, hayHijosConDerecho, familia = null) {
   const T = NORMATIVA.sobrevivenciaPct;
   switch (b.tipo) {
-    case 'conyuge':
     case 'conviviente':
+      if (hayHijosConDerecho) {
+        if (!Array.isArray(familia)) return null;
+        const hijos = familia.filter((h) => h.tipo === 'hijo' && pctSobrevivencia(h, false) > 0);
+        if (hijos.some((h) => typeof h.hijoComun !== 'boolean')) return null;
+        return hijos.some((h) => h.hijoComun) ? T.conyugeConHijosConDerecho : T.convivienteSinHijosComunesConHijos;
+      }
+      return T.conyuge;
+    case 'conyuge':
       return hayHijosConDerecho ? T.conyugeConHijosConDerecho : T.conyuge;
     case 'hijo': {
       const edad = edadExacta(b.fechaNacimiento)?.anios ?? null;
       if (b.invalidez === 'total') return T.hijoMenor18; // invalidez total conserva el mayor porcentaje aplicable
+      if (b.invalidez === 'parcial' && edad != null) return edad < 24 ? T.hijoMenor18 : T.hijoInvalidoParcialMayor24;
       if (edad != null && edad < 18) return T.hijoMenor18;
       if (b.estudiante && edad != null && edad < 24) return T.hijoEstudianteMenor24;
-      if (b.invalidez === 'parcial' && edad != null && edad >= 24) return T.hijoInvalidoParcialMayor24;
       return 0;
     }
     case 'filiacion':

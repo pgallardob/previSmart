@@ -1,4 +1,10 @@
-# Estado técnico de la entrega — 1.3.57
+# Estado técnico de la entrega — 1.3.58
+
+La revisión 1.3.58 alinea la tabla orientativa de sobrevivencia con la familia actuarial: un hijo con invalidez parcial declarada conserva el 15% antes de los 24 años, sin exigir condición de estudiante, y pasa al 11% desde los 24. El porcentaje presupone derechos cotejados, no los acredita; la regresión verifica también el importe mostrado en el escenario.
+
+También se distingue AUC con hijos comunes declarados (50%) de AUC sin hijos comunes pero con hijos del causante con derecho (15%). Si falta esa declaración, perfil, escenario e informe muestran porcentaje y monto pendientes, no un porcentaje supuesto ni un cero inventado.
+
+**Cierre final de 1.3.58: 237 comprobaciones aprobadas** (67 Node, 10 profundas, 35 de endurecimiento, 1 CSP, 89 especializadas, 21 de aplicación, 13 de compatibilidad/Pages y 1 portable). Se repitieron la batería completa y los trece ensayos entre motores con la versión final. Los flujos de origen AFP del teléfono, PDF y archivo se probaron con referencias y documentos sintéticos en contextos aislados, no como consultas reales ni certificación de dispositivos físicos.
 
 La revisión 1.3.56 conserva la lógica funcional de 1.3.55 y retira importes particulares que habían quedado como ejemplos en una guía y un comentario del parser. Añade una regresión de publicación para impedir que esos ejemplos reaparezcan; no incorpora expedientes ni nuevos datos personales a la distribución.
 

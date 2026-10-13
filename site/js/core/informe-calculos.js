@@ -108,7 +108,7 @@ export function modeloInformeCalculos(cliente, ufMeta, generadoEn = new Date().t
   if (cliente.beneficiarios?.length) {
     const escenario = escenarioSobrevivencia({ ...base, pensionUF: baseUF || 0 }, cliente.beneficiarios, vUF, pctSobrevivencia);
     for (const b of escenario.items) filasSov.push([`${valor(b.nombre)} · ${NOMBRES_TIPO[b.tipo] || valor(b.tipo)}`,
-      `${(b.pctLegal * 100).toFixed(0)}% de referencia · ${baseUF ? `${uf(b.pensionUF)}${vUF ? ` / ${clp(b.pensionCLP)}` : ''}` : 'monto pendiente por falta de pensión base'}; no acredita el derecho`]);
+      `${b.pctLegal == null ? 'Porcentaje pendiente: revisar hijos comunes AUC' : `${(b.pctLegal * 100).toFixed(0)}% de referencia`} · ${baseUF && b.pensionUF != null ? `${uf(b.pensionUF)}${vUF ? ` / ${clp(b.pensionCLP)}` : ''}` : 'monto pendiente por falta de base o porcentaje'}; no acredita el derecho`]);
     if (escenario.excede100) filasSov.push(['Distribución', 'La suma de porcentajes supera 100%; requiere distribución y validación conforme al régimen aplicable']);
   } else filasSov.push(['Beneficiarios', 'No declarados; esto no permite concluir que no existan beneficiarios legales']);
   filasSov.push(['Plazo garantizado registrado', cobertura.mesesGarantia != null ? `${cobertura.mesesGarantia} meses; no presume una póliza contratada` : 'No informado'],

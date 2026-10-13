@@ -177,7 +177,7 @@ function render(main) {
     const dur = duracionTexto(b, e);
     return `<tr>
       <td><strong>${esc(b.nombre || NOMBRES_TIPO[b.tipo] || b.tipo)}</strong><br><span class="tiny muted">${esc(NOMBRES_TIPO[b.tipo] || b.tipo)}${e ? ` · ${e.anios}a` : ''}</span></td>
-      <td>${Math.round(b.pctLegal * 100)}%</td>
+      <td>${b.pctLegal == null ? 'Pendiente' : `${Math.round(b.pctLegal * 100)}%`}</td>
       <td class="money">${uf(b.pensionUF)}<br><span class="tiny muted">${b.pensionCLP != null ? clp(b.pensionCLP) : ''}</span></td>
       <td class="small muted">${dur}${b.nota ? `<br><span class="tiny">${esc(b.nota)}</span>` : ''}</td>
     </tr>`;
@@ -215,7 +215,7 @@ function render(main) {
       <article class="card card--flat">
         <div class="u-flex u-items-center u-justify-between u-gap-2 u-wrap">
           <strong>${esc(b.nombre || NOMBRES_TIPO[b.tipo] || b.tipo)}</strong>
-          <span class="badge badge--primary">${esc(NOMBRES_TIPO[b.tipo] || b.tipo)} · ${Math.round(b.pctLegal * 100)}%</span>
+          <span class="badge badge--primary">${esc(NOMBRES_TIPO[b.tipo] || b.tipo)} · ${b.pctLegal == null ? 'porcentaje pendiente' : `${Math.round(b.pctLegal * 100)}%`}</span>
         </div>
         <p class="money u-mt-2 u-mb-0">${uf(b.pensionUF)}${b.pensionCLP != null ? ` <span class="small muted">≈ ${clp(b.pensionCLP)}</span>` : ''}</p>
         <p class="small muted u-mt-1 u-mb-0">${dur}${b.nota ? ` · ${esc(b.nota)}` : ''}</p>
