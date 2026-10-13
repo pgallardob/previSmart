@@ -197,12 +197,13 @@ function initInstall() {
 /* Check for updates on navigation, but apply only on explicit confirmation.
    In-flight downloads/backups must not be interrupted by a new service worker. */
 let recargaPorSW = false;
+let actualizacionSolicitada = false;
 function initSW() {
   if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
 
   const teniaControlador = Boolean(navigator.serviceWorker.controller);
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!teniaControlador) return;
+    if (!teniaControlador && !actualizacionSolicitada) return;
     if (recargaPorSW) return;
     recargaPorSW = true;
     toast('PreviSmart actualizado', 'success', 4000);
@@ -219,6 +220,7 @@ function initSW() {
       if (!reg.waiting) return;
       if (operacionesActivas() > 0) { toast('Termina las descargas o respaldos antes de actualizar la app.', 'warning'); return; }
       if (!window.confirm('Guarda los formularios abiertos. La app se recargará para aplicar la nueva versión. ¿Continuar?')) return;
+      actualizacionSolicitada = true;
       window.dispatchEvent(new Event('prevismart:antes-de-recargar'));
       reg.waiting.postMessage({ tipo: 'APLICAR_ACTUALIZACION' });
     });

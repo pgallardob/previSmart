@@ -1,6 +1,10 @@
-# Estado técnico de la entrega — 1.3.56
+# Estado técnico de la entrega — 1.3.57
 
 La revisión 1.3.56 conserva la lógica funcional de 1.3.55 y retira importes particulares que habían quedado como ejemplos en una guía y un comentario del parser. Añade una regresión de publicación para impedir que esos ejemplos reaparezcan; no incorpora expedientes ni nuevos datos personales a la distribución.
+
+En 1.3.57 se corrige una actualización explícita durante la primera visita: el worker nuevo se activaba, pero la página conservaba los módulos cargados antes porque no tenía controlador al arrancar. Ahora la confirmación de actualización habilita una sola recarga, mientras la instalación inicial, la cancelación y las operaciones en curso siguen sin provocarla. Dos pruebas reproducen y verifican esta condición; la lógica financiera permanece intacta.
+
+**Cierre de 1.3.57: 235 comprobaciones aprobadas** (67 Node, 10 profundas, 35 de endurecimiento, 1 CSP, 87 especializadas, 21 de aplicación, 13 de compatibilidad/Pages y 1 portable). Se volvió a ejecutar la batería funcional completa y la compatibilidad tras las correcciones de publicación/actualización. El ensayo WebKit espera a que termine la referencia UF inicial antes de generar el PDF: un cambio tardío de UF invalida deliberadamente un documento en curso para no entregar un cálculo desactualizado.
 
 ## Alcance vigente de la entrega
 
